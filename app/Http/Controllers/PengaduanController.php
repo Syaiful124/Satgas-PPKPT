@@ -6,6 +6,8 @@ use App\Models\Kategori;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class PengaduanController extends Controller
 {
@@ -105,5 +107,113 @@ class PengaduanController extends Controller
         $pengaduans = Pengaduan::with('kategori', 'penanganan.admin')->whereIn('id', $ids)->get();
         // Disini Anda bisa membuat view khusus untuk cetak
         return view('print.laporan', compact('pengaduans'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNGSI UNTUK PUBLIC / USER
+    |--------------------------------------------------------------------------
+    */
+    public function createPublic()
+    {
+        $kategoris = Kategori::all();
+        return view('public.kirim_pengaduan', compact('kategoris'));
+    }
+
+    public function storePublic(Request $request)
+    {
+        $request->validate([
+            'anonim' => 'nullable|boolean',
+            'nama_pelapor' => 'required_if:anonim,false|string|max:255',
+            'email_pelapor' => 'nullable|email',
+            'telepon_pelapor' => 'nullable|string|max:15',
+            'judul' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'isi_laporan' => 'required|string',
+            'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480', // 20MB max
+            'persetujuan' => 'required',
+        ]);
+
+        $path = null;
+        if ($request->hasFile('foto_kejadian')) {
+            $path = $request->file('foto_kejadian')->store('public/kejadian');
+        }
+
+        $namaPelapor = 'Anonim';
+        if (Auth::check() && !$request->filled('anonim')) {
+            $namaPelapor = Auth::user()->name;
+        } elseif (!$request->filled('anonim')) {
+            $namaPelapor = $request->nama_pelapor;
+        }
+
+        Pengaduan::create([
+            'user_id' => Auth::id(), // Akan null jika tamu
+            'nama_pelapor' => $namaPelapor,
+            'email_pelapor' => Auth::check() ? Auth::user()->email : $request->email_pelapor,
+            'telepon_pelapor' => $request->telepon_pelapor,
+            'judul' => $request->judul,
+            'kategori_id' => $request->kategori_id,
+            'isi_laporan' => $request->isi_laporan,
+            'foto_kejadian' => $path,
+            'status' => 'menunggu',
+        ]);
+
+        return redirect()->route('beranda')->with('success', 'Pengaduan Anda telah berhasil dikirim. Terima kasih.');
+    }
+
+    // Menampilkan detail pengaduan milik user
+    public function showUser(Pengaduan $pengaduan)
+    {
+        // Pastikan user hanya bisa melihat laporannya sendiri
+        if (Gate::denies('view', $pengaduan)) {
+            abort(403);
+        }
+        return view('user.detail_pengaduan', compact('pengaduan'));
+    }
+
+    // Menampilkan form edit pengaduan milik user
+    public function editUser(Pengaduan $pengaduan)
+    {
+        // Pastikan user hanya bisa mengedit laporannya sendiri & statusnya 'menunggu'
+        if (Gate::denies('update', $pengaduan)) {
+            abort(403, 'Anda tidak dapat mengedit laporan ini.');
+        }
+        $kategoris = Kategori::all();
+        return view('user.edit_pengaduan', compact('pengaduan', 'kategoris'));
+    }
+
+    // Proses update pengaduan oleh user
+    public function updateUser(Request $request, Pengaduan $pengaduan)
+    {
+        if (Gate::denies('update', $pengaduan)) {
+            abort(403);
+        }
+
+        // Validasi sama seperti storePublic, tapi beberapa field mungkin tidak perlu
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'isi_laporan' => 'required|string',
+        ]);
+
+        $pengaduan->update($request->only(['judul', 'kategori_id', 'isi_laporan']));
+
+        return redirect()->route('account.pengaduan.show', $pengaduan)->with('success', 'Laporan berhasil diperbarui.');
+    }
+
+    // Proses hapus pengaduan oleh user
+    public function destroyUser(Pengaduan $pengaduan)
+    {
+        if (Gate::denies('delete', $pengaduan)) {
+            abort(403);
+        }
+
+        // Hapus file jika ada
+        if ($pengaduan->foto_kejadian) {
+            Storage::delete($pengaduan->foto_kejadian);
+        }
+        $pengaduan->delete();
+
+        return redirect()->route('account.index')->with('success', 'Laporan berhasil dihapus.');
     }
 }
