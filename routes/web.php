@@ -10,8 +10,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PenangananController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PageController; // Controller baru untuk halaman publik
-use App\Http\Controllers\AccountController; // Controller baru untuk halaman akun user
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +34,9 @@ Route::get('/hubungi-kami', [PageController::class, 'hubungiKami'])->name('hubun
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
-// Form & Proses Verifikasi 2FA untuk Admin
-Route::get('/verify-2fa', [AuthController::class, 'showVerifyForm'])->name('2fa.form');
-Route::post('/verify-2fa', [AuthController::class, 'verify2fa'])->name('2fa.verify');
+// // Form & Proses Verifikasi 2FA untuk Admin
+// Route::get('/verify-2fa', [AuthController::class, 'showVerifyForm'])->name('2fa.form');
+// Route::post('/verify-2fa', [AuthController::class, 'verify2fa'])->name('2fa.verify');
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -45,20 +45,20 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
-// Proses Verifikasi Email untuk User
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+// // Proses Verifikasi Email untuk User
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->middleware('auth')->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect()->route('account.index')->with('success', 'Email berhasil diverifikasi!');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+//     return redirect()->route('account.index')->with('success', 'Email berhasil diverifikasi!');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Link verifikasi baru telah dikirim!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+// Route::post('/email/verification-notification', function (Request $request) {
+//     $request->user()->sendEmailVerificationNotification();
+//     return back()->with('message', 'Link verifikasi baru telah dikirim!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
 /*

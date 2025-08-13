@@ -33,7 +33,7 @@
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-3 font-semibold">{{ $pengaduan->judul }}</td>
                 <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->created_at->format('d M Y') }}</td>
+                <td class="p-3">{{ $pengaduan->created_at?->format('d M Y') }}</td>
                 <td class="p-3">
                     @if($pengaduan->status == 'menunggu')
                         <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu</span>

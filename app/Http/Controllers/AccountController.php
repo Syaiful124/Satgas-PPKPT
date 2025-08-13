@@ -50,16 +50,11 @@ class AccountController extends Controller
             $user->password = Hash::make($request->new_password);
         }
 
-        // Jika user mengganti email
-        if ($request->email !== $user->email) {
-            $user->email = $request->email;
-            $user->email_verified_at = null; // Set email menjadi belum terverifikasi
-            $user->sendEmailVerificationNotification(); // Kirim verifikasi ke email baru
-        }
-
+        // Langsung update nama dan email
         $user->name = $request->name;
+        $user->email = $request->email;
         $user->save();
 
-        return redirect()->route('account.index')->with('success', 'Profil berhasil diperbarui. Jika Anda mengubah email, silakan verifikasi alamat email baru Anda.');
+        return redirect()->route('account.index')->with('success', 'Profil berhasil diperbarui.');
     }
 }

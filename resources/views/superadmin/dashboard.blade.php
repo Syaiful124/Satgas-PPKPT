@@ -97,7 +97,7 @@
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-3">{{ $pengaduan->judul }}</td>
                 <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->created_at->format('d M Y') }}</td>
+                <td class="p-3">{{ $pengaduan->created_at?->format('d M Y') }}</td>
                 <td class="p-3">
                     <span class="px-3 py-1 text-sm rounded-full
                         @if($pengaduan->status == 'menunggu') badge-menunggu @endif

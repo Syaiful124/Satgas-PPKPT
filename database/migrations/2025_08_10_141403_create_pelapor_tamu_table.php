@@ -1,4 +1,3 @@
-// database/migrations/YYYY_MM_DD_HHMMSS_create_pelapor_tamu_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;

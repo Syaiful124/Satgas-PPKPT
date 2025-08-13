@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class PengaduanController extends Controller
 {
@@ -34,13 +35,7 @@ class PengaduanController extends Controller
     {
         $pengaduan->load('kategori', 'user', 'penanganan.admin');
         // Arahkan ke view yang sesuai berdasarkan status
-        if($pengaduan->status == 'menunggu'){
-            return view('superadmin.detail_menunggu', compact('pengaduan'));
-        } elseif ($pengaduan->status == 'penanganan' || $pengaduan->status == 'selesai') {
-            return view('superadmin.detail_penanganan', compact('pengaduan'));
-        } elseif ($pengaduan->status == 'ditolak') {
-             return view('superadmin.detail_ditolak', compact('pengaduan'));
-        }
+        return view('superadmin.detail', compact('pengaduan'));
     }
 
     public function setujuiPenanganan(Request $request, Pengaduan $pengaduan)
@@ -122,13 +117,18 @@ class PengaduanController extends Controller
 
     public function storePublic(Request $request)
     {
+        // Cari ID untuk kategori "Lainnya"
+        $lainnyaKategori = Kategori::where('nama_kategori', 'like', 'Lainnya')->first();
+        $lainnyaKategoriId = $lainnyaKategori ? $lainnyaKategori->id : null;
+
         $request->validate([
             'anonim' => 'nullable|boolean',
             'nama_pelapor' => 'required_if:anonim,false|string|max:255',
             'email_pelapor' => 'nullable|email',
-            'telepon_pelapor' => 'nullable|string|max:15',
+            'telepon_pelapor' => 'required_if:anonim,false|string|max:15',
             'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
+            'kategori_lainnya' => ['nullable', 'string', 'max:255', Rule::requiredIf($request->kategori_id == $lainnyaKategoriId)],
             'isi_laporan' => 'required|string',
             'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480', // 20MB max
             'persetujuan' => 'required',
@@ -136,7 +136,7 @@ class PengaduanController extends Controller
 
         $path = null;
         if ($request->hasFile('foto_kejadian')) {
-            $path = $request->file('foto_kejadian')->store('public/kejadian');
+            $path = $request->file('foto_kejadian')->store("public/kejadina");
         }
 
         $namaPelapor = 'Anonim';
@@ -149,10 +149,11 @@ class PengaduanController extends Controller
         Pengaduan::create([
             'user_id' => Auth::id(), // Akan null jika tamu
             'nama_pelapor' => $namaPelapor,
-            'email_pelapor' => Auth::check() ? Auth::user()->email : $request->email_pelapor,
-            'telepon_pelapor' => $request->telepon_pelapor,
+            'email_pelapor' => $request->filled('anonim') ? null : (Auth::check() ? Auth::user()->email : $request->email_pelapor),
+            'telepon_pelapor' => $request->filled('anonim') ? null : $request->telepon_pelapor,
             'judul' => $request->judul,
             'kategori_id' => $request->kategori_id,
+            'kategori_lainnya' => $request->kategori_lainnya,
             'isi_laporan' => $request->isi_laporan,
             'foto_kejadian' => $path,
             'status' => 'menunggu',

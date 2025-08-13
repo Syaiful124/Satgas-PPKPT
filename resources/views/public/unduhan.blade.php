@@ -2,13 +2,13 @@
 @section('title', 'Pusat Unduhan')
 
 @section('content')
-<div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+<div class="bg-white p-8 rounded-lg shadow-lg w-full h-full mx-auto">
     <div class="text-center mb-10">
         <h1 class="text-3xl font-bold text-gray-800">Pusat Unduhan</h1>
         <p class="text-gray-500">Dokumen dan panduan terkait PPKS.</p>
     </div>
 
-    <div class="space-y-4" id="accordion-container">
+    <div class="space-y-4 h-full" id="accordion-container">
         @forelse ($files as $file)
         <div class="border rounded-lg overflow-hidden">
             <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100">

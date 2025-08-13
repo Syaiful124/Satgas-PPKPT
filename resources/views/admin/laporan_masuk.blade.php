@@ -21,7 +21,7 @@
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-3 font-semibold">{{ $pengaduan->judul }}</td>
                 <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->updated_at->format('d M Y') }}</td>
+                <td class="p-3">{{ $pengaduan->updated_at?->format('d M Y') }}</td>
                 <td class="p-3">
                     @if($pengaduan->penanganan)
                         <span class="text-green-600 font-semibold">Sudah Dilaporkan</span>

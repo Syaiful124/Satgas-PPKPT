@@ -21,10 +21,17 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="md:col-span-2">
             <h2 class="text-2xl font-semibold">{{ $pengaduan->judul }}</h2>
-            <p class="text-gray-500 mb-4">{{ $pengaduan->kategori->nama_kategori }}</p>
+            <p class="text-gray-500 mb-4">
+                Kategori:
+                <span class="font-semibold">{{ $pengaduan->kategori->nama_kategori }}
+                    @if($pengaduan->kategori_lainnya)
+                        ({{ $pengaduan->kategori_lainnya }})
+                    @endif
+                </span>
+            </p>
             <div class="flex justify-between text-sm text-gray-600 mb-4">
                 <p>Status: <span class="font-bold">{{ ucfirst($pengaduan->status) }}</span></p>
-                <p>{{ $pengaduan->created_at->format('d-m-Y H:i') }}</p>
+                <p>{{ $pengaduan->created_at?->format('d-m-Y H:i') }}</p>
             </div>
             <div class="mb-4">
                 <h3 class="font-bold mb-2">Kronologi Kejadian:</h3>

@@ -10,6 +10,12 @@ class Pengaduan extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime', // Pastikan baris ini ada
+        'updated_at' => 'datetime', // dan baris ini juga
+    ];
+
     public function kategori()
     {
         return $this->belongsTo(Kategori::class);
