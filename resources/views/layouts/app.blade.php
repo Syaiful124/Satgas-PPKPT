@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SATGAS PPKPT - @yield('title')</title>
-    {{-- Ganti dengan link ke library CSS Anda, contoh: Bootstrap/Tailwind --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles untuk mencocokkan desain */
         body { font-family: 'Poppins', sans-serif; background-color: #f7fafc; }
-        .sidebar { background: linear-gradient(to top, #ffffff 5%, #ff6900 100%); color: white; }
-        .sidebar a { color: #000; display: flex; flex-direction: row; padding: 10px 25px;}
+        .sidebar { background: linear-gradient(to top, #ffffff, #ff6900 60%); color: white;}
+        .sidebar a { color: #000; display: flex; flex-direction: row; padding: 10px 20px;}
         .sidebar a.active { background-color: gray; color: white; font-weight: bold; }
-        .sidebar a svg { width: auto; height: auto; margin-right: 10px; }
+        .sidebar svg { width: auto; height: auto; margin-right: 10px; }
         .btn-primary { background-color: #f6993f; color: white; }
         .btn-primary:hover { background-color: #de751f; }
         .btn-danger { background-color: #e53e3e; color: white; }
@@ -38,14 +36,26 @@
             padding: 10px;
             border-radius: 40px;
         }
+        .jml-b {
+            border: 1px solid blue;
+        }
+        .jml-r {
+            border: 1px solid red;
+        }
+        .jml-g {
+            border: 1px solid green;
+        }
     </style>
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <aside class="w-64 sidebar flex flex-col justify-between">
+    <aside class="w-64 sidebar flex flex-col justify-between h-screen sticky top-0">
         <div class="w-full">
-            <div class="side-up text-center text-white pt-5 pb-5 mb-4 bg-gray-500  shadow-lg">
+            <div class="side-up text-center text-white pt-5 pb-5 mb-4 bg-gray-500  shadow-lg flex flex-row justify-center items-center">
+                <img src="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png" alt="STIMATA" class="h-10 w-10 mr-2 object-cover">
+                <div>
                 <h1 class="text-2xl font-bold">SATGAS</h1>
                 <p class="text-sm">Admin Panel</p>
+                </div>
             </div>
             <nav class="pr-2 pl-2">
                 <ul>
@@ -116,18 +126,18 @@
             </nav>
         </div>
         <div class="side-down p-4">
-            <div class="text-black flex justify-center items-center w-full mb-3">
+            <div class="text-black flex items-center ml-4 w-full mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                 </svg>
-                <div class="ml-5 justify-between flex flex-col">
-                    <p class="font-bold">{{ auth()->user()->role == 'superadmin' ? 'KETUA' : 'PETUGAS' }}</p>
-                    <p class="text-sm">{{ auth()->user()->name }}</p>
+                <div class="ml-2 justify-between flex flex-col">
+                    <p class="font-bold">{{ auth()->user()->name }}</p>
+                    <p class="text-sm">{{ auth()->user()->role }}</p>
                 </div>
             </div>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="w-full bg-red-600 text-white p-2 rounded hover:bg-red-700 flex flex-row justify-center items-center gap-3">
+                <button type="submit" class="w-full bg-red-600 text-white p-2 rounded-lg hover:bg-red-700 flex flex-row justify-center items-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
                     <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
@@ -152,10 +162,8 @@
 
         @yield('content')
     </main>
-
-    <script>
     @stack('scripts')
-
+    <script>
     document.addEventListener('DOMContentLoaded', function () {
         const togglePasswordButtons = document.querySelectorAll('.toggle-password');
 

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
+
 
 class PengaduanController extends Controller
 {
@@ -19,11 +22,9 @@ class PengaduanController extends Controller
         $query = Pengaduan::with('kategori')
             ->whereIn('status', ['menunggu', 'penanganan']);
 
-        // Implementasi search dan filter serupa dengan dashboard
         if ($request->filled('search')) {
-             $query->where('judul', 'like', '%' . $request->search . '%');
+            $query->where('judul', 'like', '%' . $request->search . '%');
         }
-        // ... tambahkan filter lainnya jika perlu ...
 
         $pengaduans = $query->latest()->paginate(10);
         $kategoris = Kategori::all();
@@ -34,7 +35,6 @@ class PengaduanController extends Controller
     public function show(Pengaduan $pengaduan)
     {
         $pengaduan->load('kategori', 'user', 'penanganan.admin');
-        // Arahkan ke view yang sesuai berdasarkan status
         return view('superadmin.detail', compact('pengaduan'));
     }
 
@@ -76,8 +76,6 @@ class PengaduanController extends Controller
         // Admin hanya melihat laporan berstatus 'penanganan'
         $query = Pengaduan::with('kategori')->where('status', 'penanganan');
 
-        // ... tambahkan search & filter jika diperlukan di halaman admin ...
-
         $pengaduans = $query->latest()->paginate(10);
         return view('admin.laporan_masuk', compact('pengaduans'));
     }
@@ -118,42 +116,66 @@ class PengaduanController extends Controller
     public function storePublic(Request $request)
     {
         // Cari ID untuk kategori "Lainnya"
-        $lainnyaKategori = Kategori::where('nama_kategori', 'like', 'Lainnya')->first();
-        $lainnyaKategoriId = $lainnyaKategori ? $lainnyaKategori->id : null;
+        $lainnyaKategoriId = Kategori::where('nama_kategori', 'Lainnya')->first()?->id;
 
         $request->validate([
             'anonim' => 'nullable|boolean',
-            'nama_pelapor' => 'required_if:anonim,false|string|max:255',
-            'email_pelapor' => 'nullable|email',
-            'telepon_pelapor' => 'required_if:anonim,false|string|max:15',
+            'nama_pelapor' => [
+                Rule::requiredIf(!$request->boolean('anonim') && !Auth::check()),
+                'nullable', 'string', 'max:255'
+            ],
+            'email_pelapor' => [
+                Rule::requiredIf(!$request->boolean('anonim')),
+                'nullable', 'email', 'max:255'
+            ],
+            'telepon_pelapor' => [
+                Rule::requiredIf(!$request->boolean('anonim')),
+                'nullable', 'string', 'max:25'
+            ],
             'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
-            'kategori_lainnya' => ['nullable', 'string', 'max:255', Rule::requiredIf($request->kategori_id == $lainnyaKategoriId)],
+            'kategori_lainnya' => [
+                Rule::requiredIf($request->input('kategori_id') == $lainnyaKategoriId),
+                'nullable', 'string', 'max:100'
+            ],
             'isi_laporan' => 'required|string',
-            'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480', // 20MB max
+            'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480',
             'persetujuan' => 'required',
         ]);
 
-        $path = null;
-        if ($request->hasFile('foto_kejadian')) {
-            $path = $request->file('foto_kejadian')->store("public/kejadina");
+        $is_anonymous = $request->boolean('anonim');
+
+        $reporter_name = null;
+        $reporter_email = null;
+        $reporter_phone = null;
+
+        if ($is_anonymous) {
+            $reporter_name = 'Anonim';
+        } else {
+            if (Auth::check()) {
+                $reporter_name = Auth::user()->name;
+                $reporter_email = Auth::user()->email;
+                $reporter_phone = $request->telepon_pelapor; // Ambil dari form karena mungkin user belum punya data telepon
+            } else {
+                $reporter_name = $request->nama_pelapor;
+                $reporter_email = $request->email_pelapor;
+                $reporter_phone = $request->telepon_pelapor;
+            }
         }
 
-        $namaPelapor = 'Anonim';
-        if (Auth::check() && !$request->filled('anonim')) {
-            $namaPelapor = Auth::user()->name;
-        } elseif (!$request->filled('anonim')) {
-            $namaPelapor = $request->nama_pelapor;
+        $path = null;
+        if ($request->hasFile('foto_kejadian')) {
+            $path = $request->file('foto_kejadian')->store('public/kejadian');
         }
 
         Pengaduan::create([
-            'user_id' => Auth::id(), // Akan null jika tamu
-            'nama_pelapor' => $namaPelapor,
-            'email_pelapor' => $request->filled('anonim') ? null : (Auth::check() ? Auth::user()->email : $request->email_pelapor),
-            'telepon_pelapor' => $request->filled('anonim') ? null : $request->telepon_pelapor,
+            'user_id' => Auth::id(),
+            'nama_pelapor' => $reporter_name,
+            'email_pelapor' => $reporter_email,
+            'telepon_pelapor' => $reporter_phone,
             'judul' => $request->judul,
             'kategori_id' => $request->kategori_id,
-            'kategori_lainnya' => $request->kategori_lainnya,
+            'kategori_lainnya' => $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null,
             'isi_laporan' => $request->isi_laporan,
             'foto_kejadian' => $path,
             'status' => 'menunggu',
@@ -186,18 +208,44 @@ class PengaduanController extends Controller
     // Proses update pengaduan oleh user
     public function updateUser(Request $request, Pengaduan $pengaduan)
     {
+        // Otorisasi: pastikan hanya pemilik yang bisa mengedit
         if (Gate::denies('update', $pengaduan)) {
-            abort(403);
+            abort(403, 'Anda tidak diizinkan untuk mengedit laporan ini.');
         }
 
-        // Validasi sama seperti storePublic, tapi beberapa field mungkin tidak perlu
+        $lainnyaKategoriId = Kategori::where('nama_kategori', 'Lainnya')->first()?->id;
+
         $request->validate([
+            // Validasi sama seperti form kirim pengaduan
             'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
+            'kategori_lainnya' => [
+                Rule::requiredIf($request->input('kategori_id') == $lainnyaKategoriId),
+                'nullable', 'string', 'max:100'
+            ],
             'isi_laporan' => 'required|string',
+            'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480',
+            'persetujuan' => 'required',
         ]);
 
-        $pengaduan->update($request->only(['judul', 'kategori_id', 'isi_laporan']));
+        // Ambil semua data kecuali token dan method
+        $data = $request->except(['_token', '_method']);
+
+        // Logika untuk menangani file bukti baru
+        if ($request->hasFile('foto_kejadian')) {
+            // Hapus file lama jika ada
+            if ($pengaduan->foto_kejadian) {
+                Storage::delete($pengaduan->foto_kejadian);
+            }
+            // Simpan file baru
+            $data['foto_kejadian'] = $request->file('foto_kejadian')->store('public/kejadian');
+        }
+
+        // Pastikan kategori lainnya null jika bukan kategori "Lainnya"
+        $data['kategori_lainnya'] = $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null;
+
+        // Update data pengaduan
+        $pengaduan->update($data);
 
         return redirect()->route('account.pengaduan.show', $pengaduan)->with('success', 'Laporan berhasil diperbarui.');
     }
@@ -216,5 +264,20 @@ class PengaduanController extends Controller
         $pengaduan->delete();
 
         return redirect()->route('account.index')->with('success', 'Laporan berhasil dihapus.');
+    }
+
+    public function exportPDF(Pengaduan $pengaduan)
+    {
+        // Load semua data yang dibutuhkan
+        $pengaduan->load('kategori', 'user', 'penanganan.admin');
+
+        // Buat PDF dari view 'print.laporan' yang sudah kita buat sebelumnya
+        $pdf = PDF::loadView('print.laporan', ['pengaduans' => collect([$pengaduan])]);
+
+        // Buat nama file yang dinamis
+        $fileName = 'laporan-' . $pengaduan->id . '-' . Str::slug($pengaduan->judul) . '.pdf';
+
+        // Download file PDF
+        return $pdf->download($fileName);
     }
 }

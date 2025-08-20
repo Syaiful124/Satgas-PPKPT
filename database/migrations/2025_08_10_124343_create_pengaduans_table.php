@@ -10,13 +10,16 @@ return new class extends Migration
     {
         Schema::create('pengaduans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('kategori_id')->constrained('kategoris');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->string('nama_pelapor');
+            $table->string('email_pelapor')->nullable();
+            $table->string('telepon_pelapor')->nullable();
             $table->string('judul');
+            $table->foreignId('kategori_id')->constrained('kategoris');
+            $table->string('kategori_lainnya')->nullable();
             $table->text('isi_laporan');
             $table->string('foto_kejadian')->nullable();
             $table->enum('status', ['menunggu', 'penanganan', 'selesai', 'ditolak'])->default('menunggu');
-            $table->boolean('is_anonymous')->default(false); // Kolom baru untuk status anonim
             $table->timestamps();
         });
     }

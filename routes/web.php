@@ -80,7 +80,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('account')->name('a
 
 /*
 |--------------------------------------------------------------------------
-| Halaman Admin & Superadmin (dari sebelumnya)
+| Halaman Admin & Superadmin
 |--------------------------------------------------------------------------
 */
 // --- GRUP UNTUK SUPERADMIN ---
@@ -94,7 +94,8 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     Route::post('laporan/{pengaduan}/tolak', [PengaduanController::class, 'tolakPengaduan'])->name('laporan.tolak');
     Route::post('laporan/{pengaduan}/selesaikan', [PengaduanController::class, 'selesaikanPengaduan'])->name('laporan.selesaikan');
     Route::resource('users', UserController::class);
-    Route::post('print', [PengaduanController::class, 'print'])->name('print');
+    Route::get('laporan/{pengaduan}/pdf', [PengaduanController::class, 'exportPDF'])->name('laporan.pdf');
+    Route::get('dashboard/export/pdf', [DashboardController::class, 'exportDashboardPDF'])->name('dashboard.export.pdf');
 });
 
 // --- GRUP UNTUK ADMIN ---

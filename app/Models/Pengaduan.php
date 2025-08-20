@@ -12,8 +12,8 @@ class Pengaduan extends Model
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'created_at' => 'datetime', // Pastikan baris ini ada
-        'updated_at' => 'datetime', // dan baris ini juga
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function kategori()

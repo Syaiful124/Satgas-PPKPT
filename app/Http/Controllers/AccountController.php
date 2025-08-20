@@ -24,7 +24,16 @@ class AccountController extends Controller
         if ($request->filled('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
-        // ... filter lainnya bisa ditambahkan ...
+        // Fitur sort
+        if ($request->filled('sort')) {
+            $sort = explode('_', $request->sort);
+            if(count($sort) == 2){
+                $query->orderBy($sort[0], $sort[1]);
+            }
+        } else {
+            // Urutan default jika tidak ada pilihan sort
+            $query->latest();
+        }
 
         $pengaduans = $query->paginate(5);
 

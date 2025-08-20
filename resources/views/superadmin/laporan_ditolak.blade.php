@@ -3,7 +3,12 @@
 @section('title', 'Laporan Ditolak')
 
 @section('content')
-<h1 class="text-3xl font-bold mb-6">Laporan Ditolak</h1>
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Laporan Ditolak</h1>
+    <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" class="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700">
+        Export ke PDF
+    </a>
+</div>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <table class="w-full">

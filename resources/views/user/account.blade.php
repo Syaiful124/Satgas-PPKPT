@@ -97,6 +97,13 @@
                             <option value="ditolak" @if(request('status') == 'ditolak') selected @endif>Ditolak</option>
                         </select>
                     </div>
+                    <div>
+                        <label class="text-sm">Urutkan</label>
+                        <select name="sort" class="w-full p-2 border rounded-lg">
+                            <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
+                            <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
+                        </select>
+                    </div class="flex space-x-2">
                     <button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">Filter</button>
                      <a href="{{ route('account.index') }}" class="bg-gray-300 px-4 py-2 rounded-lg">Reset</a>
                 </div>

@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="hidden md:block">
-            <img src="https://images.unsplash.com/photo-1593113598332-cd288d6494a4?q=80&w=2070&auto=format&fit=crop" alt="Tim Satgas" class="w-full h-full object-cover">
+            <img src="https://scontent.fsub6-6.fna.fbcdn.net/v/t39.30808-6/481274767_1177387491054707_3775528880299657301_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=a0CfO9ESh-wQ7kNvwE4JO4k&_nc_oc=AdnkFvhiZ7HOWmb3omAnEvPo3FwI_oPyoVZK3688k-6dNbEUm0bOzmAOm-DpCiVGJBc&_nc_zt=23&_nc_ht=scontent.fsub6-6.fna&_nc_gid=zWY2ExHEkGnOb_u8JIDSwQ&oh=00_AfUcpV9Y_6D2EhWhPjUn6sHJSLgvCQ74mzZ7TrmVI-HpWg&oe=68AAE629" alt="Tim Satgas" class="w-full h-full object-cover">
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@
                 <p class="text-lg font-bold">{{ $pengaduan->judul }}</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-2 grid-rows-3 gap-4 mb-4">
                 <div>
                     <p class="text-sm text-gray-500">Kategori</p>
                     <p class="font-semibold">{{ $pengaduan->kategori->nama_kategori }}</p>
@@ -29,9 +29,17 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->nama_pelapor }}</p>
+                    <p class="font-semibold">{{ $pengaduan->nama_pelapor ?? 'Anonim' }}</p>
                 </div>
-                 <div>
+                <div>
+                    <p class="text-sm text-gray-500">Email Pelapor</p>
+                    <p class="font-semibold">{{ $pengaduan->email_pelapor }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Telepon Pelapor</p>
+                    <p class="font-semibold">{{ $pengaduan->telepon_pelapor }}</p>
+                </div>
+                <div>
                     <p class="text-sm text-gray-500">Status Saat Ini</p>
                     <p class="font-bold
                         @if($pengaduan->status == 'menunggu') text-orange-500 @endif
@@ -40,6 +48,12 @@
                         @if($pengaduan->status == 'ditolak') text-red-500 @endif
                     ">{{ ucfirst($pengaduan->status) }}</p>
                 </div>
+                @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
+                <div class="col-span-2">
+                    <p class="text-sm text-gray-500">Kategori Lainnya yang Disebutkan</p>
+                    <p class="font-semibold text-orange-600">{{ $pengaduan->kategori_lainnya }}</p>
+                </div>
+                @endif
             </div>
 
             <div class="mb-4">
@@ -107,11 +121,11 @@
                     <div class="flex justify-center space-x-4">
                         <form action="{{ route('superadmin.laporan.setujui', $pengaduan) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-primary px-6 py-2 rounded-lg">Setujui untuk Ditangani</button>
+                            <button type="submit" class="btn-primary px-6 py-2 rounded-lg">Setujui</button>
                         </form>
                         <form action="{{ route('superadmin.laporan.tolak', $pengaduan) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-danger px-6 py-2 rounded-lg">Tolak Laporan</button>
+                            <button type="submit" class="btn-danger px-6 py-2 rounded-lg">Tolak</button>
                         </form>
                     </div>
                     @break
@@ -132,10 +146,20 @@
 
                 @case('selesai')
                     <p class="text-sm text-center text-gray-600">Laporan ini telah selesai ditangani.</p>
+                    <div class="text-center">
+                        <a href="{{ route('superadmin.laporan.pdf', $pengaduan) }}" target="_blank" class="inline-block bg-red-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-700">
+                            Export ke PDF
+                        </a>
+                    </div>
                     @break
 
                 @case('ditolak')
                     <p class="text-sm text-center text-gray-600">Laporan ini telah ditolak.</p>
+                    <div class="text-center">
+                        <a href="{{ route('superadmin.laporan.pdf', $pengaduan) }}" target="_blank" class="inline-block bg-red-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-700">
+                            Export ke PDF
+                        </a>
+                    </div>
                     @break
             @endswitch
         </div>

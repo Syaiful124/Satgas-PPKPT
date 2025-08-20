@@ -10,6 +10,12 @@ class Penanganan extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function pengaduan()
     {
         return $this->belongsTo(Pengaduan::class);

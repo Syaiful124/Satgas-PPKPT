@@ -29,7 +29,8 @@
         </div>
 
         @if ($errors->any())
-            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                <p class="font-bold">Terjadi Kesalahan</p>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -53,15 +54,15 @@
                         <div id="identitasPelapor">
                             <div class="mb-3">
                                 <label for="nama_pelapor" class="block text-gray-700 font-bold mb-1">Nama Pengadu</label>
-                                <input placeholder="nama pelapor" type="text" name="nama_pelapor" id="nama_pelapor" value="{{ auth()->user()->name ?? old('nama_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
+                                <input placeholder="nama pelapor" type="text" name="nama_pelapor" id="namaPelapor" value="{{ auth()->user()->name ?? old('nama_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
                             <div class="mb-3">
                                 <label for="email_pelapor" class="block text-gray-700 font-bold mb-1">Email</label>
-                                <input placeholder="email@gmail.com" type="email" name="email_pelapor" id="email_pelapor" value="{{ auth()->user()->email ?? old('email_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
+                                <input placeholder="email@gmail.com" type="email" name="email_pelapor" id="emailPelapor" value="{{ auth()->user()->email ?? old('email_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
                             <div>
                                 <label for="telepon_pelapor" class="block text-gray-700 font-bold mb-1">No. Telepon/HP</label>
-                                <input placeholder="no. telepon" type="text" name="telepon_pelapor" value="{{ old('telepon_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
+                                <input placeholder="no. telepon" type="text" name="telepon_pelapor" id="teleponPelapor" value="{{ old('telepon_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
                             </div>
                         </div>
                     </div>
@@ -70,18 +71,18 @@
                             <label for="judul" class="block text-gray-700 font-bold mb-1">Judul Pengaduan*</label>
                             <input placeholder="judul" type="text" name="judul" value="{{ old('judul') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
                         </div>
-                        <div>
-                            <label for="kategori_id" class="block text-gray-700 font-bold">Kategori Pengaduan*</label>
-                            <select name="kategori_id" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
+                        <div class="mb-4">
+                            <label for="kategori_id" class="block text-gray-700 font-bold mb-2">Kategori Pengaduan*</label>
+                            <select name="kategori_id" id="kategoriSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
                                 <option value="">-- Pilih Kategori --</option>
                                 @foreach($kategoris as $kategori)
                                 <option value="{{ $kategori->id }}" data-nama="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div id="kategoriLainnyaContainer" class="hidden">
+                        <div id="kategoriLainnyaContainer" class="hidden mb-4">
                             <label for="kategori_lainnya" class="block text-gray-700 font-bold mb-2">Sebutkan Kategori Lainnya*</label>
-                            <input type="text" name="kategori_lainnya" id="kategori_lainnya" class="w-full px-3 py-2 border rounded-lg">
+                            <input type="text" name="kategori_lainnya" id="kategoriLainnyaInput" value="{{ old('kategori_lainnya') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
                         </div>
                     </div>
                 </div>
@@ -132,31 +133,13 @@
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // ... (JavaScript untuk checkbox anonim dan persetujuan tetap sama)
         const anonimCheckbox = document.getElementById('anonimCheckbox');
         const identitasPelapor = document.getElementById('identitasPelapor');
-        const namaPelaporInput = document.getElementById('nama_pelapor');
-
-        function toggleIdentitas() {
-            if (anonimCheckbox.checked) {
-                identitasPelapor.style.display = 'none';
-                namaPelaporInput.required = false;
-            } else {
-                identitasPelapor.style.display = 'block';
-                namaPelaporInput.required = true;
-            }
-        }
-        anonimCheckbox.addEventListener('change', toggleIdentitas);
-        toggleIdentitas();
-
+        const namaPelaporInput = document.getElementById('namaPelapor');
+        const emailPelaporInput =document.getElementById('emailPelapor');
+        const teleponPelaporInput =document.getElementById('teleponPelapor');
         const submitButton = document.getElementById('submitButton');
         const persetujuanCheckbox = document.getElementById('persetujuanCheckbox');
-
-        persetujuanCheckbox.addEventListener('change', function() {
-            submitButton.disabled = !this.checked;
-        });
-
-        // --- JAVASCRIPT UPLOAD FILE YANG DIPERBARUI ---
         const fileInput = document.getElementById('foto_kejadian');
         const imagePreview = document.getElementById('image-preview');
         const videoPreview = document.getElementById('video-preview');
@@ -164,7 +147,37 @@
         const fileNameDisplay = document.getElementById('file-name');
         const fileSizeDisplay = document.getElementById('file-size');
         const removeFileButton = document.getElementById('remove-file');
+        const kategoriSelect = document.getElementById('kategoriSelect');
+        const kategoriLainnyaContainer = document.getElementById('kategoriLainnyaContainer');
+        const kategoriLainnyaInput = document.getElementById('kategoriLainnyaInput');
 
+        // === Logika untuk Anonim ===
+        function toggleIdentitas() {
+            const isAnonim = anonimCheckbox.checked;
+            identitasPelapor.style.display = isAnonim ? 'none' : 'block';
+            namaPelaporInput.required = !isAnonim;
+            emailPelaporInput.required = !isAnonim;
+            teleponPelaporInput.required = !isAnonim;
+        }
+
+        // === Logika untuk Kategori Lainnya ===
+        function toggleKategoriLainnya() {
+            const selectedOption = kategoriSelect.options[kategoriSelect.selectedIndex];
+            const isLainnya = selectedOption.dataset.nama?.toLowerCase() === 'lainnya';
+
+            kategoriLainnyaContainer.classList.toggle('hidden', !isLainnya);
+            kategoriLainnyaInput.required = isLainnya;
+            if (!isLainnya) {
+                kategoriLainnyaInput.value = '';
+            }
+        }
+
+        // === Logika untuk Tombol Kirim ===
+        function toggleSubmitButton() {
+            submitButton.disabled = !persetujuanCheckbox.checked;
+        }
+
+        // === Logika untuk Preview File ===
         function formatBytes(bytes, decimals = 2) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -215,26 +228,17 @@
             previewPlaceholder.classList.remove('hidden');
         });
 
-        const kategoriSelect = document.getElementById('kategori_id');
-        const kategoriLainnyaContainer = document.getElementById('kategoriLainnyaContainer');
-        const kategoriLainnyaInput = document.getElementById('kategori_lainnya');
 
-        kategoriSelect.addEventListener('change', function() {
-            // Dapatkan teks dari opsi yang dipilih
-            const selectedOptionText = this.options[this.selectedIndex].text;
+        // === Event Listeners ===
+        anonimCheckbox.addEventListener('change', toggleIdentitas);
+        kategoriSelect.addEventListener('change', toggleKategoriLainnya);
+        persetujuanCheckbox.addEventListener('change', toggleSubmitButton);
 
-            if (selectedOptionText.toLowerCase().includes('lainnya')) {
-                // Jika "Lainnya" dipilih, tampilkan container dan buat inputnya 'required'
-                kategoriLainnyaContainer.classList.remove('hidden');
-                kategoriLainnyaInput.required = true;
-            } else {
-                // Jika bukan, sembunyikan, hapus isinya, dan buat tidak 'required'
-                kategoriLainnyaContainer.classList.add('hidden');
-                kategoriLainnyaInput.value = '';
-                kategoriLainnyaInput.required = false;
-        }
+        // === Panggil fungsi saat halaman pertama kali dimuat ===
+        toggleIdentitas();
+        toggleKategoriLainnya();
+        toggleSubmitButton();
     });
-});
     </script>
 </body>
 </html>

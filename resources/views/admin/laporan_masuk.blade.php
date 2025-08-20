@@ -3,7 +3,7 @@
 @section('title', 'Laporan Untuk Ditangani')
 
 @section('content')
-<h1 class="text-3xl font-bold mb-6">Laporan Untuk Ditangani</h1>
+<h1 class="text-3xl font-bold mb-6 ">Laporan Untuk Ditangani</h1>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <table class="w-full">
