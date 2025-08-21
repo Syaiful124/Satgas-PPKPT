@@ -9,14 +9,11 @@
             @csrf
             <div class="mb-4">
                 <label for="name" class="block font-semibold">Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full p-2 border rounded mt-1">
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
             </div>
             <div class="mb-4">
                 <label for="email" class="block font-semibold">Email</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full p-2 border rounded mt-1">
-                {{-- @if(!$user->hasVerifiedEmail())
-                <p class="text-xs text-red-600 mt-1">Email belum diverifikasi. <a href="{{ route('verification.send') }}" class="underline" onclick="event.preventDefault(); this.closest('form').submit();">Kirim ulang verifikasi.</a></p>
-                @endif --}}
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
             </div>
             <hr class="my-6">
             <h3 class="font-bold mb-2">Ubah Password</h3>
@@ -24,7 +21,7 @@
                 <div class="mb-4">
                     <label for="current_password" class="block font-semibold">Password Saat Ini</label>
                     <div class="relative">
-                        <input type="password" name="current_password" class="w-full p-2 border rounded mt-1">
+                        <input type="password" name="current_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
                         <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
                             <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -39,10 +36,30 @@
                     @error('current_password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
+
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600 mb-4">
+                <div id="check-length" class="flex items-center">
+                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Minimal 8 karakter
+                </div>
+                <div id="check-uppercase" class="flex items-center">
+                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Huruf besar
+                </div>
+                <div id="check-number" class="flex items-center">
+                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Angka
+                </div>
+                <div id="check-symbol" class="flex items-center">
+                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Simbol
+                </div>
+            </div>
+
             <div class="mb-4">
                 <label for="new_password" class="block font-semibold">Password Baru</label>
                 <div class="relative">
-                    <input type="password" name="new_password" class="w-full p-2 border rounded mt-1">
+                    <input id="new_password" type="password" name="new_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
                     <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
                         <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -55,10 +72,11 @@
                     </button>
                 </div>
             </div>
+
             <div class="mb-4">
                 <label for="new_password_confirmation" class="block font-semibold">Konfirmasi Password Baru</label>
                 <div class="relative">
-                    <input type="password" name="new_password_confirmation" class="w-full p-2 border rounded mt-1">
+                    <input id="new_password_confirmation" type="password" name="new_password_confirmation" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
                     <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
                         <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -142,3 +160,70 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newPasswordInput = document.getElementById('new_password');
+    const confirmPasswordInput = document.getElementById('new_password_confirmation');
+
+    function validatePasswordConfirmation() {
+        const errorMessage = confirmPasswordInput.parentElement.querySelector('.text-red-500');
+
+        if (newPasswordInput.value && confirmPasswordInput.value) {
+            if (newPasswordInput.value !== confirmPasswordInput.value) {
+                if (!errorMessage) {
+                    let newError = document.createElement('p');
+                    newError.className = 'text-red-500 text-xs mt-1';
+                    newError.textContent = 'Konfirmasi password tidak cocok.';
+                    confirmPasswordInput.parentElement.appendChild(newError);
+                }
+            } else {
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }
+        } else {
+             if (errorMessage) {
+                errorMessage.remove();
+            }
+        }
+    }
+
+    if (newPasswordInput && confirmPasswordInput) {
+        newPasswordInput.addEventListener('input', validatePasswordConfirmation);
+        confirmPasswordInput.addEventListener('input', validatePasswordConfirmation);
+    }
+
+    if (!newPasswordInput) return;
+
+    const checks = {
+        length: document.getElementById('check-length'),
+        uppercase: document.getElementById('check-uppercase'),
+        number: document.getElementById('check-number'),
+        symbol: document.getElementById('check-symbol')
+    };
+    const successColor = 'text-green-500';
+    const failColor = 'text-red-500';
+
+    newPasswordInput.addEventListener('input', function() {
+        const val = this.value;
+        // Cek Panjang
+        updateCheck(checks.length, val.length >= 8);
+        // Cek Huruf Besar
+        updateCheck(checks.uppercase, /[A-Z]/.test(val));
+        // Cek Angka
+        updateCheck(checks.number, /[0-9]/.test(val));
+        // Cek Simbol
+        updateCheck(checks.symbol, /[^A-Za-z0-9]/.test(val));
+    });
+
+    function updateCheck(element, isSuccess) {
+        if (!element) return;
+        const svg = element.querySelector('svg');
+        svg.classList.remove(isSuccess ? failColor : successColor);
+        svg.classList.add(isSuccess ? successColor : failColor);
+    }
+});
+</script>
+@endpush

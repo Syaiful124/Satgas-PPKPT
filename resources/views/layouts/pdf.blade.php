@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Laporan SATGAS PPKPT')</title>
+    <title> @yield('title') - SATGAS PPKPT</title>
+    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
     <style>
         /* CSS untuk tampilan PDF yang rapi */
         @page {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - SATGAS PPKPT</title>
+    <title>Kirim Pengaduan - SATGAS PPKPT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {

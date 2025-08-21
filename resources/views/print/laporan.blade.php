@@ -1,6 +1,6 @@
 @extends('layouts.pdf')
 
-@section('title', 'Detail Laporan Pengaduan')
+@section('title', 'Laporan Pengaduan')
 
 @section('content')
     @forelse($pengaduans as $pengaduan)

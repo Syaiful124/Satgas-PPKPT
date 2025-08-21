@@ -1,5 +1,5 @@
 @extends('layouts.public')
-@section('title', 'Selamat Datang')
+@section('title', 'Beranda')
 
 @section('content')
 <div class="bg-white rounded-lg shadow-xl overflow-hidden mb-12">

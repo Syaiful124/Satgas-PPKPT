@@ -15,8 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::create([
             'name' => 'Ketua',
             'email' => 'syaiful_22310001@stimata.ac.id',
@@ -42,5 +40,10 @@ class DatabaseSeeder extends Seeder
         Kategori::create(['nama_kategori' => 'Perundungan (Bullying)']);
         Kategori::create(['nama_kategori' => 'Penyalahgunaan Nafsa']);
         Kategori::create(['nama_kategori' => 'Lainnya']);
+
+
+        $this->call([
+            UnduhanSeeder::class,
+        ]);
     }
 }

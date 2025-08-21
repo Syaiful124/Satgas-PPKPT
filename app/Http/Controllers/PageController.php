@@ -14,15 +14,8 @@ class PageController extends Controller
 
     public function unduhan()
     {
-        $files = Unduhan::all();
-        // Anda perlu mengisi data unduhan, misalnya melalui seeder atau fitur admin
-        // Contoh data dummy jika tabel kosong:
-        if ($files->isEmpty()) {
-            $files = collect([
-                (object)['judul' => 'Undang-Undang RI No 12 Tahun 2022', 'file_path' => '#', 'file_name' => 'UU_TPKS.pdf'],
-                (object)['judul' => 'Permendikbudristek No 30 Tahun 2021', 'file_path' => '#', 'file_name' => 'Permen_PPKS.pdf'],
-            ]);
-        }
+        $files = Unduhan::latest()->get();
+
         return view('public.unduhan', compact('files'));
     }
 

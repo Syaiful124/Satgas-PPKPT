@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'SATGAS PPKPT STIMATA')</title>
+    <title> @yield('title') - SATGAS PPKPT</title>
+    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Poppins', sans-serif;}
@@ -34,7 +35,7 @@
 <body class="bg-gray-100">
     <header class="text-black shadow-md w-full">
         <nav class="container mx-auto flex justify-between items-center ml-2     ">
-            <a href="{{ route('beranda') }}" class=" font-bold text-xl w-auto items-center">
+            <a href="{{ route('beranda') }}" class=" font-bold text-xl w-auto items-center hover:text-orange-200">
                 <img src="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png" alt="STIMATA" class="h-10 w-10 mr-2 object-cover">
                 SATGAS PPKPT STIMATA
             </a>
