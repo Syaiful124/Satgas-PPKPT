@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     private function getFilteredPengaduans(Request $request)
     {
-        $query = Pengaduan::with(['kategori', 'penanganan.admin']);
+        $query = Pengaduan::with(['kategori', 'penanganan.admin', 'petugas']);
 
         // Fitur Search
         if ($request->filled('search')) {
@@ -46,7 +46,7 @@ class DashboardController extends Controller
         ];
 
         $query = $this->getFilteredPengaduans($request);
-        $pengaduans = $query->paginate(10); // Ambil data dengan paginasi
+        $pengaduans = $query->paginate(10);
 
         $kategoris = Kategori::all();
 
@@ -55,15 +55,8 @@ class DashboardController extends Controller
 
     public function exportDashboardPDF(Request $request)
     {
-        // Panggil method filter yang sama, tapi ambil semua data (bukan paginasi)
         $query = $this->getFilteredPengaduans($request);
-        $pengaduans = $query->get(); // Ambil semua data yang cocok
-
-        $pdf = PDF::loadView('superadmin.laporan_tabel_pdf', compact('pengaduans'));
-
-        // Atur kertas menjadi landscape agar tabel lebih pas
-        $pdf->setPaper('a4', 'landscape');
-
-        return $pdf->download('rekap-laporan-pengaduan-' . now()->format('Ymd') . '.pdf');
+        $pengaduans = $query->get();
+        return view('print.tabel_laporan', compact('pengaduans'));
     }
 }

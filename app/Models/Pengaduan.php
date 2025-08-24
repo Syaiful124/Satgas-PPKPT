@@ -30,4 +30,8 @@ class Pengaduan extends Model
     {
         return $this->hasOne(Penanganan::class);
     }
+    public function petugas()
+    {
+        return $this->belongsTo(User::class, 'petugas_id');
+    }
 }

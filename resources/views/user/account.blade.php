@@ -87,6 +87,9 @@
                             <path fill-rule="evenodd" d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z" clip-rule="evenodd"/>
                         </svg>
                     </button>
+                    @error('new_password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
             <div class="flex justify-end space-x-2 mt-4">
@@ -139,7 +142,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="font-bold">{{ $pengaduan->judul }}</p>
-                            <p class="text-sm text-gray-500">{{ $pengaduan->kategori->nama_kategori }} | {{ $pengaduan->created_at->format('d M Y') }}</p>
+                            <p class="text-sm text-gray-500">{{ $pengaduan->kategori->nama_kategori }} | {{ $pengaduan->created_at->translatedFormat('d M Y') }}</p>
                         </div>
                         <span class="text-sm font-semibold px-3 py-1 rounded-full
                              @if($pengaduan->status == 'menunggu') bg-yellow-200 text-yellow-800 @endif

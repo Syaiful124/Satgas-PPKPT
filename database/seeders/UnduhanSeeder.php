@@ -15,7 +15,7 @@ class UnduhanSeeder extends Seeder
         Unduhan::create([
             'judul' => 'Undang-Undang Tindak Pidana Kekerasan Seksual',
             'file_name' => 'UU-No-12-Tahun-2022-Tindak-Pidana-Kekerasan-Seksual.pdf',
-            'file_path' => 'dokumen/UU-No-12-Tahun-2022-Tindak-Pidana-Kekerasan-Seksual.pdf'
+            'file_path' => 'https://jdih.setneg.go.id/uploads/files/4909/salinan_uu_nomor_12_tahun_2022.pdf'
         ]);
 
         Unduhan::create([

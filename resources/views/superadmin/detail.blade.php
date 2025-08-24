@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Dilaporkan</p>
-                    <p class="font-semibold">{{ $pengaduan->created_at?->format('d M Y, H:i') }}</p>
+                    <p class="font-semibold">{{ $pengaduan->created_at?->translatedFormat('d M Y, H:i') }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Pelapor</p>
@@ -73,7 +73,7 @@
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Tanggal Ditangani</p>
-                        <p class="font-semibold">{{ $pengaduan->penanganan->created_at?->format('d M Y, H:i') }}</p>
+                        <p class="font-semibold">{{ $pengaduan->penanganan->created_at?->translatedFormat('d M Y, H:i') }}</p>
                     </div>
                 </div>
                 <div>
@@ -115,19 +115,38 @@
 
         <div class="bg-gray-50 p-6 rounded-lg border">
             <h3 class="font-bold text-center mb-4">Panel Aksi</h3>
+            @if ($pengaduan->petugas_id)
+                <div class="text-center mb-4">
+                    <a href="{{ route('superadmin.surat.penugasan', $pengaduan) }}" target="_blank" class="w-full block bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-gray-700">
+                        Lihat/Cetak Ulang Surat Tugas
+                    </a>
+                </div>
+                @if($pengaduan->status != 'menunggu')
+                    <hr class="my-4">
+                @endif
+            @endif
             @switch($pengaduan->status)
                 @case('menunggu')
-                    <p class="text-sm text-center text-gray-600 mb-4">Setujui laporan ini untuk ditangani oleh petugas atau tolak jika tidak sesuai.</p>
-                    <div class="flex justify-center space-x-4">
-                        <form action="{{ route('superadmin.laporan.setujui', $pengaduan) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-primary px-6 py-2 rounded-lg">Setujui</button>
-                        </form>
-                        <form action="{{ route('superadmin.laporan.tolak', $pengaduan) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-danger px-6 py-2 rounded-lg">Tolak</button>
-                        </form>
-                    </div>
+                    <p class="text-sm text-center text-gray-600 mb-4">Pilih petugas untuk menangani laporan ini, kemudian setujui.</p>
+                    <form action="{{ route('superadmin.laporan.setujui', $pengaduan) }}" target="_blank" method="POST">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="petugas_id" class="block font-semibold mb-2">Tugaskan kepada Petugas:</label>
+                            <select name="petugas_id" id="petugas_id" class="w-full p-2 border rounded-lg" required>
+                                <option value="">-- Pilih Petugas --</option>
+                                @foreach ($petugas_list as $petugas)
+                                    <option value="{{ $petugas->id }}">{{ $petugas->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="flex justify-center space-x-4 mt-4">
+                            <button type="submit" class="btn-primary px-6 py-2 rounded-lg">Setujui & Buat Surat Tugas</button>
+                            <form action="{{ route('superadmin.laporan.tolak', $pengaduan) }}" method="POST" class="inline-block">
+                                @csrf
+                                <button type="submit" class="btn-danger px-4 py-2 rounded-lg">Tolak Laporan</button>
+                            </form>
+                        </div>
+                    </form>
                     @break
 
                 @case('penanganan')

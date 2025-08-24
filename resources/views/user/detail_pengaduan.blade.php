@@ -42,7 +42,7 @@
                 @endif
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Dilaporkan</p>
-                    <p class="font-semibold">{{ $pengaduan->created_at?->format('d M Y, H:i') }}</p>
+                    <p class="font-semibold">{{ $pengaduan->created_at?->translatedFormat('d M Y, H:i') }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Pelapor</p>
@@ -72,7 +72,7 @@
                 @if($pengaduan->penanganan)
                     <div>
                         <p class="text-sm text-gray-500">Tanggal Ditangani</p>
-                        <p class="font-semibold">{{ $pengaduan->penanganan->created_at?->format('d M Y, H:i') }}</p>
+                        <p class="font-semibold">{{ $pengaduan->penanganan->created_at?->translatedFormat('d M Y, H:i') }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Isi Tanggapan</p>

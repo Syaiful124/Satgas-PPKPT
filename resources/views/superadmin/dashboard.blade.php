@@ -5,7 +5,7 @@
 @section('content')
 <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold">Dashboard</h1>
-    <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" class="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700">
+    <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" target="_blank" class="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700">
         Export PDF
     </a>
 </div>
@@ -59,7 +59,7 @@
                 <select name="bulan" class="w-full p-2 border rounded-lg">
                     <option value="">--</option>
                     @for ($i = 1; $i <= 12; $i++)
-                        <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->format('F') }}</option>
+                        <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
                     @endfor
                 </select>
             </div>
@@ -116,7 +116,7 @@
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-3">{{ $pengaduan->judul }}</td>
                 <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->created_at?->format('d M Y') }}</td>
+                <td class="p-3">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
                 <td class="p-3">
                     <span class="px-3 py-1 text-sm rounded-full
                         @if($pengaduan->status == 'menunggu') badge-menunggu @endif

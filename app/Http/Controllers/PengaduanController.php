@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 
 class PengaduanController extends Controller
@@ -35,13 +36,26 @@ class PengaduanController extends Controller
     public function show(Pengaduan $pengaduan)
     {
         $pengaduan->load('kategori', 'user', 'penanganan.admin');
-        return view('superadmin.detail', compact('pengaduan'));
+        $petugas_list = User::where('role', 'admin')->get();
+
+        return view('superadmin.detail', compact('pengaduan', 'petugas_list'));
     }
 
     public function setujuiPenanganan(Request $request, Pengaduan $pengaduan)
     {
-        $pengaduan->update(['status' => 'penanganan']);
-        return redirect()->route('superadmin.laporan.masuk')->with('success', 'Pengaduan disetujui untuk ditangani.');
+        $request->validate([
+            'petugas_id' => 'required|exists:users,id',
+        ]);
+
+        // Update status dan simpan ID petugas yang ditugaskan
+        $pengaduan->update([
+            'status' => 'penanganan',
+            'petugas_id' => $request->petugas_id
+        ]);
+
+        // Arahkan ke halaman print surat tugas
+        return redirect()->route('superadmin.surat.penugasan', $pengaduan)
+                        ->with('success', 'Laporan disetujui dan surat tugas telah dibuat.');
     }
 
     public function tolakPengaduan(Request $request, Pengaduan $pengaduan)
@@ -73,10 +87,11 @@ class PengaduanController extends Controller
 
     public function laporanMasukAdmin(Request $request)
     {
-        // Admin hanya melihat laporan berstatus 'penanganan'
-        $query = Pengaduan::with('kategori')->where('status', 'penanganan');
+        $query = Pengaduan::with('kategori')
+                            ->where('status', 'penanganan')
+                            ->where('petugas_id', Auth::id());
 
-        $pengaduans = $query->latest()->paginate(10);
+        $pengaduans = $query->latest('updated_at')->paginate(10);
         return view('admin.laporan_masuk', compact('pengaduans'));
     }
 
@@ -268,16 +283,7 @@ class PengaduanController extends Controller
 
     public function exportPDF(Pengaduan $pengaduan)
     {
-        // Load semua data yang dibutuhkan
         $pengaduan->load('kategori', 'user', 'penanganan.admin');
-
-        // Buat PDF dari view 'print.laporan' yang sudah kita buat sebelumnya
-        $pdf = PDF::loadView('print.laporan', ['pengaduans' => collect([$pengaduan])]);
-
-        // Buat nama file yang dinamis
-        $fileName = 'laporan-' . $pengaduan->id . '-' . Str::slug($pengaduan->judul) . '.pdf';
-
-        // Download file PDF
-        return $pdf->download($fileName);
+        return view('print.detail_laporan', compact('pengaduan'));
     }
 }

@@ -34,7 +34,7 @@
 </head>
 <body class="bg-gray-100">
     <header class="text-black shadow-md w-full">
-        <nav class="container mx-auto flex justify-between items-center ml-2     ">
+        <nav class="mx-auto flex justify-between items-center ml-2">
             <a href="{{ route('beranda') }}" class=" font-bold text-xl w-auto items-center hover:text-orange-200">
                 <img src="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png" alt="STIMATA" class="h-10 w-10 mr-2 object-cover">
                 SATGAS PPKPT STIMATA
@@ -133,7 +133,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto p-6 w-full flex h-full flex-col">
+    <main class="mx-auto p-6 w-full flex h-full flex-col">
         @if(session('success'))
         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
             <p>{{ session('success') }}</p>
@@ -163,10 +163,8 @@
 
         togglePasswordButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Dapatkan input password yang berada tepat sebelum tombol ini
                 const passwordInput = this.previousElementSibling;
 
-                // Dapatkan ikon mata di dalam tombol
                 const eyeIcon = this.querySelector('.bi-eye-fill');
                 const eyeSlashIcon = this.querySelector('.bi-eye-slash-fill');
 

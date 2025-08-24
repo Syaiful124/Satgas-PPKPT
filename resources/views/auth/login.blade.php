@@ -91,7 +91,7 @@
             <p class="text-gray-600">Belum punya akun? <a href="{{ route('register') }}" class="text-orange-500 font-bold">Register</a></p>
         </div>
     </div>
-    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-gray-600 text-sm flex justify-center">
+    <div class="text-gray-600 text-sm flex justify-center m-3">
         <p>&copy; {{ date('Y') }} SATGAS PPKPT. All rights reserved.</p>
     </div>
     <script>

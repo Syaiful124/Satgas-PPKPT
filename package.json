@@ -11,6 +11,9 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "bootstrap-icons": "^1.13.1"
+        "@tailwindcss/vite": "^4.1.12",
+        "bootstrap": "^5.3.7",
+        "bootstrap-icons": "^1.13.1",
+        "tailwindcss": "^4.1.12"
     }
 }
