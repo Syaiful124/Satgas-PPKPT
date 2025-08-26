@@ -105,18 +105,6 @@ class PengaduanController extends Controller
         return view('admin.detail_penanganan', compact('pengaduan'));
     }
 
-    // === FITUR PRINT (CONTOH SEDERHANA) ===
-    public function print(Request $request)
-    {
-        $ids = $request->input('ids');
-        if(!$ids){
-            return back()->with('error', 'Pilih setidaknya satu laporan untuk dicetak.');
-        }
-        $pengaduans = Pengaduan::with('kategori', 'penanganan.admin')->whereIn('id', $ids)->get();
-        // Disini Anda bisa membuat view khusus untuk cetak
-        return view('print.laporan', compact('pengaduans'));
-    }
-
     /*
     |--------------------------------------------------------------------------
     | FUNGSI UNTUK PUBLIC / USER
@@ -130,8 +118,9 @@ class PengaduanController extends Controller
 
     public function storePublic(Request $request)
     {
-        // Cari ID untuk kategori "Lainnya"
         $lainnyaKategoriId = Kategori::where('nama_kategori', 'Lainnya')->first()?->id;
+        $imageFormats = 'jpg,jpeg,png,gif,webp,heic';
+        $videoFormats = 'mp4,mov,avi,mkv,webm,flv';
 
         $request->validate([
             'anonim' => 'nullable|boolean',
@@ -154,8 +143,27 @@ class PengaduanController extends Controller
                 'nullable', 'string', 'max:100'
             ],
             'isi_laporan' => 'required|string',
-            'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480',
             'persetujuan' => 'required',
+            'bukti' => 'nullable|array|max:6',
+            'bukti.*' => [
+                'file',
+                'mimes:' . $imageFormats . ',' . $videoFormats,
+                function ($attribute, $value, $fail) {
+                    // Validasi ukuran custom
+                    $maxImageSize = 10 * 1024; // 10 MB untuk gambar
+                    $maxVideoSize = 300 * 1024; // 300 MB untuk video
+
+                    $isImage = Str::startsWith($value->getMimeType(), 'image/');
+                    $isVideo = Str::startsWith($value->getMimeType(), 'video/');
+
+                    if ($isImage && $value->getSize() > $maxImageSize * 1024) {
+                        $fail("Ukuran file gambar tidak boleh lebih dari 10MB.");
+                    }
+                    if ($isVideo && $value->getSize() > $maxVideoSize * 1024) {
+                        $fail("Ukuran file video tidak boleh lebih dari 300MB.");
+                    }
+                },
+            ],
         ]);
 
         $is_anonymous = $request->boolean('anonim');
@@ -178,12 +186,7 @@ class PengaduanController extends Controller
             }
         }
 
-        $path = null;
-        if ($request->hasFile('foto_kejadian')) {
-            $path = $request->file('foto_kejadian')->store('public/kejadian');
-        }
-
-        Pengaduan::create([
+        $pengaduan = Pengaduan::create([
             'user_id' => Auth::id(),
             'nama_pelapor' => $reporter_name,
             'email_pelapor' => $reporter_email,
@@ -192,9 +195,22 @@ class PengaduanController extends Controller
             'kategori_id' => $request->kategori_id,
             'kategori_lainnya' => $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null,
             'isi_laporan' => $request->isi_laporan,
-            'foto_kejadian' => $path,
             'status' => 'menunggu',
         ]);
+
+        if ($request->hasFile('bukti')) {
+            foreach ($request->file('bukti') as $file) {
+                $path = $file->store('public/bukti-pelapor');
+                $type = Str::startsWith($file->getMimeType(), 'image/') ? 'image' : 'video';
+
+                $pengaduan->bukti()->create([
+                    'pengaduan_id' => $pengaduan->id,
+                    'file_path' => $path,
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_type' => $type,
+                ]);
+            }
+        }
 
         return redirect()->route('beranda')->with('success', 'Pengaduan Anda telah berhasil dikirim. Terima kasih.');
     }
@@ -247,13 +263,13 @@ class PengaduanController extends Controller
         $data = $request->except(['_token', '_method']);
 
         // Logika untuk menangani file bukti baru
-        if ($request->hasFile('foto_kejadian')) {
+        if ($request->hasFile('bukti_pelapor')) {
             // Hapus file lama jika ada
-            if ($pengaduan->foto_kejadian) {
-                Storage::delete($pengaduan->foto_kejadian);
+            if ($pengaduan->bukti()->exists()) {
+                Storage::delete($pengaduan->bukti()->exists());
             }
             // Simpan file baru
-            $data['foto_kejadian'] = $request->file('foto_kejadian')->store('public/kejadian');
+            $data['bukti_pelapor'] = $request->file('bukti_pelapor')->store('public/bukti-pelapor');
         }
 
         // Pastikan kategori lainnya null jika bukan kategori "Lainnya"

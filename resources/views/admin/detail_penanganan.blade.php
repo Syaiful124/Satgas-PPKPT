@@ -4,36 +4,36 @@
 @section('content')
 <a href="{{ route('admin.laporan.masuk') }}" class="text-gray-600 hover:text-gray-900 mb-4 inline-block">&larr; BACK</a>
 
-<div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-4">
+<div class="flex flex-col gap-4 mb-2">
     <div class="lg:col-span-3 flex flex-col gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-md mb-5">
+        <div class="bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Laporan Pengaduan</h2>
-
             <div class="mb-4">
                 <p class="text-sm text-gray-500">Judul Laporan</p>
                 <p class="text-lg font-bold">{{ $pengaduan->judul }}</p>
             </div>
-
+            <div class="mb-4">
+                <p class="text-sm text-gray-500">Kategori</p>
+                <p class="font-semibold">{{ $pengaduan->kategori->nama_kategori }}</p>
+            </div>
+            @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
+            <div class="mb-4">
+                <p class="text-sm text-gray-500">Kategori Lainnya yang Disebutkan</p>
+                <p class="font-semibold text-orange-600">{{ $pengaduan->kategori_lainnya }}</p>
+            </div>
+            @endif
             <div class="grid grid-cols-2 grid-rows-3 gap-4 mb-4">
                 <div>
-                    <p class="text-sm text-gray-500">Kategori</p>
-                    <p class="font-semibold">{{ $pengaduan->kategori->nama_kategori }}</p>
+                    <p class="text-sm text-gray-500">Pelapor</p>
+                    <p class="font-semibold">{{ $pengaduan->nama_pelapor ?? 'Anonim' }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Dilaporkan</p>
                     <p class="font-semibold">{{ $pengaduan->created_at?->translatedFormat('d M Y, H:i') }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->nama_pelapor ?? 'Anonim' }}</p>
-                </div>
-                <div>
                     <p class="text-sm text-gray-500">Email Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->email_pelapor }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500">Telepon Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->telepon_pelapor }}</p>
+                    <p class="font-semibold">{{ $pengaduan->email_pelapor ?? '-' }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Status Saat Ini</p>
@@ -44,12 +44,10 @@
                         @if($pengaduan->status == 'ditolak') text-red-500 @endif
                     ">{{ ucfirst($pengaduan->status) }}</p>
                 </div>
-                @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
-                <div class="col-span-2">
-                    <p class="text-sm text-gray-500">Kategori Lainnya yang Disebutkan</p>
-                    <p class="font-semibold text-orange-600">{{ $pengaduan->kategori_lainnya }}</p>
+                <div>
+                    <p class="text-sm text-gray-500">Telepon Pelapor</p>
+                    <p class="font-semibold">{{ $pengaduan->telepon_pelapor ?? '-' }}</p>
                 </div>
-                @endif
             </div>
 
             <div class="mb-4">
@@ -58,17 +56,25 @@
             </div>
         </div>
     </div>
-    <div class="lg:col-span-2 flex flex-col gap-8">
+    <div class="lg:col-span-2 flex flex-col gap-8 mb-4">
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="font-bold mb-2">Bukti Kejadian (dari Pelapor)</h3>
-            @if($pengaduan->foto_kejadian)
-                @if(Str::contains($pengaduan->foto_kejadian, ['.jpg', '.jpeg', '.png', '.gif']))
-                <img src="{{ Storage::url($pengaduan->foto_kejadian) }}" alt="Bukti" class="w-full rounded-lg shadow">
-                @else
-                <video src="{{ Storage::url($pengaduan->foto_kejadian) }}" controls class="w-full rounded-lg shadow"></video>
-                @endif
+            @if ($pengaduan->bukti->isNotEmpty())
+                <div class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 p-1">
+                    @foreach($pengaduan->bukti as $bukti)
+                        <div>
+                            @if($bukti->file_type == 'image')
+                                <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full min-h-[100px] max-h-[200px] rounded-lg shadow">
+                            @else
+                                <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full min-h-[100px] max-h-[200px] rounded-lg shadow"></video>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
             @else
-            <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">Tidak ada bukti gambar/video.</div>
+                <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">
+                    Tidak ada bukti dari pelapor.
+                </div>
             @endif
         </div>
     </div>
@@ -78,8 +84,7 @@
     @csrf
     <div class="bg-white p-6 rounded-lg shadow-md">
         <h3 class="text-xl font-bold mb-4">Form Penanganan Admin</h3>
-        <div class="flex flex-row w-full gap-6">
-            <div class="w-full">
+        <div class="flex flex-col w-full gap-6">
                 <div class="mb-4">
                     <label for="nama_admin" class="block text-gray-700 font-bold mb-2">Nama Admin*</label>
                     <input type="text" id="nama_admin" value="{{ auth()->user()->name }}" class="w-full px-3 py-2 border rounded-lg bg-gray-100" readonly>
@@ -92,28 +97,42 @@
             <div class="mb-4 w-full">
                 <label class="block text-gray-700 font-bold mb-2">Upload Bukti Penanganan</label>
                 <div class="flex items-center space-x-4 flex-col gap-4">
-                    <div id="preview-container-admin" class="w-auto h-auto flex-shrink-0 bg-gray-200 rounded-lg flex items-center justify-center">
-                        <img id="image-preview-admin" class="hidden w-full h-full object-cover rounded-lg"/>
-                        <video id="video-preview-admin" class="hidden w-full h-full object-cover rounded-lg"></video>
-                        <svg id="preview-placeholder-admin" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 min-h-[100px] max-h-[300px] p-1">
+                        @if($pengaduan->penanganan)
+                            @foreach($pengaduan->penanganan->bukti as $bukti)
+                            <div class="w-full h-auto bg-gray-100 rounded-lg shadow-sm flex flex-col">
+                                <div class="relative w-full h-24 bg-gray-200 rounded-t-lg">
+                                    @if($bukti->file_type == 'image')
+                                    <img src="{{ Storage::url($bukti->file_path) }}" class="w-full h-full object-cover rounded-t-lg">
+                                    @else
+                                    <video src="{{ Storage::url($bukti->file_path) }}" class="w-full h-full object-cover rounded-t-lg"></video>
+                                    @endif
+                                </div>
+                                <div class="text-xs p-2 text-center w-full">
+                                    <span class="block truncate font-semibold text-gray-700" title="{{ $bukti->file_name }}">{{ $bukti->file_name }}</span>
+                                </div>
+                            </div>
+                            @endforeach
+                        @endif
                     </div>
                     <div class="flex flex-row gap-4">
-                        <label for="foto_penanganan" class="flex items-center cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        <label for="bukti-input" class="flex items-center cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
                             Upload Bukti
                         </label>
-                        <input type="file" name="foto_penanganan" id="foto_penanganan" class="hidden w-full" accept="image/*,video/*">
-                        <div id="file-info-admin" class="text-sm text-gray-500 mt-2">
-                            <p id="file-name-admin">Tidak ada file dipilih.</p>
-                            <p id="file-size-admin"></p>
+                        <input type="file" name="bukti[]" id="bukti-input" class="hidden w-full" accept="image/*,video/*" multiple>
                         </div>
-                        <button type="button" id="remove-file-admin" class="hidden mt-2 text-red-500 text-sm hover:underline">Hapus File</button>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-2">Format: PNG, JPG, JPEG, MP4, AVI, MOV (maks 20MB)</p>
+                <p class="text-xs text-gray-500 mt-2 w-full h-auto">
+                    *Format Foto: .jpg, .jpeg, .png, .gif, .webp, .heic (maks 20MB)
+                    <br>*Format Video: .mp4, .mov, .avi, .mkv, .webm, .flv (maks 300MB)
+                </p>
             </div>
         </div>
         <div class="flex justify-end">
-            <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">Kirim</button>
+            <button type="submit" class="w-full bg-orange-500 bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">
+                {{ $pengaduan->penanganan ? 'Update Laporan Penanganan' : 'Kirim Laporan Penanganan' }}
+            </button>
         </div>
     </div>
 </form>
@@ -122,14 +141,8 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const fileInput = document.getElementById('foto_penanganan');
-    const imagePreview = document.getElementById('image-preview-admin');
-    const videoPreview = document.getElementById('video-preview-admin');
-    const previewPlaceholder = document.getElementById('preview-placeholder-admin');
-    const fileNameDisplay = document.getElementById('file-name-admin');
-    const fileSizeDisplay = document.getElementById('file-size-admin');
-    const removeFileButton = document.getElementById('remove-file-admin');
 
+    // === FUNGSI BANTUAN UNTUK FORMAT UKURAN FILE ===
     function formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -139,42 +152,100 @@ document.addEventListener('DOMContentLoaded', function () {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
+    // === LOGIKA BARU UNTUK MULTIPLE FILE UPLOAD ===
+    const fileInput = document.getElementById('bukti-input');
+    const previewContainer = document.getElementById('preview-container');
+    let selectedFiles = []; // Array untuk menampung file yang valid
+
     fileInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            fileNameDisplay.textContent = file.name;
-            fileSizeDisplay.textContent = formatBytes(file.size);
-            removeFileButton.classList.remove('hidden');
-            previewPlaceholder.classList.add('hidden');
+        const newFiles = Array.from(event.target.files);
 
-            const fileType = file.type;
-            imagePreview.classList.add('hidden');
-            videoPreview.classList.add('hidden');
-
-            if (fileType.startsWith('image/')) {
-                imagePreview.src = URL.createObjectURL(file);
-                imagePreview.classList.remove('hidden');
-            } else if (fileType.startsWith('video/')) {
-                 videoPreview.src = URL.createObjectURL(file);
-                 videoPreview.classList.remove('hidden');
-            } else {
-                 previewPlaceholder.classList.remove('hidden');
-            }
+        let combinedFiles = [...selectedFiles, ...newFiles];
+        if (combinedFiles.length > 6) {
+            alert('Anda hanya dapat mengupload maksimal 6 file.');
+            combinedFiles = combinedFiles.slice(0, 6);
         }
+        selectedFiles = combinedFiles;
+
+        updatePreview();
+        updateFileInput();
     });
 
-    removeFileButton.addEventListener('click', function() {
-        fileInput.value = '';
-        fileNameDisplay.textContent = 'Tidak ada file dipilih.';
-        fileSizeDisplay.textContent = '';
-        removeFileButton.classList.add('hidden');
+    function updatePreview() {
+        previewContainer.innerHTML = ''; // Kosongkan preview lama
 
-        imagePreview.classList.add('hidden');
-        imagePreview.src = '';
-        videoPreview.classList.add('hidden');
-        videoPreview.src = '';
-        previewPlaceholder.classList.remove('hidden');
-    });
+        if (selectedFiles.length === 0) {
+            previewContainer.classList.remove('grid');
+            previewContainer.classList.add('flex'); // Kembalikan ke flex jika kosong
+        } else {
+            previewContainer.classList.remove('flex');
+            previewContainer.classList.add('grid'); // Gunakan grid jika ada file
+        }
+
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+
+            // Wrapper untuk satu item file (preview + info)
+            const fileItemWrapper = document.createElement('div');
+            fileItemWrapper.className = 'w-full h-auto bg-gray-100 rounded-lg shadow-sm flex flex-col';
+
+            // Wrapper untuk preview media
+            const previewWrapper = document.createElement('div');
+            previewWrapper.className = 'relative w-full h-24 bg-gray-200 rounded-t-lg';
+
+            let mediaElement;
+            if (file.type.startsWith('image/')) {
+                mediaElement = document.createElement('img');
+            } else {
+                mediaElement = document.createElement('video');
+            }
+            mediaElement.src = URL.createObjectURL(file); // Gunakan URL.createObjectURL untuk preview cepat
+            mediaElement.className = 'w-full h-full object-cover rounded-t-lg';
+            previewWrapper.appendChild(mediaElement);
+
+            // Tombol Hapus
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-75 hover:opacity-100';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.onclick = function() {
+                selectedFiles.splice(index, 1);
+                updatePreview();
+                updateFileInput();
+            };
+
+            previewWrapper.appendChild(removeBtn);
+            fileItemWrapper.appendChild(previewWrapper);
+
+            // ================== BAGIAN BARU: INFO NAMA & UKURAN FILE ==================
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'text-xs p-2 text-center w-full';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'block truncate font-semibold text-gray-700';
+            nameSpan.textContent = file.name;
+            nameSpan.title = file.name; // Tooltip jika nama terlalu panjang
+
+            const sizeSpan = document.createElement('span');
+            sizeSpan.className = 'block text-gray-500';
+            sizeSpan.textContent = formatBytes(file.size);
+
+            infoDiv.appendChild(nameSpan);
+            infoDiv.appendChild(sizeSpan);
+            fileItemWrapper.appendChild(infoDiv);
+            // =======================================================================
+
+            previewContainer.appendChild(fileItemWrapper);
+        });
+    }
+
+    function updateFileInput() {
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        fileInput.files = dataTransfer.files;
+    }
 });
 </script>
 @endpush

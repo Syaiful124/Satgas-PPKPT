@@ -90,21 +90,39 @@
     <div class="lg:col-span-2 flex flex-col gap-8">
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="font-bold mb-2">Bukti Kejadian Anda</h3>
-            @if($pengaduan->foto_kejadian)
-                @if(Str::contains($pengaduan->foto_kejadian, ['.jpg', '.jpeg', '.png', '.gif']))
-                <img src="{{ Storage::url($pengaduan->foto_kejadian) }}" alt="Bukti" class="w-full rounded-lg shadow">
-                @else
-                <video src="{{ Storage::url($pengaduan->foto_kejadian) }}" controls class="w-full rounded-lg shadow"></video>
-                @endif
+            @if ($pengaduan->bukti->isNotEmpty())
+                <div class="grid grid-cols-2 gap-2 max-h-[400px] min-h-[100px] overflow-y-auto">
+                    @foreach($pengaduan->bukti as $bukti)
+                        <div>
+                            @if($bukti->file_type == 'image')
+                                <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full rounded-lg shadow">
+                            @else
+                                <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full rounded-lg shadow"></video>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
             @else
-            <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">Tidak ada bukti.</div>
+                <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">
+                    Tidak ada bukti yang Anda lampirkan.
+                </div>
             @endif
         </div>
 
-        @if ($pengaduan->penanganan?->foto_penanganan)
+        @if ($pengaduan->penanganan && $pengaduan->penanganan->bukti->isNotEmpty())
         <div class="bg-white p-6 rounded-lg shadow-md">
-             <h3 class="font-bold mb-2">Bukti Penanganan dari Satgas</h3>
-             <img src="{{ Storage::url($pengaduan->penanganan->foto_penanganan) }}" alt="Bukti Penanganan" class="w-full rounded-lg shadow">
+            <h3 class="font-bold mb-2">Bukti Penanganan dari Satgas</h3>
+            <div class="grid grid-cols-2 gap-2">
+                @foreach($pengaduan->penanganan->bukti as $bukti)
+                    <div>
+                        @if($bukti->file_type == 'image')
+                            <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full rounded-lg shadow">
+                        @else
+                            <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full rounded-lg shadow"></video>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
         </div>
         @endif
     </div>

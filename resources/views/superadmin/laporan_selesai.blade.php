@@ -14,11 +14,11 @@
     <table class="w-full">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3 text-left">Judul</th>
-                <th class="p-3 text-left">Kategori</th>
-                <th class="p-3 text-left">Tanggal Lapor</th>
-                <th class="p-3 text-left">Tanggal Selesai</th>
-                <th class="p-3 text-left">Aksi</th>
+                <th class="p-3 text-center">Judul</th>
+                <th class="p-3 text-center">Kategori</th>
+                <th class="p-3 text-center">Tanggal Lapor</th>
+                <th class="p-3 text-center">Tanggal Selesai</th>
+                <th class="p-3 text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -26,9 +26,9 @@
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-3">{{ $pengaduan->judul }}</td>
                 <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
-                <td class="p-3">{{ $pengaduan->updated_at?->translatedFormat('d M Y') }}</td>
-                <td class="p-3">
+                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
+                <td class="p-3 text-center">{{ $pengaduan->updated_at?->translatedFormat('d M Y') }}</td>
+                <td class="p-3 text-center">
                      <a href="{{ route('superadmin.laporan.show', $pengaduan) }}" class="text-blue-500 hover:underline">Lihat Detail</a>
                 </td>
             </tr>

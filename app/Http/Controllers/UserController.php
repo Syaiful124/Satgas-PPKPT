@@ -63,15 +63,15 @@ class UserController extends Controller
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->role = $request->role;
-        if($request->filled('password')){
-            $user->password = Hash::make($request->password);
-        }
-        $user->save();
 
-        return redirect()->route('superadmin.users.index', ['role' => $user->role])->with('success', 'Akun berhasil diperbarui.');
+        $data = $request->only('name', 'email', 'role');
+        if($request->filled('password')){
+            $data['password'] = Hash::make($request->password);
+        }
+        $user->update($data);
+
+        return redirect()->route('superadmin.users.index', ['role' => $user->role])
+        ->with('success', 'Akun berhasil diperbarui.');
     }
 
     public function destroy(User $user)

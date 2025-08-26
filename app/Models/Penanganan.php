@@ -25,4 +25,9 @@ class Penanganan extends Model
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    public function bukti()
+    {
+        return $this->hasMany(BuktiPenanganan::class);
+    }
 }

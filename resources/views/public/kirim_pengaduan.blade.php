@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kirim Pengaduan - SATGAS PPKPT</title>
+    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -41,8 +42,8 @@
 
         <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data" id="pengaduanForm">
             @csrf
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-fit">
-                <div class="flex flex-col">
+            <div class="flex gap-8 h-fit">
+                <div class="flex flex-col w-full">
                     <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
                         <div class="mb-4">
                             <label class="flex items-center">
@@ -87,41 +88,36 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col items-center bg-white p-6 rounded-lg shadow-lg mb-4 w-full h-full">
-                    <p class="block text-gray-700 font-bold mb-2 flex justify-center">Bukti Kejadian</p>
+                <div class="flex flex-col bg-white p-6 rounded-lg shadow-lg mb-4 w-full h-full">
+                    <p class="block text-gray-700 font-bold mb-2 flex items-center justify-center h-auto w-full">Bukti Kejadian</p>
                     <div class="flex items-center justify-center space-x-4 flex-col w-full h-full">
-                        <div id="preview-container" class="w-auto h-auto flex-shrink-0 bg-gray-200 rounded-lg flex items-center justify-center p-1">
-                            <img id="image-preview" class="hidden w-full h-full object-cover rounded-lg"/>
-                            <video id="video-preview" class="hidden w-full h-full object-cover rounded-lg"></video>
-                            <svg id="preview-placeholder" xmlns="http://www.w3.org/2000/svg" class="w-full h-full  text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 min-h-[100px] max-h-[300px] p-2">
                         </div>
                     </div>
-                    <div class="flex flex-row mt-2 gap-1 items-center w-full h-auto">
-                        <label for="foto_kejadian" class="w-max cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    <div class="flex flex-row gap-1 items-center justify-between w-full h-max">
+                        <label for="bukti-input" class="text-center w-full h-max cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
                             Upload
                         </label>
-                        <input type="file" name="foto_kejadian" id="foto_kejadian" class="hidden" accept="image/*,video/*">
-                        <div id="file-info" class="text-sm text-gray-500 items-center h-auto flex items-center flex-row bg-gray-100 w-full px-3 py-2 border rounded-lg">
-                            <p id="file-name">Tidak ada file dipilih.</p>
-                            <p id="file-size"></p>
-                        </div>
-                        <button type="button" id="remove-file" class="hidden text-red-500 text-sm hover:underline w-auto ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                            </svg>
-                        </button>
+                        <input type="file" name="bukti[]" id="bukti-input" class="hidden" accept="image/*,video/*" multiple>
                     </div>
-                    <p class="text-xs text-gray-500 mt-2 w-full h-auto">Format: PNG, JPG, JPEG, MP4, AVI, MOV (maks 20MB)</p>
+                    <p class="text-xs text-gray-400 mt-2 w-full h-auto">
+                        *Format Foto: .jpg, .jpeg, .png, .gif, .webp, .heic (maks 20MB)
+                        <br>*Format Video: .mp4, .mov, .avi, .mkv, .webm, .flv (maks 300MB)
+                    </p>
                 </div>
             </div>
-
             <div class="mt-4 p-6 bg-white rounded-lg shadow-lg">
                 <label for="isi_laporan" class="block text-gray-700 font-bold mb-2">Kronologi Kejadian*</label>
-                <textarea name="isi_laporan" rows="5" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>{{ old('isi_laporan') }}</textarea>
+                <textarea name="isi_laporan" rows="5" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" requiredplaceholder="Tuliskan :
+Nama Korban :
+Lokasi Kejadian :
+Tanggal/Waktu Kejadian :
+Kondisi Korban saat ini :
+Deskripsikan lebih lanjut..."
+                >{{ old('isi_laporan') }}</textarea>
             </div>
             <div class="mt-6">
-                <label class="flex items-start">
+                <label class="flex items-start cursor-pointer">
                     <input type="checkbox" name="persetujuan" id="persetujuanCheckbox" value="1" class="form-checkbox h-5 w-5 text-orange-600 mt-1" required>
                     <span class="ml-2 text-gray-700">Apakah anda yakin sudah mengisi dengan benar dan sejujurnya?<br><small>Pastikan semua data yang anda masukkan sudah benar sebelum mengirim untuk pertimbangan penanganan.</small></span>
                 </label>
@@ -140,13 +136,6 @@
         const teleponPelaporInput =document.getElementById('teleponPelapor');
         const submitButton = document.getElementById('submitButton');
         const persetujuanCheckbox = document.getElementById('persetujuanCheckbox');
-        const fileInput = document.getElementById('foto_kejadian');
-        const imagePreview = document.getElementById('image-preview');
-        const videoPreview = document.getElementById('video-preview');
-        const previewPlaceholder = document.getElementById('preview-placeholder');
-        const fileNameDisplay = document.getElementById('file-name');
-        const fileSizeDisplay = document.getElementById('file-size');
-        const removeFileButton = document.getElementById('remove-file');
         const kategoriSelect = document.getElementById('kategoriSelect');
         const kategoriLainnyaContainer = document.getElementById('kategoriLainnyaContainer');
         const kategoriLainnyaInput = document.getElementById('kategoriLainnyaInput');
@@ -177,7 +166,7 @@
             submitButton.disabled = !persetujuanCheckbox.checked;
         }
 
-        // === Logika untuk Preview File ===
+        // === FUNGSI BANTUAN UNTUK FORMAT UKURAN FILE ===
         function formatBytes(bytes, decimals = 2) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -187,47 +176,100 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         }
 
+        // === LOGIKA BARU UNTUK MULTIPLE FILE UPLOAD ===
+        const fileInput = document.getElementById('bukti-input');
+        const previewContainer = document.getElementById('preview-container');
+        let selectedFiles = []; // Array untuk menampung file yang valid
+
         fileInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                // Tampilkan Info
-                fileNameDisplay.textContent = file.name;
-                fileSizeDisplay.textContent = formatBytes(file.size);
-                removeFileButton.classList.remove('hidden');
-                previewPlaceholder.classList.add('hidden');
+            const newFiles = Array.from(event.target.files);
 
-                // Tampilkan Preview
-                const fileType = file.type;
-                imagePreview.classList.add('hidden');
-                videoPreview.classList.add('hidden');
-
-                if (fileType.startsWith('image/')) {
-                    imagePreview.src = URL.createObjectURL(file);
-                    imagePreview.classList.remove('hidden');
-                } else if (fileType.startsWith('video/')) {
-                    videoPreview.src = URL.createObjectURL(file);
-                    videoPreview.classList.remove('hidden');
-                } else {
-                    // Jika bukan gambar/video, tampilkan placeholder lagi
-                    previewPlaceholder.classList.remove('hidden');
-                }
+            let combinedFiles = [...selectedFiles, ...newFiles];
+            if (combinedFiles.length > 6) {
+                alert('Anda hanya dapat mengupload maksimal 6 file.');
+                combinedFiles = combinedFiles.slice(0, 6);
             }
+            selectedFiles = combinedFiles;
+
+            updatePreview();
+            updateFileInput();
         });
 
-        removeFileButton.addEventListener('click', function() {
-            fileInput.value = ''; // Reset file input
-            fileNameDisplay.textContent = 'Tidak ada file dipilih.';
-            fileSizeDisplay.textContent = '';
-            removeFileButton.classList.add('hidden');
+        function updatePreview() {
+            previewContainer.innerHTML = ''; // Kosongkan preview lama
 
-            // Reset preview
-            imagePreview.classList.add('hidden');
-            imagePreview.src = '';
-            videoPreview.classList.add('hidden');
-            videoPreview.src = '';
-            previewPlaceholder.classList.remove('hidden');
-        });
+            if (selectedFiles.length === 0) {
+                previewContainer.classList.remove('grid');
+                previewContainer.classList.add('flex'); // Kembalikan ke flex jika kosong
+            } else {
+                previewContainer.classList.remove('flex');
+                previewContainer.classList.add('grid'); // Gunakan grid jika ada file
+            }
 
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+
+                // Wrapper untuk satu item file (preview + info)
+                const fileItemWrapper = document.createElement('div');
+                fileItemWrapper.className = 'w-full h-auto bg-gray-100 rounded-lg shadow-sm flex flex-col';
+
+                // Wrapper untuk preview media
+                const previewWrapper = document.createElement('div');
+                previewWrapper.className = 'relative w-full h-24 bg-gray-200 rounded-t-lg';
+
+                let mediaElement;
+                if (file.type.startsWith('image/')) {
+                    mediaElement = document.createElement('img');
+                } else {
+                    mediaElement = document.createElement('video');
+                }
+                mediaElement.src = URL.createObjectURL(file); // Gunakan URL.createObjectURL untuk preview cepat
+                mediaElement.className = 'w-full h-full object-cover rounded-t-lg';
+                previewWrapper.appendChild(mediaElement);
+
+                // Tombol Hapus
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-75 hover:opacity-100';
+                removeBtn.innerHTML = '&times;';
+                removeBtn.onclick = function() {
+                    selectedFiles.splice(index, 1);
+                    updatePreview();
+                    updateFileInput();
+                };
+
+                previewWrapper.appendChild(removeBtn);
+                fileItemWrapper.appendChild(previewWrapper);
+
+                // ================== BAGIAN BARU: INFO NAMA & UKURAN FILE ==================
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'text-xs p-2 text-center w-full';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'block truncate font-semibold text-gray-700';
+                nameSpan.textContent = file.name;
+                nameSpan.title = file.name; // Tooltip jika nama terlalu panjang
+
+                const sizeSpan = document.createElement('span');
+                sizeSpan.className = 'block text-gray-500';
+                sizeSpan.textContent = formatBytes(file.size);
+
+                infoDiv.appendChild(nameSpan);
+                infoDiv.appendChild(sizeSpan);
+                fileItemWrapper.appendChild(infoDiv);
+                // =======================================================================
+
+                previewContainer.appendChild(fileItemWrapper);
+            });
+        }
+
+        function updateFileInput() {
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+            fileInput.files = dataTransfer.files;
+        }
 
         // === Event Listeners ===
         anonimCheckbox.addEventListener('change', toggleIdentitas);

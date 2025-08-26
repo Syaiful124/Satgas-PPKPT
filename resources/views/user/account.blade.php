@@ -107,10 +107,10 @@
                 <button type="submit" class="bg-gray-700 text-white p-2 rounded-r-lg hover:bg-gray-800">Cari</button>
             </form>
             <form action="{{ route('account.index') }}" method="GET">
-                <div class="flex items-end space-x-4">
-                    <div class="flex-grow">
-                        <label class="text-sm">Status</label>
-                        <select name="status" class="w-full p-2 border rounded-lg">
+                <div class="flex gap-3 items-start">
+                    <div class="flex gap-3">
+                        <label class="text-sm p-2">Status</label>
+                        <select name="status" class="w-fit p-2 border rounded-lg ">
                             <option value="">Semua Status</option>
                             <option value="menunggu" @if(request('status') == 'menunggu') selected @endif>Menunggu</option>
                             <option value="penanganan" @if(request('status') == 'penanganan') selected @endif>Penanganan</option>
@@ -120,13 +120,25 @@
                     </div>
                     <div>
                         <label class="text-sm">Urutkan</label>
-                        <select name="sort" class="w-full p-2 border rounded-lg">
+                        <select name="sort" class="w-fit p-2 border rounded-lg">
                             <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
                             <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
                         </select>
-                    </div class="flex space-x-2">
-                    <button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">Filter</button>
-                     <a href="{{ route('account.index') }}" class="bg-gray-300 px-4 py-2 rounded-lg">Reset</a>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <a href="{{ route('superadmin.dashboard') }}" class="w-full block text-center bg-gray-300 text-gray-700 p-2 rounded-lg hover:bg-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="col-span-2 md:col-span-1 items-center ">
+                        <button type="submit" class="w-full bg-orange-400 text-white p-2 rounded-lg hover:bg-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

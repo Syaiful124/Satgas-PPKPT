@@ -21,11 +21,11 @@
     <table class="w-full">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3 text-left">Judul</th>
-                <th class="p-3 text-left">Kategori</th>
-                <th class="p-3 text-left">Tanggal</th>
-                <th class="p-3 text-left">Status</th>
-                <th class="p-3 text-left">Aksi</th>
+                <th class="p-3 text-center">Judul</th>
+                <th class="p-3 text-center">Kategori</th>
+                <th class="p-3 text-center">Tanggal</th>
+                <th class="p-3 text-center">Status</th>
+                <th class="p-3 text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -33,8 +33,8 @@
             <tr class="border-b hover:bg-gray-50">
                 <td class="p-3 font-semibold">{{ $pengaduan->judul }}</td>
                 <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
-                <td class="p-3">
+                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
+                <td class="p-3 text-center">
                     @if($pengaduan->status == 'menunggu')
                         <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu</span>
                         <p class="text-xs text-gray-500">Menunggu persetujuan</p>
@@ -49,7 +49,7 @@
                         </p>
                     @endif
                 </td>
-                <td class="p-3">
+                <td class="p-3 text-center">
                      <a href="{{ route('superadmin.laporan.show', $pengaduan) }}" class="text-blue-500 hover:underline">Lihat Detail</a>
                 </td>
             </tr>

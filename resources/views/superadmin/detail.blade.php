@@ -12,32 +12,32 @@
     <div class="lg:col-span-3 flex flex-col gap-8">
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Laporan Pengaduan</h2>
-
             <div class="mb-4">
                 <p class="text-sm text-gray-500">Judul Laporan</p>
                 <p class="text-lg font-bold">{{ $pengaduan->judul }}</p>
             </div>
-
+            <div class="mb-4">
+                <p class="text-sm text-gray-500">Kategori</p>
+                <p class="font-semibold">{{ $pengaduan->kategori->nama_kategori }}</p>
+            </div>
+            @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
+            <div class="mb-4">
+                <p class="text-sm text-gray-500">Kategori Lainnya yang Disebutkan</p>
+                <p class="font-semibold text-orange-600">{{ $pengaduan->kategori_lainnya }}</p>
+            </div>
+            @endif
             <div class="grid grid-cols-2 grid-rows-3 gap-4 mb-4">
                 <div>
-                    <p class="text-sm text-gray-500">Kategori</p>
-                    <p class="font-semibold">{{ $pengaduan->kategori->nama_kategori }}</p>
+                    <p class="text-sm text-gray-500">Pelapor</p>
+                    <p class="font-semibold">{{ $pengaduan->nama_pelapor ?? 'Anonim' }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Dilaporkan</p>
                     <p class="font-semibold">{{ $pengaduan->created_at?->translatedFormat('d M Y, H:i') }}</p>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->nama_pelapor ?? 'Anonim' }}</p>
-                </div>
-                <div>
                     <p class="text-sm text-gray-500">Email Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->email_pelapor }}</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500">Telepon Pelapor</p>
-                    <p class="font-semibold">{{ $pengaduan->telepon_pelapor }}</p>
+                    <p class="font-semibold">{{ $pengaduan->email_pelapor ?? '-' }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Status Saat Ini</p>
@@ -48,12 +48,10 @@
                         @if($pengaduan->status == 'ditolak') text-red-500 @endif
                     ">{{ ucfirst($pengaduan->status) }}</p>
                 </div>
-                @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
-                <div class="col-span-2">
-                    <p class="text-sm text-gray-500">Kategori Lainnya yang Disebutkan</p>
-                    <p class="font-semibold text-orange-600">{{ $pengaduan->kategori_lainnya }}</p>
+                <div>
+                    <p class="text-sm text-gray-500">Telepon Pelapor</p>
+                    <p class="font-semibold">{{ $pengaduan->telepon_pelapor ?? '-' }}</p>
                 </div>
-                @endif
             </div>
 
             <div class="mb-4">
@@ -86,33 +84,6 @@
                 </div>
             @endif
         </div>
-    </div>
-
-    <div class="lg:col-span-2 flex flex-col gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="font-bold mb-2">Bukti Kejadian (dari Pelapor)</h3>
-            @if($pengaduan->foto_kejadian)
-                @if(Str::contains($pengaduan->foto_kejadian, ['.jpg', '.jpeg', '.png', '.gif']))
-                <img src="{{ Storage::url($pengaduan->foto_kejadian) }}" alt="Bukti" class="w-full rounded-lg shadow">
-                @else
-                <video src="{{ Storage::url($pengaduan->foto_kejadian) }}" controls class="w-full rounded-lg shadow"></video>
-                @endif
-            @else
-            <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">Tidak ada bukti gambar/video.</div>
-            @endif
-        </div>
-
-        @if ($pengaduan->penanganan)
-        <div class="bg-white p-6 rounded-lg shadow-md">
-             <h3 class="font-bold mb-2">Bukti Penanganan (dari Petugas)</h3>
-             @if($pengaduan->penanganan->foto_penanganan)
-                <img src="{{ Storage::url($pengaduan->penanganan->foto_penanganan) }}" alt="Bukti Penanganan" class="w-full rounded-lg shadow">
-             @else
-             <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">Tidak ada bukti gambar.</div>
-             @endif
-        </div>
-        @endif
-
         <div class="bg-gray-50 p-6 rounded-lg border">
             <h3 class="font-bold text-center mb-4">Panel Aksi</h3>
             @if ($pengaduan->petugas_id)
@@ -182,6 +153,51 @@
                     @break
             @endswitch
         </div>
+    </div>
+
+    <div class="lg:col-span-2 flex flex-col gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-bold mb-2">Bukti Kejadian (dari Pelapor)</h3>
+            @if ($pengaduan->bukti->isNotEmpty())
+                <div class="grid grid-cols-2 gap-2 mb-4 min-h-[100px] max-h-[400px] overflow-y-auto">
+                    @foreach($pengaduan->bukti as $bukti)
+                        <div>
+                            @if($bukti->file_type == 'image')
+                                <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full rounded-lg shadow">
+                            @else
+                                <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full rounded-lg shadow"></video>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">
+                    Tidak ada bukti yang dilampirkan.
+                </div>
+            @endif
+        </div>
+
+        @if ($pengaduan->penanganan && $pengaduan->penanganan->bukti->isNotEmpty())
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-bold mb-2">Bukti Penanganan (dari Petugas)</h3>
+            <div class="grid grid-cols-2 gap-2 mb-4 min-h-[100px] max-h-[400px] overflow-y-auto">
+                @foreach($pengaduan->penanganan->bukti as $bukti)
+                    <div>
+                        @if($bukti->file_type == 'image')
+                            <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full rounded-lg shadow">
+                        @else
+                            <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full rounded-lg shadow"></video>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @else
+            <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">
+                Tidak ada bukti yang dilampirkan.
+            </div>
+        @endif
+
     </div>
 </div>
 @endsection

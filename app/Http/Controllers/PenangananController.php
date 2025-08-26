@@ -7,31 +7,74 @@ use App\Models\Penanganan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BuktiPenanganan;
+use Illuminate\Support\Str;
+
 
 class PenangananController extends Controller
 {
     public function store(Request $request, Pengaduan $pengaduan)
     {
+        $imageFormats = 'jpg,jpeg,png,gif,webp,heic';
+        $videoFormats = 'mp4,mov,avi,mkv,webm,flv';
+
         $request->validate([
             'isi_penanganan' => 'required|string',
-            'foto_penanganan' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // max 5MB
+            'bukti' => 'nullable|array|max:6', // Validasi untuk multi-file
+            'bukti.*' => [
+                'file',
+                'mimes:' . $imageFormats . ',' . $videoFormats,
+                function ($attribute, $value, $fail) {
+                    $maxImageSize = 10 * 1024; // 10 MB
+                    $maxVideoSize = 300 * 1024; // 300 MB
+
+                    $isImage = Str::startsWith($value->getMimeType(), 'image/');
+                    if ($isImage && $value->getSize() > $maxImageSize * 1024) {
+                        $fail("Ukuran file gambar tidak boleh lebih dari 10MB.");
+                    }
+
+                    $isVideo = Str::startsWith($value->getMimeType(), 'video/');
+                    if ($isVideo && $value->getSize() > $maxVideoSize * 1024) {
+                        $fail("Ukuran file video tidak boleh lebih dari 300MB.");
+                    }
+                },
+            ],
         ]);
 
-        $path = null;
-        if ($request->hasFile('foto_penanganan')) {
-            $path = $request->file('foto_penanganan')->store('public/penanganan');
-        }
-
-        Penanganan::updateOrCreate(
+        // Buat atau update data penanganan
+        $penanganan = $pengaduan->penanganan()->updateOrCreate(
             ['pengaduan_id' => $pengaduan->id],
             [
                 'admin_id' => Auth::id(),
                 'isi_penanganan' => $request->isi_penanganan,
-                'foto_penanganan' => $path,
             ]
         );
 
-        // Status pengaduan tetap 'penanganan', superadmin yang akan mengubahnya menjadi 'selesai'
+        // Proses upload file bukti baru
+        if ($request->hasFile('bukti')) {
+            // Hapus bukti lama terlebih dahulu jika ada
+            foreach ($penanganan->bukti as $buktiLama) {
+                Storage::delete($buktiLama->file_path);
+                $buktiLama->delete();
+            }
+
+            // Simpan bukti baru
+            foreach ($request->file('bukti') as $file) {
+                $path = $file->store('public/bukti-penanganan');
+                $type = Str::startsWith($file->getMimeType(), 'image/') ? 'image' : 'video';
+
+                $penanganan->bukti()->create([
+                    'penanganan_id' => $penanganan->id,
+                    'file_path' => $path,
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_type' => $type,
+                ]);
+            }
+        }
+
+        // Update status pengaduan utama
+        $pengaduan->update(['status' => 'penanganan']);
+
         return redirect()->route('admin.laporan.masuk')->with('success', 'Laporan penanganan berhasil dikirim.');
     }
 }

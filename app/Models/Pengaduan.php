@@ -34,4 +34,9 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(User::class, 'petugas_id');
     }
+
+    public function bukti()
+    {
+        return $this->hasMany(BuktiPengaduan::class);
+    }
 }

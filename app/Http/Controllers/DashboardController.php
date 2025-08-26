@@ -30,7 +30,7 @@ class DashboardController extends Controller
             $sort = explode('_', $request->sort);
             if(count($sort) == 2) $query->orderBy($sort[0], $sort[1]);
         } else {
-            $query->latest(); // Default sort
+            $query->latest();
         }
 
         return $query;

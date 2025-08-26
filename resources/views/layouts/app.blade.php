@@ -49,7 +49,7 @@
     </style>
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <aside class="w-64 sidebar flex flex-col justify-between h-screen sticky top-0">
+    <aside class="w-[240px] sidebar flex flex-col justify-between h-screen sticky top-0">
         <div class="w-full">
             <div class="side-up text-center text-white pt-5 pb-5 mb-4 bg-gray-500  shadow-lg flex flex-row justify-center items-center">
                 <img src="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png" alt="STIMATA" class="h-10 w-10 mr-2 object-cover">

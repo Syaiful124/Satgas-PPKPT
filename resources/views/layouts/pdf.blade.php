@@ -35,8 +35,9 @@
         .detail-table .label { font-weight: bold; width: 30%; }
 
         /* Tabel */
-        .content-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .content-table th, .content-table td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        .content-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+        .content-table table {width: 100%;}
+        .content-table th, .content-table td { border: 1px solid #ccc; padding: 8px; text-align: center;}
         .content-table th { background-color: #f2f2f2; font-weight: bold; }
         .content-table tr:nth-child(even) { background-color: #f9f9f9; }
         .page-break {
