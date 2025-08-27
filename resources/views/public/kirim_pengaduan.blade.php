@@ -103,18 +103,14 @@
                     <p class="text-xs text-gray-400 mt-2 w-full h-auto">
                         *Format Foto: .jpg, .jpeg, .png, .gif, .webp, .heic (maks 20MB)
                         <br>*Format Video: .mp4, .mov, .avi, .mkv, .webm, .flv (maks 300MB)
+                        <br>*Maksimal 6 file bukti.
                     </p>
                 </div>
             </div>
             <div class="mt-4 p-6 bg-white rounded-lg shadow-lg">
                 <label for="isi_laporan" class="block text-gray-700 font-bold mb-2">Kronologi Kejadian*</label>
-                <textarea name="isi_laporan" rows="5" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" requiredplaceholder="Tuliskan :
-Nama Korban :
-Lokasi Kejadian :
-Tanggal/Waktu Kejadian :
-Kondisi Korban saat ini :
-Deskripsikan lebih lanjut..."
-                >{{ old('isi_laporan') }}</textarea>
+                <textarea name="isi_laporan" rows="5" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required
+                placeholder="Jelaskan secara detail nama korban, lokasi kejadian, tanggal/waktu kejadian, kondisi korban, dll.">{{ old('isi_laporan') }}</textarea>
             </div>
             <div class="mt-6">
                 <label class="flex items-start cursor-pointer">

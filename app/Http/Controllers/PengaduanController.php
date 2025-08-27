@@ -27,6 +27,18 @@ class PengaduanController extends Controller
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
 
+        // Fitur Filter
+        if ($request->filled('bulan')) $query->whereMonth('created_at', $request->bulan);
+        if ($request->filled('tahun')) $query->whereYear('created_at', $request->tahun);
+
+        // Fitur Urutkan
+        if ($request->filled('sort')) {
+            $sort = explode('_', $request->sort);
+            if(count($sort) == 2) $query->orderBy($sort[0], $sort[1]);
+        } else {
+            $query->latest();
+        }
+
         $pengaduans = $query->latest()->paginate(10);
         $kategoris = Kategori::all();
 

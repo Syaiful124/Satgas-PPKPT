@@ -2,9 +2,9 @@
 @section('title', 'Form Penanganan')
 
 @section('content')
-<a href="{{ route('admin.laporan.masuk') }}" class="text-gray-600 hover:text-gray-900 mb-4 inline-block">&larr; BACK</a>
+<a href="{{ route('admin.laporan.masuk') }}" class="text-gray-600 hover:text-gray-900 mb-4 inline-block">&larr; KEMBALI</a>
 
-<div class="flex flex-col gap-4 mb-2">
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-2">
     <div class="lg:col-span-3 flex flex-col gap-8">
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Laporan Pengaduan</h2>
@@ -82,22 +82,25 @@
 
 <form action="{{ route('admin.laporan.tangani', $pengaduan) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-4">Form Penanganan Admin</h3>
-        <div class="flex flex-col w-full gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class=" w-full bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4">Form Penanganan Admin</h3>
+            <div class="flex flex-col w-full gap-6">
                 <div class="mb-4">
                     <label for="nama_admin" class="block text-gray-700 font-bold mb-2">Nama Admin*</label>
                     <input type="text" id="nama_admin" value="{{ auth()->user()->name }}" class="w-full px-3 py-2 border rounded-lg bg-gray-100" readonly>
                 </div>
                 <div class="mb-4">
                     <label for="isi_penanganan" class="block text-gray-700 font-bold mb-2">Penjelasan Penanganan*</label>
-                    <textarea name="isi_penanganan" id="isi_penanganan" rows="5" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>{{ old('isi_penanganan') }}</textarea>
+                    <textarea name="isi_penanganan" id="isi_penanganan" rows="5" class="w-full bg-gray-200 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>{{ old('isi_penanganan') }}</textarea>
                 </div>
             </div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
             <div class="mb-4 w-full">
                 <label class="block text-gray-700 font-bold mb-2">Upload Bukti Penanganan</label>
                 <div class="flex items-center space-x-4 flex-col gap-4">
-                    <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 min-h-[100px] max-h-[300px] p-1">
+                    <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 min-h-[100px] max-h-[300px] p-1">
                         @if($pengaduan->penanganan)
                             @foreach($pengaduan->penanganan->bukti as $bukti)
                             <div class="w-full h-auto bg-gray-100 rounded-lg shadow-sm flex flex-col">
@@ -120,12 +123,12 @@
                             Upload Bukti
                         </label>
                         <input type="file" name="bukti[]" id="bukti-input" class="hidden w-full" accept="image/*,video/*" multiple>
-                        </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-2 w-full h-auto">
+                    <p class="text-xs text-gray-500 mt-2 w-full h-auto">
                     *Format Foto: .jpg, .jpeg, .png, .gif, .webp, .heic (maks 20MB)
                     <br>*Format Video: .mp4, .mov, .avi, .mkv, .webm, .flv (maks 300MB)
+                    <br>*Maksimal 6 file bukti.
                 </p>
             </div>
         </div>

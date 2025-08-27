@@ -40,7 +40,7 @@ class DashboardController extends Controller
     {
         $stats = [
             'total' => Pengaduan::count(),
-            'masuk' => Pengaduan::where('status', 'menunggu')->count(),
+            'masuk' => Pengaduan::whereIn('status', ['menunggu', 'penanganan'])->count(),
             'selesai' => Pengaduan::where('status', 'selesai')->count(),
             'ditolak' => Pengaduan::where('status', 'ditolak')->count(),
         ];

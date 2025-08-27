@@ -4,7 +4,7 @@
 @section('content')
 <div class="flex justify-between items-center mb-4">
     <div>
-        <a href="{{ route('account.index') }}" class="text-sm text-gray-600 hover:text-gray-900 mb-2 inline-block">&larr; Kembali ke Riwayat</a>
+        <a href="{{ route('account.index') }}" class="text-sm text-gray-600 hover:text-gray-900 mb-2 inline-block">&larr; KEMBALI</a>
         <h1 class="text-3xl font-bold">Detail Laporan</h1>
     </div>
     @can('update', $pengaduan)

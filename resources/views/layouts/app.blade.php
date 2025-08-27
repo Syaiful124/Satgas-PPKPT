@@ -18,10 +18,10 @@
         .btn-danger:hover { background-color: #c53030; }
         .btn-success { background-color: #48bb78; color: white; }
         .btn-success:hover { background-color: #38a169; }
-        .badge-menunggu { background-color: #f6993f; color: white; }
-        .badge-penanganan { background-color: #ecc94b; color: #4a5568; }
-        .badge-selesai { background-color: #48bb78; color: white; }
-        .badge-ditolak { background-color: #e53e3e; color: white; }
+        .badge-menunggu { background-color: #ff880060; color: white; width: 180px; border: 1px solid yellow; }
+        .badge-penanganan { background-color: #ffff0060; color: black; width: 180px; border: 1px solid orange; }
+        .badge-selesai { background-color: #00ff0060; color: black; width: 180px; border: 1px solid green; }
+        .badge-ditolak { background-color: #ff000060; color: black; width: 180px; border: 1px solid red; }
         .side-up {
             border-radius: 0 0 20px 20px;
             border-bottom: 5px solid #fff;
@@ -46,19 +46,25 @@
         .jml-g {
             border: 1px solid green;
         }
+
+        .title-h {
+            border-bottom: 4px solid #ff6900;
+            padding-bottom: 10px;
+        }
+
     </style>
 </head>
 <body class="flex bg-gray-100 min-h-screen">
-    <aside class="w-[240px] sidebar flex flex-col justify-between h-screen sticky top-0">
+    <aside class="w-[250px] sidebar flex flex-col justify-between h-screen sticky top-0">
         <div class="w-full">
-            <div class="side-up text-center text-white pt-5 pb-5 mb-4 bg-gray-500  shadow-lg flex flex-row justify-center items-center">
+            <div class="side-up text-center text-white pt-3 pb-4 mb-4 bg-gray-500 shadow-lg flex flex-row justify-center items-center gap-2">
                 <img src="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png" alt="STIMATA" class="h-10 w-10 mr-2 object-cover">
                 <div>
-                <h1 class="text-2xl font-bold">SATGAS</h1>
-                <p class="text-sm">Admin Panel</p>
+                    <h1 class="text-2xl font-bold">SATGAS</h1>
+                    <p class="text-sm">Admin Panel</p>
                 </div>
             </div>
-            <nav class="pr-2 pl-2">
+            <nav class="pr-2 pl-2 text-sm">
                 <ul>
                     @if(auth()->user()->role == 'superadmin')
                         <li class="mb-2">
@@ -127,13 +133,13 @@
             </nav>
         </div>
         <div class="side-down p-4">
-            <div class="text-black flex items-center ml-4 w-full mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <div class="text-black flex px-1 w-full mb-3 gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                 </svg>
-                <div class="ml-2 justify-between flex flex-col">
-                    <p class="font-bold">{{ auth()->user()->name }}</p>
-                    <p class="text-sm">{{ auth()->user()->role }}</p>
+                <div class='flex flex-col'>
+                    <h3 class="font-bold text-[12px]">{{ auth()->user()->name }}</h3>
+                    <p class="text-[12px]">{{ auth()->user()->role }}</p>
                 </div>
             </div>
             <form action="{{ route('logout') }}" method="POST">

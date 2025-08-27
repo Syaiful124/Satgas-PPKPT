@@ -31,16 +31,11 @@ Route::get('/hubungi-kami', [PageController::class, 'hubungiKami'])->name('hubun
 | Autentikasi (Login & Register)
 |--------------------------------------------------------------------------
 */
-// Form Login (digunakan bersama)
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-
-// Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Form & Proses Registrasi User
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 /*
@@ -79,6 +74,8 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     Route::get('laporan/{pengaduan}/pdf', [PengaduanController::class, 'exportPDF'])->name('laporan.pdf');
     Route::get('dashboard/export/pdf', [DashboardController::class, 'exportDashboardPDF'])->name('dashboard.export.pdf');
     Route::get('surat-penugasan/{pengaduan}', [SuratController::class, 'penugasan'])->name('surat.penugasan');
+    Route::post('users/{user}/approve', [UserController::class, 'approveChange'])->name('users.approve');
+    Route::post('users/{user}/reject', [UserController::class, 'rejectChange'])->name('users.reject');
 });
 
 // --- GRUP UNTUK ADMIN ---

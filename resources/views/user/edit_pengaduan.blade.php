@@ -122,6 +122,7 @@
                     <p class="text-xs text-gray-400 mt-2 w-full h-auto">
                         *Format Foto: .jpg, .jpeg, .png, .gif, .webp, .heic (maks 20MB)
                         <br>*Format Video: .mp4, .mov, .avi, .mkv, .webm, .flv (maks 300MB)
+                        <br>*Maksimal 6 file bukti.
                     </p>
                 </div>
             </div>

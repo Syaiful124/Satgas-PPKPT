@@ -3,7 +3,7 @@
 @section('title', 'Detail Laporan Pengaduan')
 
 @section('content')
-<div class="flex justify-between items-center mb-4">
+<div class="flex justify-between items-center mb-4 title-h">
     <h1 class="text-3xl font-bold">Detail Laporan</h1>
     <a href="{{ url()->previous() }}" class="text-gray-600 hover:text-gray-900">&larr; KEMBALI</a>
 </div>
@@ -110,13 +110,16 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="flex justify-center space-x-4 mt-4">
-                            <button type="submit" class="btn-primary px-6 py-2 rounded-lg">Setujui & Buat Surat Tugas</button>
-                            <form action="{{ route('superadmin.laporan.tolak', $pengaduan) }}" method="POST" class="inline-block">
-                                @csrf
-                                <button type="submit" class="btn-danger px-4 py-2 rounded-lg">Tolak Laporan</button>
-                            </form>
-                        </div>
+                        <button type="submit" class=" w-full btn-primary px-6 py-2 rounded-lg">Buat Surat Tugas</button>
+                    </form>
+                    <div class="my-4 flex items-center">
+                        <hr class="flex-grow border-t">
+                        <span class="px-2 text-xs text-gray-500">ATAU</span>
+                        <hr class="flex-grow border-t">
+                    </div>
+                    <form action="{{ route('superadmin.laporan.tolak', $pengaduan) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menolak laporan ini?');">
+                        @csrf
+                        <button type="submit" class="w-full btn-danger px-4 py-2 rounded-lg">Tolak Laporan</button>
                     </form>
                     @break
 
@@ -136,18 +139,26 @@
 
                 @case('selesai')
                     <p class="text-sm text-center text-gray-600">Laporan ini telah selesai ditangani.</p>
-                    <div class="text-center">
-                        <a href="{{ route('superadmin.laporan.pdf', $pengaduan) }}" target="_blank" class="inline-block bg-red-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-700">
-                            Export ke PDF
+                    <div class="text-center flex justify-center">
+                        <a href="{{ route('superadmin.laporan.pdf', $pengaduan) }}" target="_blank" class="w-max flex items-center gap-1 bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
+                            </svg>
+                            Print
                         </a>
                     </div>
                     @break
 
                 @case('ditolak')
                     <p class="text-sm text-center text-gray-600">Laporan ini telah ditolak.</p>
-                    <div class="text-center">
-                        <a href="{{ route('superadmin.laporan.pdf', $pengaduan) }}" target="_blank" class="inline-block bg-red-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-700">
-                            Export ke PDF
+                    <div class="text-center flex justify-center">
+                        <a href="{{ route('superadmin.laporan.pdf', $pengaduan) }}" target="_blank" class="w-max flex items-center gap-1 bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
+                            </svg>
+                            Print
                         </a>
                     </div>
                     @break
@@ -177,9 +188,9 @@
             @endif
         </div>
 
-        @if ($pengaduan->penanganan && $pengaduan->penanganan->bukti->isNotEmpty())
         <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="font-bold mb-2">Bukti Penanganan (dari Petugas)</h3>
+            @if ($pengaduan->penanganan && $pengaduan->penanganan->bukti->isNotEmpty())
             <div class="grid grid-cols-2 gap-2 mb-4 min-h-[100px] max-h-[400px] overflow-y-auto">
                 @foreach($pengaduan->penanganan->bukti as $bukti)
                     <div>
@@ -191,13 +202,12 @@
                     </div>
                 @endforeach
             </div>
+            @else
+                <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">
+                    Tidak ada bukti yang dilampirkan.
+                </div>
+            @endif
         </div>
-        @else
-            <div class="border-2 border-dashed rounded-lg p-10 text-center text-gray-400">
-                Tidak ada bukti yang dilampirkan.
-            </div>
-        @endif
-
     </div>
 </div>
 @endsection

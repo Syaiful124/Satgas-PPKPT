@@ -3,11 +3,8 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
+<div class="flex justify-between items-center mb-6 title-h">
     <h1 class="text-3xl font-bold">Dashboard</h1>
-    <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" target="_blank" class="bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700">
-        Export PDF
-    </a>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4 text-center">
@@ -25,12 +22,19 @@
     </div>
 </div>
 
-<div class="bg-white p-4 rounded-lg shadow-md mb-4">
-    <form action="{{ route('superadmin.dashboard') }}" method="GET" class="flex items-center mb-4">
+<div class="bg-white p-4 rounded-lg shadow-md mb-4 ">
+    <form action="{{ route('superadmin.dashboard') }}" method="GET" class="flex items-center mb-4 flex justify-between">
         <input type="text" name="search" placeholder="Cari Pengaduan" value="{{ request('search') }}" class="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-orange-400">
         <button type="submit" class="bg-gray-700 text-white p-2 rounded-r-lg hover:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         </button>
+        <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" target="_blank" class="ml-10 flex items-center gap-1 bg-orange-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-red-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
+            </svg>
+            Print
+        </a>
     </form>
 
     <form action="{{ route('superadmin.dashboard') }}" method="GET">
@@ -104,22 +108,22 @@
 </div>
 
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden flex">
-    <table class="w-full">
+<div class="bg-white p-0 m-0 rounded-lg shadow-md overflow-hidden flex">
+    <table class="w-full p-3">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3 text-center">Judul</th>
-                <th class="p-3 text-center">Kategori</th>
-                <th class="p-3 text-center">Tanggal</th>
-                <th class="p-3 text-center">Status</th>
-                <th class="p-3 text-center">Aksi</th>
+                <th class="p-3 text-center ">Judul</th>
+                <th class="p-3 text-center w-[150px]">Tanggal</th>
+                <th class="p-3 text-center w-[100px]">Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse($pengaduans as $pengaduan)
-            <tr class="border-b hover:bg-gray-50">
-                <td class="p-3">{{ $pengaduan->judul }}</td>
-                <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
+            <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
+                <td class="p-3 flex flex-col gap-1">
+                    <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
+                    <p class="text-[14px] ">{{ $pengaduan->kategori->nama_kategori }}  {{ $pengaduan->kategori_lainnya }}</p>
+                </td>
                 <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
                 <td class="p-3 text-center">
                     <span class="px-3 py-1 text-sm rounded-full w-full
@@ -130,9 +134,6 @@
                     ">
                         {{ ucfirst($pengaduan->status) }}
                     </span>
-                </td>
-                <td class="p-3 text-center">
-                     <a href="{{ route('superadmin.laporan.show', $pengaduan) }}" class="text-blue-500 hover:underline">Lihat Detail</a>
                 </td>
             </tr>
             @empty

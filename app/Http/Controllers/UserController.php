@@ -15,14 +15,15 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $role = $request->query('role', 'user'); // Default tab is 'user'
+        $role = $request->query('role', 'user');
         if (!in_array($role, ['user', 'admin', 'superadmin'])) {
             $role = 'user';
         }
 
-        $users = User::where('role', $role)->paginate(10);
+        $users = User::where('role', $role)->whereNull('status_perubahan')->paginate(10);
+        $requests = User::whereNotNull('status_perubahan')->get();
 
-        return view('shared.management_account.index', compact('users', 'role'));
+        return view('shared.management_account.index', compact('users', 'role', 'requests'));
     }
 
     public function create()
@@ -85,12 +86,45 @@ class UserController extends Controller
         return redirect()->route('superadmin.users.index', ['role' => $role])->with('success', 'Akun berhasil dihapus.');
     }
 
+    public function approveChange(User $user)
+    {
+        $changes = $user->data_perubahan;
+
+        if ($user->status_perubahan === 'pending_update') {
+            $user->update($changes); // Terapkan data baru
+            $message = 'Perubahan akun berhasil disetujui.';
+        } elseif ($user->status_perubahan === 'pending_delete') {
+            $user->delete();
+            $message = 'Permintaan penghapusan akun berhasil disetujui.';
+        } else {
+            return redirect()->route('superadmin.users.index')->with('error', 'Tindakan tidak valid.');
+        }
+
+        // Hapus status setelah disetujui
+        if ($user->exists) {
+            $user->update([
+                'status_perubahan' => null,
+                'data_perubahan' => null,
+            ]);
+        }
+
+        return redirect()->route('superadmin.users.index')->with('success', $message);
+    }
+
+    public function rejectChange(User $user)
+    {
+        $user->update([
+            'status_perubahan' => null,
+            'data_perubahan' => null,
+        ]);
+        return redirect()->route('superadmin.users.index')->with('success', 'Permintaan perubahan berhasil ditolak.');
+    }
+
     // === UNTUK ADMIN (HANYA MENGELOLA USER) ===
 
     public function indexAdmin()
     {
         $users = User::where('role', 'user')->paginate(10);
-        // Menggunakan view yang sama, tapi role dikunci
         return view('shared.management_account.index', ['users' => $users, 'role' => 'user']);
     }
 
@@ -125,28 +159,37 @@ class UserController extends Controller
 
     public function updateUser(Request $request, User $user)
     {
-        if($user->role !== 'user') abort(403);
+        if ($user->role !== 'user') abort(403);
 
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Siapkan data perubahan
+        $changes = ['name' => $validatedData['name'], 'email' => $validatedData['email']];
+        if ($request->filled('password')) {
+            $changes['password'] = Hash::make($request->password);
+        }
+
+        // Simpan permintaan ke database
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
+            'status_perubahan' => 'pending_update',
+            'data_perubahan' => $changes,
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'Akun user berhasil diperbarui.');
+        return redirect()->route('admin.users.index')->with('success', 'Permintaan perubahan akun telah dikirim ke Superadmin untuk persetujuan.');
     }
 
     public function destroyUser(User $user)
     {
         if($user->role !== 'user') abort(403);
-        $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'Akun user berhasil dihapus.');
-    }
 
+        $user->update([
+            'status_perubahan' => 'pending_delete',
+        ]);
+
+        return redirect()->route('admin.users.index')->with('success', 'Permintaan penghapusan akun telah dikirim ke Superadmin untuk persetujuan.');
+    }
 }
