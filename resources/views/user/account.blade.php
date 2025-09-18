@@ -22,7 +22,7 @@
                     <label for="current_password" class="block font-semibold">Password Saat Ini</label>
                     <div class="relative">
                         <input type="password" name="current_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
-                        <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
+                        <button type="button" class="toggle-password absolute inset-y-0 right-0 m-4 text-gray-500">
                             <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                                 <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" clip-rule="evenodd" />
@@ -37,35 +37,35 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600 mb-4">
-                <div id="check-length" class="flex items-center">
-                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Minimal 8 karakter
-                </div>
-                <div id="check-uppercase" class="flex items-center">
-                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Huruf besar
-                </div>
-                <div id="check-number" class="flex items-center">
-                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Angka
-                </div>
-                <div id="check-symbol" class="flex items-center">
-                    <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Simbol
-                </div>
-            </div>
 
             <div class="mb-4">
                 <label for="new_password" class="block font-semibold">Password Baru</label>
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600">
+                    <div id="check-length" class="flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        Minimal 8 karakter
+                    </div>
+                    <div id="check-uppercase" class="flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        Huruf besar & kecil
+                    </div>
+                    <div id="check-number" class="flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        Angka
+                    </div>
+                    <div id="check-symbol" class="flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        Simbol
+                    </div>
+                </div>
                 <div class="relative">
-                    <input id="new_password" type="password" name="new_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
-                    <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
+                    <input id="new_password" type="password" name="new_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 items-center">
+                    <button type="button" class="toggle-password absolute inset-y-0 right-0 m-4 text-gray-500">
                         <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                             <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" clip-rule="evenodd" />
                         </svg>
-                        <svg class="bi bi-eye-slash-fill h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="bi bi-eye-slash-fill h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" fill="currentColor">
                             <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
                             <path fill-rule="evenodd" d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z" clip-rule="evenodd"/>
                         </svg>
@@ -77,7 +77,7 @@
                 <label for="new_password_confirmation" class="block font-semibold">Konfirmasi Password Baru</label>
                 <div class="relative">
                     <input id="new_password_confirmation" type="password" name="new_password_confirmation" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
-                    <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
+                    <button type="button" class="toggle-password absolute inset-y-0 right-0 m-4 text-gray-500">
                         <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                             <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" clip-rule="evenodd" />
@@ -103,8 +103,10 @@
         <h2 class="text-2xl font-bold mb-4">Riwayat Pengaduan Saya</h2>
         <div class="bg-gray-50 p-4 rounded-lg mb-4 border">
             <form action="{{ route('account.index') }}" method="GET" class="flex items-center mb-4">
-                <input type="text" name="search" placeholder="Cari judul laporan..." value="{{ request('search') }}" class="flex-grow p-2 border rounded-l-lg">
-                <button type="submit" class="bg-gray-700 text-white p-2 rounded-r-lg hover:bg-gray-800">Cari</button>
+                <input type="text" name="search" placeholder="Cari Pengaduan" value="{{ request('search') }}" class="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-orange-400">
+                <button type="submit" class="bg-gray-700 text-white p-2 rounded-r-lg hover:bg-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </button>
             </form>
             <form action="{{ route('account.index') }}" method="GET">
                 <div class="flex gap-3 items-start">
@@ -156,7 +158,7 @@
                             <p class="font-bold">{{ $pengaduan->judul }}</p>
                             <p class="text-sm text-gray-500">{{ $pengaduan->kategori->nama_kategori }} | {{ $pengaduan->created_at->translatedFormat('d M Y') }}</p>
                         </div>
-                        <span class="text-sm font-semibold px-3 py-1 rounded-full
+                        <span class="text-sm font-semibold px-3 py-1 rounded-full items-center
                              @if($pengaduan->status == 'menunggu') bg-yellow-200 text-yellow-800 @endif
                              @if($pengaduan->status == 'penanganan') bg-blue-200 text-blue-800 @endif
                              @if($pengaduan->status == 'selesai') bg-green-200 text-green-800 @endif

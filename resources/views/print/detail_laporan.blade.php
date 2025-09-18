@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Laporan - SATGAS PPKPT - {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}</title>
-    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @page {
@@ -30,6 +30,22 @@
 
         .tanda-tangan { width: 100%; margin-top: 50px; text-align: center; border: none !important; display: flex; justify-content: end;}
 
+        footer {
+            position: fixed;
+            bottom: 0.5cm;
+            left: 1.5cm;
+            right: 1.5cm;
+            height: 1cm;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+        }
+        /* Logika untuk menampilkan nomor halaman (contoh: Halaman 1 dari 5) */
+        footer .page-number::before {
+            content: "Halaman " counter(page);
+        }
         /* Button */
         .print-button { background-color: #ff6900; color: white;}
         @media print {
@@ -103,6 +119,18 @@
                     <tr>
                         <td class="label">Laporan Hasil Penanganan</td>
                         <td>: {{ $pengaduan->penanganan->isi_penanganan }}</td>
+                    </tr>
+                </table>
+            </div>
+            @endif
+            @if ($pengaduan->status == 'ditolak' && !empty($pengaduan->alasan_penolakan))
+            <div>
+                <h3 class="section-title">{{ $pengaduan->penanganan ? 'C. Hasil Akhir' : 'B. Hasil Akhir' }}: Laporan Ditolak</h3>
+                <table class="detail-table">
+                    <tr>
+                        <td class="label" style="vertical-align: top; color: #dc2626;">Alasan Penolakan</td>
+                        <td style="vertical-align: top;">:</td>
+                        <td style="white-space: pre-wrap;">{{ $pengaduan->alasan_penolakan }}</td>
                     </tr>
                 </table>
             </div>

@@ -50,6 +50,12 @@
 
         <div class="mb-4">
             <label for="password" class="block text-gray-700 font-bold mb-2">Password Baru</label>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600 mb-6">
+                <div id="check-length" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Minimal 8 karakter</div>
+                <div id="check-uppercase" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung huruf besar & kecil</div>
+                <div id="check-number" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung angka</div>
+                <div id="check-symbol" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung simbol</div>
+            </div>
             <div class="relative">
                 <input type="password" id="password" name="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
                 <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
@@ -66,7 +72,7 @@
             <p class="text-xs text-gray-500 mt-1">Kosongkan jika tidak ingin mengubah password.</p>
         </div>
         <div class="mb-6">
-            <label for="password_confirmation" class="block text-gray-700 font-bold mb-2">Password Baru</label>
+            <label for="password_confirmation" class="block text-gray-700 font-bold mb-2">Konfirmasi Password</label>
             <div class="relative">
                 <input type="password" id="password_confirmation" name="password_confirmation" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
                 <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
@@ -88,4 +94,56 @@
         </div>
     </form>
 </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const checks = {
+            length: document.getElementById('check-length'),
+            uppercase: document.getElementById('check-uppercase'),
+            number: document.getElementById('check-number'),
+            symbol: document.getElementById('check-symbol')
+        };
+        const successColor = 'text-green-500';
+        const failColor = 'text-red-500';
+
+        passwordInput.addEventListener('input', function() {
+            const val = this.value;
+            // Length
+            updateCheck(checks.length, val.length >= 8);
+            // Uppercase
+            updateCheck(checks.uppercase, /[A-Z]/.test(val));
+            // Number
+            updateCheck(checks.number, /[0-9]/.test(val));
+            // Symbol
+            updateCheck(checks.symbol, /[^A-Za-z0-9]/.test(val));
+        });
+
+        function updateCheck(element, isSuccess) {
+            const svg = element.querySelector('svg');
+            svg.classList.remove(isSuccess ? failColor : successColor);
+            svg.classList.add(isSuccess ? successColor : failColor);
+        }
+
+        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+
+        togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const passwordInput = this.previousElementSibling;
+
+                const eyeIcon = this.querySelector('.bi-eye-fill');
+                const eyeSlashIcon = this.querySelector('.bi-eye-slash-fill');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    eyeIcon.classList.add('hidden');
+                    eyeSlashIcon.classList.remove('hidden');
+                } else {
+                    passwordInput.type = 'password';
+                    eyeIcon.classList.remove('hidden');
+                    eyeSlashIcon.classList.add('hidden');
+                }
+            });
+        });
+    });
+    </script>
 @endsection

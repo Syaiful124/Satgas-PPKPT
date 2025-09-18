@@ -9,30 +9,30 @@
     <table class="w-full">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3 text-left">Judul</th>
-                <th class="p-3 text-left">Kategori</th>
-                <th class="p-3 text-left">Tanggal Disetujui</th>
-                <th class="p-3 text-left">Status Penanganan</th>
-                <th class="p-3 text-left">Aksi</th>
+                <th class="p-3 text-center">Keterangan</th>
+                <th class="p-3 text-center w-[150px]">Tanggal</th>
+                <th class="p-3 text-center w-[200px]">Status</th>
             </tr>
         </thead>
         <tbody>
             @forelse($pengaduans as $pengaduan)
-            <tr class="border-b hover:bg-gray-50">
-                <td class="p-3 font-semibold">{{ $pengaduan->judul }}</td>
-                <td class="p-3">{{ $pengaduan->kategori->nama_kategori }}</td>
-                <td class="p-3">{{ $pengaduan->updated_at?->translatedFormat('d M Y') }}</td>
+            <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('admin.laporan.show', $pengaduan) }}'">
+                <td class="p-3 flex flex-col gap-1">
+                    <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
+                    <p class="text-[14px] ">{{ $pengaduan->kategori->nama_kategori }}
+                        @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
+                            - {{ $pengaduan->kategori_lainnya }}
+                        @endif
+                    </p>
+                    <p class="text-[14px]">Opsi Pendampingan: {{ $pengaduan->pendampingan->opsi_pendampingan ?? 'Tidak Ada' }}</p>
+                </td>
+                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
                 <td class="p-3">
                     @if($pengaduan->penanganan)
                         <span class="text-green-600 font-semibold">Sudah Dilaporkan</span>
                     @else
                         <span class="text-red-600 font-semibold">Belum Dilaporkan</span>
                     @endif
-                </td>
-                <td class="p-3">
-                     <a href="{{ route('admin.laporan.show', $pengaduan) }}" class="text-blue-500 hover:underline">
-                        {{ $pengaduan->penanganan ? 'Lihat/Edit Laporan' : 'Tangani & Lapor' }}
-                     </a>
                 </td>
             </tr>
             @empty

@@ -13,7 +13,7 @@ class AccountController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $query = $user->pengaduans()->with('kategori')->latest();
+        $query = $user->pengaduans()->with('kategori', 'pendampingan', 'tindaklanjut')->latest();
 
         // Fitur Search untuk laporan user
         if ($request->filled('search')) {

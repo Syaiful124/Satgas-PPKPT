@@ -68,7 +68,7 @@
     <table class="w-full">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3 text-center">Judul</th>
+                <th class="p-3 text-center">Keterangan</th>
                 <th class="p-3 text-center w-[150px]">Tanggal</th>
                 <th class="p-3 text-center w-[200px]">Status</th>
             </tr>
@@ -78,18 +78,28 @@
             <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
                 <td class="p-3 flex flex-col gap-1">
                     <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
-                    <p class="text-[14px]">{{ $pengaduan->kategori->nama_kategori }}  {{ $pengaduan->kategori_lainnya }}</p>
+                    <p class="text-[12px] text-gray-600">
+                        {{ $pengaduan->nama_pelapor ?? 'Anonim' }}
+                        | {{ $pengaduan->kategori->nama_kategori }}
+                        @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
+                            - {{ $pengaduan->kategori_lainnya }}
+                        @endif
+                    </p>
+                    <p class="text-[12px] text-gray-600">
+                        {{ $pengaduan->pendampingan->opsi_pendampingan }}
+                        | {{ $pengaduan->penanganan->tindaklanjut->opsi_tindaklanjut ?? 'Belum Ditindaklanjuti' }}
+                    </p>
                 </td>
-                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
+                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d-m-Y') }}</td>
                 <td class="p-3 text-center">
                     @if($pengaduan->status == 'menunggu')
-                        <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu</span>
-                        <p class="text-xs text-gray-500">Menunggu persetujuan</p>
+                        <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu Verifikasi</span>
+                        <p class="text-xs text-gray-500">Menunggu Verifikasi</p>
                     @elseif($pengaduan->status == 'penanganan')
                         <span class="px-3 py-1 text-sm rounded-full badge-penanganan">Penanganan</span>
                         <p class="text-xs text-gray-500">
                             @if($pengaduan->penanganan)
-                                Menunggu konfirmasi Anda
+                                Menunggu konfirmasi
                             @else
                                 Menunggu laporan admin
                             @endif

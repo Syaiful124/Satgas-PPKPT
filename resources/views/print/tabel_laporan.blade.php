@@ -27,8 +27,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $pengaduan->judul }}</td>
-                        <td>
-                            {{ $pengaduan->kategori->nama_kategori }}
+                        <td>{{ $pengaduan->kategori->nama_kategori }}
                             @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
                                 ({{ $pengaduan->kategori_lainnya }})
                             @endif
@@ -46,15 +45,8 @@
             </tbody>
         </table>
     </div>
-    <div>
-        @foreach ($pengaduans as $pengaduan)
-            <div class="page-break"></div>
-            @include('print.detail_laporan', ['pengaduans' => collect([$pengaduan])])
-        @endforeach
-    </div>
-
-    <footer>
-        <div class="page-number"></div>
-    </footer>
-
+    @foreach ($pengaduans as $pengaduan)
+        <div class="page-break"></div>
+        @include('print.detail_laporan', ['pengaduans' => collect([$pengaduan])])
+    @endforeach
 @endsection

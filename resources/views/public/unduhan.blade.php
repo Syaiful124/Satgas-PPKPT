@@ -11,7 +11,7 @@
     <div class="space-y-4 h-full" id="accordion-container">
         @forelse ($files as $file)
         <div class="border rounded-lg overflow-hidden">
-            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100">
+            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 bg-orange-200 hover:bg-gray-100">
                 <span>{{ $file->judul }}</span>
                 <svg class="accordion-arrow w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>

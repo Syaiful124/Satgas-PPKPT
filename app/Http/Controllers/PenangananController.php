@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
+use App\Models\Tindaklanjut;
 use App\Models\Penanganan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ class PenangananController extends Controller
         $videoFormats = 'mp4,mov,avi,mkv,webm,flv';
 
         $request->validate([
+            'tindaklanjut_id' => 'required|exists:tindaklanjuts,id',
             'isi_penanganan' => 'required|string',
             'bukti' => 'nullable|array|max:6', // Validasi untuk multi-file
             'bukti.*' => [
@@ -46,6 +48,7 @@ class PenangananController extends Controller
             ['pengaduan_id' => $pengaduan->id],
             [
                 'admin_id' => Auth::id(),
+                'tindaklanjut_id' => $request->tindaklanjut_id,
                 'isi_penanganan' => $request->isi_penanganan,
             ]
         );

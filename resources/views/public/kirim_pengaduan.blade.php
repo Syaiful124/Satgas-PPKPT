@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kirim Pengaduan - SATGAS PPKPT</title>
-    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -17,16 +17,16 @@
     </style>
 </head>
 <body class=" flex justify-center w-full">
-    <a href="{{ url()->previous() }}" onclick="window.history.back(); return false;" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2">
+    <a href="{{ route('beranda') }}" onclick="window.history.back(); return false;" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
-        Back
+        Kembali
     </a>
     <div class="w-full ml-20 mr-20 mt-10 mb-10">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Pengaduan</h1>
-            <p class="text-gray-500">Lengkapi formulir untuk pengaduan Anda</p>
+            <p class="text-white">Lengkapi formulir untuk pengaduan Anda</p>
         </div>
 
         @if ($errors->any())
@@ -40,12 +40,12 @@
             </div>
         @endif
 
-        <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data" id="pengaduanForm">
+        <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data" id="pengaduanForm" class="flex flex-col gap-4">
             @csrf
-            <div class="flex gap-8 h-fit">
-                <div class="flex flex-col w-full">
-                    <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
-                        <div class="mb-4">
+            <div class="flex gap-4">
+                <div class="flex flex-col w-full gap-4">
+                    <div class="bg-white p-5 rounded-lg shadow-lg flex flex-col gap-2 ">
+                        <div>
                             <label class="flex items-center">
                                 <input type="checkbox" name="anonim" id="anonimCheckbox" value="1" class="form-checkbox h-5 w-5 text-orange-600">
                                 <span class="ml-2 text-gray-700 ">Kirim sebagai Anonim</span>
@@ -53,11 +53,11 @@
                         </div>
 
                         <div id="identitasPelapor">
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="nama_pelapor" class="block text-gray-700 font-bold mb-1">Nama Pengadu</label>
                                 <input placeholder="nama pelapor" type="text" name="nama_pelapor" id="namaPelapor" value="{{ auth()->user()->name ?? old('nama_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="email_pelapor" class="block text-gray-700 font-bold mb-1">Email</label>
                                 <input placeholder="email@gmail.com" type="email" name="email_pelapor" id="emailPelapor" value="{{ auth()->user()->email ?? old('email_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
@@ -67,58 +67,66 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <div class="mb-4">
+                    <div class="bg-white p-5 rounded-lg shadow-lg flex flex-col gap-2 ">
+                        <div>
                             <label for="judul" class="block text-gray-700 font-bold mb-1">Judul Pengaduan*</label>
                             <input placeholder="judul" type="text" name="judul" value="{{ old('judul') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="kategori_id" class="block text-gray-700 font-bold mb-2">Kategori Pengaduan*</label>
-                            <select name="kategori_id" id="kategoriSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
+                            <select name="kategori_id" id="kategoriSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg text-center" required>
                                 <option value="">-- Pilih Kategori --</option>
                                 @foreach($kategoris as $kategori)
                                 <option value="{{ $kategori->id }}" data-nama="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div id="kategoriLainnyaContainer" class="hidden mb-4">
-                            <label for="kategori_lainnya" class="block text-gray-700 font-bold mb-2">Sebutkan Kategori Lainnya*</label>
-                            <input type="text" name="kategori_lainnya" id="kategoriLainnyaInput" value="{{ old('kategori_lainnya') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
+                        <div id="kategoriLainnyaContainer" class="hidden">
+                            <input type="text" name="kategori_lainnya" id="kategoriLainnyaInput" value="{{ old('kategori_lainnya') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" placeholder="Tuliskan Kategorinya">
+                        </div>
+                        <div class="mb-4">
+                            <label for="pendampingan_id" class="block text-gray-700 font-bold mb-2">Opsi Pendampingan*</label>
+                            <select name="pendampingan_id" id="pendampinganSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg text-center" required>
+                                <option value="">-- Pilih Pendampingan  --</option>
+                                @foreach($pendampingans as $pendampingan)
+                                <option value="{{ $pendampingan->id }}" data-nama="{{ $pendampingan->opsi_pendampingan }}">{{ $pendampingan->opsi_pendampingan }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col bg-white p-6 rounded-lg shadow-lg mb-4 w-full h-full">
-                    <p class="block text-gray-700 font-bold mb-2 flex items-center justify-center h-auto w-full">Bukti Kejadian</p>
+                <div class="flex flex-col bg-white p-5 rounded-lg shadow-lg 2 w-full h-full">
+                    <p class="block text-gray-700 font-bold mb-2 flex items-center justify-center h-full w-full">Bukti Kejadian</p>
                     <div class="flex items-center justify-center space-x-4 flex-col w-full h-full">
-                        <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 min-h-[100px] max-h-[300px] p-2">
+                        <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 min-h-[100px] max-h-[100%] p-2">
                         </div>
                     </div>
                     <div class="flex flex-row gap-1 items-center justify-between w-full h-max">
                         <label for="bukti-input" class="text-center w-full h-max cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                            Upload
+                            Pilih File Bukti (Foto/Video)
                         </label>
                         <input type="file" name="bukti[]" id="bukti-input" class="hidden" accept="image/*,video/*" multiple>
                     </div>
                     <p class="text-xs text-gray-400 mt-2 w-full h-auto">
                         *Format Foto: .jpg, .jpeg, .png, .gif, .webp, .heic (maks 20MB)
                         <br>*Format Video: .mp4, .mov, .avi, .mkv, .webm, .flv (maks 300MB)
-                        <br>*Maksimal 6 file bukti.
+                        <br>*Maksimal 6 file bukti
                     </p>
                 </div>
             </div>
-            <div class="mt-4 p-6 bg-white rounded-lg shadow-lg">
+            <div class="p-5 bg-white rounded-lg shadow-lg">
                 <label for="isi_laporan" class="block text-gray-700 font-bold mb-2">Kronologi Kejadian*</label>
-                <textarea name="isi_laporan" rows="5" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required
+                <textarea name="isi_laporan" rows="3" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required
                 placeholder="Jelaskan secara detail nama korban, lokasi kejadian, tanggal/waktu kejadian, kondisi korban, dll.">{{ old('isi_laporan') }}</textarea>
             </div>
-            <div class="mt-6">
+            <div>
                 <label class="flex items-start cursor-pointer">
                     <input type="checkbox" name="persetujuan" id="persetujuanCheckbox" value="1" class="form-checkbox h-5 w-5 text-orange-600 mt-1" required>
-                    <span class="ml-2 text-gray-700">Apakah anda yakin sudah mengisi dengan benar dan sejujurnya?<br><small>Pastikan semua data yang anda masukkan sudah benar sebelum mengirim untuk pertimbangan penanganan.</small></span>
+                    <span class="ml-2 text-gray-700 font-semibold">Apakah anda yakin sudah mengisi dengan benar dan sejujurnya?<br><small class="font-normal">Pastikan semua data yang anda masukkan sudah benar sebelum mengirim untuk bahan pertimbangan.</small></span>
                 </label>
             </div>
-            <div class="mt-8 text-center">
+            <div class="text-center">
                 <button type="submit" id="submitButton" class="w-full md:w-1/2 bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Kirim Pengaduan</button>
             </div>
         </form>

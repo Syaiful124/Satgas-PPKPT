@@ -12,8 +12,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pengaduan_id')->constrained('pengaduans')->onDelete('cascade');
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('tindaklanjut_id')->constrained('tindaklanjuts');
             $table->text('isi_penanganan');
-            $table->string('foto_penanganan')->nullable();
+            $table->string('foto_penanganan');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> @yield('title') - SATGAS PPKPT</title>
-    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f7fafc; }
@@ -18,7 +18,7 @@
         .btn-danger:hover { background-color: #c53030; }
         .btn-success { background-color: #48bb78; color: white; }
         .btn-success:hover { background-color: #38a169; }
-        .badge-menunggu { background-color: #ff880060; color: white; width: 180px; border: 1px solid yellow; }
+        .badge-menunggu { background-color: #ff880060; color: black; width: 180px; border: 1px solid yellow; }
         .badge-penanganan { background-color: #ffff0060; color: black; width: 180px; border: 1px solid orange; }
         .badge-selesai { background-color: #00ff0060; color: black; width: 180px; border: 1px solid green; }
         .badge-ditolak { background-color: #ff000060; color: black; width: 180px; border: 1px solid red; }
@@ -58,7 +58,7 @@
     <aside class="w-[250px] sidebar flex flex-col justify-between h-screen sticky top-0">
         <div class="w-full">
             <div class="side-up text-center text-white pt-3 pb-4 mb-4 bg-gray-500 shadow-lg flex flex-row justify-center items-center gap-2">
-                <img src="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png" alt="STIMATA" class="h-10 w-10 mr-2 object-cover">
+                <img src="{{ asset('images/logo.jpg')}}" alt="STIMATA" class=" w-10 mr-2 object-cover">
                 <div>
                     <h1 class="text-2xl font-bold">SATGAS</h1>
                     <p class="text-sm">Admin Panel</p>

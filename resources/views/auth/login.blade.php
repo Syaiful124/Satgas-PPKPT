@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SATGAS PPKPT</title>
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=login');
@@ -43,7 +44,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
-        KEMBALI
+        Kembali
     </a>
     <div class=" p-8  w-fit relative flex items-center justify-center flex-col">
         <div class="login-icon">
@@ -52,7 +53,7 @@
             </svg>
         </div>
         <h1 class="text-3xl font-bold text-gray-800">SATGAS PPKPT</h1>
-        <p class="text-gray-600">Selamat datang kembali, silahkan login untuk melanjutkan.</p>
+        <p class="text-white">Selamat datang kembali, silahkan login untuk melanjutkan.</p>
     </div>
     <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md relative">
         <div>

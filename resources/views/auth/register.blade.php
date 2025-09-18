@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - SATGAS PPKPT</title>
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
 
@@ -33,7 +34,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
-        KEMBALI
+        Kembali
     </a>
     <div class=" w-max flex items-center justify-center flex-col m-4 w-full flex">
         <div class="login-icon">
@@ -42,7 +43,7 @@
             </svg>
         </div>
         <h1 class="text-3xl font-bold text-gray-800">REGISTER SATGAS PPKPT</h1>
-        <p class="text-gray-600">Silahkan masukkan data anda untuk membuat akun.</p>
+        <p class="text-white">Silahkan masukkan data anda untuk membuat akun.</p>
     </div>
 
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-fit">
@@ -62,14 +63,14 @@
                 <label for="email" class="block text-gray-700 font-bold mb-2">Email*</label>
                 <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg" required value="{{ old('email') }}" placeholder="email@gmail.com">
             </div>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600 mb-6">
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-600 mb-2">
                 <div id="check-length" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Minimal 8 karakter</div>
-                <div id="check-uppercase" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung huruf besar</div>
+                <div id="check-uppercase" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung huruf besar & kecil</div>
                 <div id="check-number" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung angka</div>
                 <div id="check-symbol" class="flex items-center"><svg class="w-4 h-4 mr-1 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.707a1 1 0 00-1.414-1.414L9 8.586 7.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Mengandung simbol</div>
             </div>
-            <div class="flex items-center justify-center gap-8">
-                <div class="mb-4">
+            <div class="flex items-center justify-center gap-8 mb-4">
+                <div class="">
                     <label for="password" class="block text-gray-700 font-bold mb-2">Password*</label>
                     <div class="relative">
                         <input type="password" id="password" name="password" class="w-full px-3 py-2 border rounded-lg" required placeholder="password">
@@ -85,7 +86,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="mb-4">
+                <div class="">
                     <label for="password_confirmation" class="block text-gray-700 font-bold mb-2">Konfirmasi Password*</label>
                     <div class="relative">
                         <input type="password" id="password_confirmation" name="password_confirmation" class="w-full px-3 py-2 border rounded-lg" required placeholder="konfirmasi password">

@@ -20,6 +20,10 @@ class Penanganan extends Model
     {
         return $this->belongsTo(Pengaduan::class);
     }
+    public function tindaklanjut()
+    {
+        return $this->belongsTo(Tindaklanjut::class);
+    }
 
     public function admin()
     {

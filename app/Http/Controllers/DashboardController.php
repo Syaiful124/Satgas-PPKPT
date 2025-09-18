@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pendampingan;
+use App\Models\Tindaklanjut;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use App\Models\Kategori;
+use App\Models\Penanganan;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 
@@ -12,7 +15,7 @@ class DashboardController extends Controller
 {
     private function getFilteredPengaduans(Request $request)
     {
-        $query = Pengaduan::with(['kategori', 'penanganan.admin', 'petugas']);
+        $query = Pengaduan::with(['kategori', 'penanganan.admin', 'petugas', 'pendampingan']);
 
         // Fitur Search
         if ($request->filled('search')) {
@@ -22,6 +25,12 @@ class DashboardController extends Controller
         // Fitur Filter
         if ($request->filled('status')) $query->where('status', $request->status);
         if ($request->filled('kategori')) $query->where('kategori_id', $request->kategori);
+        if ($request->filled('pendampingan')) $query->where('pendampingan_id', $request->pendampingan);
+        if ($request->filled('tindaklanjut')) {
+            $query->whereHas('penanganan.tindaklanjut', function ($q) use ($request) {
+                $q->where('id', $request->tindaklanjut);
+            });
+        }
         if ($request->filled('bulan')) $query->whereMonth('created_at', $request->bulan);
         if ($request->filled('tahun')) $query->whereYear('created_at', $request->tahun);
 
@@ -47,10 +56,11 @@ class DashboardController extends Controller
 
         $query = $this->getFilteredPengaduans($request);
         $pengaduans = $query->paginate(10);
-
         $kategoris = Kategori::all();
+        $pendampingans = Pendampingan::all();
+        $tindaklanjuts = Tindaklanjut::all();
 
-        return view('superadmin.dashboard', compact('stats', 'pengaduans', 'kategoris'));
+        return view('superadmin.dashboard', compact('stats', 'pengaduans', 'kategoris', 'pendampingans', 'tindaklanjuts'));
     }
 
     public function exportDashboardPDF(Request $request)

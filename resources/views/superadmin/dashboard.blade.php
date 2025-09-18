@@ -5,6 +5,12 @@
 @section('content')
 <div class="flex justify-between items-center mb-6 title-h">
     <h1 class="text-3xl font-bold">Dashboard</h1>
+        <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" target="_blank" class="ml-10 flex items-center gap-1 bg-orange-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-red-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803q.43 0 .732-.173.305-.175.463-.474a1.4 1.4 0 0 0 .161-.677q0-.375-.158-.677a1.2 1.2 0 0 0-.46-.477q-.3-.18-.732-.179m.545 1.333a.8.8 0 0 1-.085.38.57.57 0 0 1-.238.241.8.8 0 0 1-.375.082H.788V12.48h.66q.327 0 .512.181.185.183.185.522m1.217-1.333v3.999h1.46q.602 0 .998-.237a1.45 1.45 0 0 0 .595-.689q.196-.45.196-1.084 0-.63-.196-1.075a1.43 1.43 0 0 0-.589-.68q-.396-.234-1.005-.234zm.791.645h.563q.371 0 .609.152a.9.9 0 0 1 .354.454q.118.302.118.753a2.3 2.3 0 0 1-.068.592 1.1 1.1 0 0 1-.196.422.8.8 0 0 1-.334.252 1.3 1.3 0 0 1-.483.082h-.563zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638z"/>
+            </svg>
+            Print
+        </a>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4 text-center">
@@ -28,22 +34,14 @@
         <button type="submit" class="bg-gray-700 text-white p-2 rounded-r-lg hover:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         </button>
-        <a href="{{ route('superadmin.dashboard.export.pdf', request()->query()) }}" target="_blank" class="ml-10 flex items-center gap-1 bg-orange-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-red-700">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
-            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
-            </svg>
-            Print
-        </a>
     </form>
 
     <form action="{{ route('superadmin.dashboard') }}" method="GET">
-        <div class="flex flex-col gap-3 items-start">
+        <div class="flex flex-col gap-3 ">
             <div class="flex gap-3">
                 <div>
-                    <label class="text-sm p-2">Status</label>
-                    <select name="status" class="w-fit p-2 border rounded-lg">
-                        <option value="">Semua Status</option>
+                    <select name="status" class=" p-2 border rounded-lg">
+                        <option value="">Pilih Status</option>
                         <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
                         <option value="penanganan" {{ request('status') == 'penanganan' ? 'selected' : '' }}>Penanganan</option>
                         <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
@@ -51,36 +49,50 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-sm p-2">Kategori</label>
-                    <select name="kategori" class="w-fit p-2 border rounded-lg">
+                    <select name="kategori" class=" p-2 border rounded-lg">
                         <option value="">Semua Kategori</option>
                         @foreach($kategoris as $kategori)
                         <option value="{{ $kategori->id }}" {{ request('kategori') == $kategori->id ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
                         @endforeach
                     </select>
                 </div>
+                <div>
+                    <select name="pendampingan" class="p-2 border rounded-lg">
+                        <option value="">Semua Pendampingan</option>
+                        @foreach($pendampingans as $pendampingan)
+                        <option value="{{ $pendampingan->id }}" {{ request('pendampingan') == $pendampingan->id ? 'selected' : '' }}>{{ $pendampingan->opsi_pendampingan }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <select name="tindaklanjut" class="p-2 border rounded-lg">
+                        <option value="">Semua Tindak Lanjut</option>
+                        @foreach($tindaklanjuts as $tindaklanjut)
+                            <option value="{{ $tindaklanjut->id }}" {{ request('tindaklanjut') == $tindaklanjut->id ? 'selected' : '' }}>
+                                {{ $tindaklanjut->opsi_tindaklanjut }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="flex gap-3">
                 <div>
-                    <label class="text-sm p-2">Bulan</label>
-                    <select name="bulan" class="w-fit p-2 border rounded-lg">
-                        <option value="">--</option>
+                    <select name="bulan" class=" p-2 border rounded-lg">
+                        <option value="">Bulan</option>
                         @for ($i = 1; $i <= 12; $i++)
                             <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
                         @endfor
                     </select>
                 </div>
                 <div>
-                    <label class="text-sm p-2">Tahun</label>
-                    <select name="tahun" class="w-fit p-2 border rounded-lg">
-                        <option value="">--</option>
+                    <select name="tahun" class=" p-2 border rounded-lg">
+                        <option value="">Tahun</option>
                         @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
                             <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>{{ $i }}</option>
                         @endfor
                     </select>
                 </div>
                 <div>
-                    <label class="text-sm p-2">Urutkan</label>
                     <select name="sort" class="w-fit p-2 border rounded-lg">
                         <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
                         <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
@@ -112,9 +124,9 @@
     <table class="w-full p-3">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3 text-center ">Judul</th>
+                <th class="p-3 text-center ">Keterangan</th>
                 <th class="p-3 text-center w-[150px]">Tanggal</th>
-                <th class="p-3 text-center w-[100px]">Status</th>
+                <th class="p-3 text-center w-[200px]">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -122,18 +134,37 @@
             <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
                 <td class="p-3 flex flex-col gap-1">
                     <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
-                    <p class="text-[14px] ">{{ $pengaduan->kategori->nama_kategori }}  {{ $pengaduan->kategori_lainnya }}</p>
+                    <p class="text-[12px] text-gray-600">
+                        {{ $pengaduan->nama_pelapor ?? 'Anonim' }}
+                        | {{ $pengaduan->kategori->nama_kategori }}
+                        @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
+                            - {{ $pengaduan->kategori_lainnya }}
+                        @endif
+                    </p>
+                    <p class="text-[12px] text-gray-600">
+                        {{ $pengaduan->pendampingan->opsi_pendampingan }}
+                        | {{ $pengaduan->penanganan->tindaklanjut->opsi_tindaklanjut ?? 'Belum Ditindaklanjuti' }}
+                    </p>
                 </td>
-                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d M Y') }}</td>
+                <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d-m-Y') }}</td>
                 <td class="p-3 text-center">
-                    <span class="px-3 py-1 text-sm rounded-full w-full
-                        @if($pengaduan->status == 'menunggu') badge-menunggu @endif
-                        @if($pengaduan->status == 'penanganan') badge-penanganan @endif
-                        @if($pengaduan->status == 'selesai') badge-selesai @endif
-                        @if($pengaduan->status == 'ditolak') badge-ditolak @endif
-                    ">
-                        {{ ucfirst($pengaduan->status) }}
-                    </span>
+                    @if($pengaduan->status == 'menunggu')
+                        <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu</span>
+                        <p class="text-xs text-gray-500">Menunggu Verifikasi</p>
+                    @elseif($pengaduan->status == 'penanganan')
+                        <span class="px-3 py-1 text-sm rounded-full badge-penanganan">Penanganan</span>
+                        <p class="text-xs text-gray-500">
+                            @if($pengaduan->penanganan)
+                                Menunggu Ditindaklanjuti
+                            @else
+                                Menunggu Klarifikasi & Pemeriksaan Petugas
+                            @endif
+                        </p>
+                    @elseif($pengaduan->status == 'selesai')
+                        <span class="px-3 py-1 text-sm rounded-full badge-selesai">Selesai</span>
+                    @elseif($pengaduan->status == 'ditolak')
+                        <span class="px-3 py-1 text-sm rounded-full badge-ditolak">Ditolak</span>
+                    @endif
                 </td>
             </tr>
             @empty

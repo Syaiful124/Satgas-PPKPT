@@ -15,6 +15,15 @@ class Pengaduan extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+    public function pendampingan()
+    {
+        return $this->belongsTo(Pendampingan::class);
+    }
+    
+    public function tindaklanjut()
+    {
+        return $this->belongsTo(Tindaklanjut::class);
+    }
 
     public function kategori()
     {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Pengaduan - SATGAS PPKPT</title>
-    <link rel="icon" type="image/png" href="https://stimata.ac.id/media/2023/01/ICON-STIMATA-1536x1536.png">
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -89,6 +89,17 @@
                         <div id="kategoriLainnyaContainer" class="hidden mb-4">
                             <label for="kategori_lainnya" class="block text-gray-700 font-bold mb-2">Sebutkan Kategori Lainnya*</label>
                             <input type="text" name="kategori_lainnya" id="kategoriLainnyaInput" value="{{ old('kategori_lainnya', $pengaduan->kategori_lainnya) }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
+                        </div>
+                        <div class="mb-4">
+                            <label for="pendampingan_id" class="block text-gray-700 font-bold mb-2">Opsi Pendampingan*</label>
+                            <select name="pendampingan_id" id="pendampinganSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
+                                <option value="">-- Pilih Pendampingan  --</option>
+                                @foreach($pendampingans as $pendampingan)
+                                <option value="{{ $pendampingan->id }}" data-nama="{{ $pendampingan->opsi_pendampingan }}" {{ old('pendampingan_id', $pengaduan->pendampingan_id) == $pendampingan->id ? 'selected' : '' }}>
+                                    {{ $pendampingan->opsi_pendampingan }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

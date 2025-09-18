@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\Pendampingan;
+use App\Models\Tindaklanjut;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,7 @@ class PengaduanController extends Controller
 
     public function laporanMasukSuperAdmin(Request $request)
     {
-        $query = Pengaduan::with('kategori')
+        $query = Pengaduan::with('kategori', 'pendampingan', 'tindaklanjut')
             ->whereIn('status', ['menunggu', 'penanganan']);
 
         if ($request->filled('search')) {
@@ -41,13 +43,15 @@ class PengaduanController extends Controller
 
         $pengaduans = $query->latest()->paginate(10);
         $kategoris = Kategori::all();
+        $pendampingans = Pendampingan::all();
+        $tindaklanjuts = Tindaklanjut::all();
 
-        return view('superadmin.laporan_masuk', compact('pengaduans', 'kategoris'));
+        return view('superadmin.laporan_masuk', compact('pengaduans', 'kategoris', 'pendampingans', 'tindaklanjuts'));
     }
 
     public function show(Pengaduan $pengaduan)
     {
-        $pengaduan->load('kategori', 'user', 'penanganan.admin');
+        $pengaduan->load('kategori', 'user', 'penanganan.admin', 'pendampingan', 'tindaklanjut');
         $petugas_list = User::where('role', 'admin')->get();
 
         return view('superadmin.detail', compact('pengaduan', 'petugas_list'));
@@ -72,7 +76,15 @@ class PengaduanController extends Controller
 
     public function tolakPengaduan(Request $request, Pengaduan $pengaduan)
     {
-        $pengaduan->update(['status' => 'ditolak']);
+        $request->validate([
+            'alasan_penolakan' => 'required|string|min:10',
+        ]);
+
+        $pengaduan->update([
+            'status' => 'ditolak',
+            'alasan_penolakan' => $request->alasan_penolakan,
+        ]);
+
         return redirect()->route('superadmin.dashboard')->with('success', 'Pengaduan telah ditolak.');
     }
 
@@ -85,12 +97,15 @@ class PengaduanController extends Controller
     public function laporanSelesai(Request $request)
     {
         $pengaduans = Pengaduan::with('kategori')->where('status', 'selesai')->latest()->paginate(10);
+        $pengaduans = Pengaduan::with('pendampingan')->where('status', 'selesai')->latest()->paginate(10);
+        $pengaduans = Pengaduan::with('tindaklanjut')->where('status', 'selesai')->latest()->paginate(10);
         return view('superadmin.laporan_selesai', compact('pengaduans'));
     }
 
     public function laporanDitolak(Request $request)
     {
         $pengaduans = Pengaduan::with('kategori')->where('status', 'ditolak')->latest()->paginate(10);
+        $pengaduans = Pengaduan::with('pendampingan')->where('status', 'ditolak')->latest()->paginate(10);
         return view('superadmin.laporan_ditolak', compact('pengaduans'));
     }
 
@@ -99,9 +114,9 @@ class PengaduanController extends Controller
 
     public function laporanMasukAdmin(Request $request)
     {
-        $query = Pengaduan::with('kategori')
-                            ->where('status', 'penanganan')
-                            ->where('petugas_id', Auth::id());
+        $query = Pengaduan::with('kategori', 'pendampingan', 'tindaklanjut')
+            ->where('status', 'penanganan')
+            ->where('petugas_id', Auth::id());
 
         $pengaduans = $query->latest('updated_at')->paginate(10);
         return view('admin.laporan_masuk', compact('pengaduans'));
@@ -113,8 +128,9 @@ class PengaduanController extends Controller
         if($pengaduan->status !== 'penanganan'){
             abort(403, 'Anda tidak memiliki akses ke laporan ini.');
         }
-        $pengaduan->load('kategori', 'user');
-        return view('admin.detail_penanganan', compact('pengaduan'));
+        $pengaduan->load('kategori', 'user', 'pendampingan', 'penanganan.admin');
+        $tindaklanjuts = Tindaklanjut::all();
+        return view('admin.detail_penanganan', compact('pengaduan', 'tindaklanjuts'));
     }
 
     /*
@@ -125,7 +141,9 @@ class PengaduanController extends Controller
     public function createPublic()
     {
         $kategoris = Kategori::all();
-        return view('public.kirim_pengaduan', compact('kategoris'));
+        $pendampingans = Pendampingan::all();
+        $tindaklanjuts = Tindaklanjut::all();
+        return view('public.kirim_pengaduan', compact('kategoris', 'pendampingans', 'tindaklanjuts'));
     }
 
     public function storePublic(Request $request)
@@ -154,9 +172,10 @@ class PengaduanController extends Controller
                 Rule::requiredIf($request->input('kategori_id') == $lainnyaKategoriId),
                 'nullable', 'string', 'max:100'
             ],
+            'pendampingan_id' => 'required|exists:pendampingans,id',
             'isi_laporan' => 'required|string',
             'persetujuan' => 'required',
-            'bukti' => 'nullable|array|max:6',
+            'bukti' => 'required|array|max:6',
             'bukti.*' => [
                 'file',
                 'mimes:' . $imageFormats . ',' . $videoFormats,
@@ -206,6 +225,7 @@ class PengaduanController extends Controller
             'judul' => $request->judul,
             'kategori_id' => $request->kategori_id,
             'kategori_lainnya' => $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null,
+            'pendampingan_id' => $request->pendampingan_id,
             'isi_laporan' => $request->isi_laporan,
             'status' => 'menunggu',
         ]);
@@ -245,7 +265,14 @@ class PengaduanController extends Controller
             abort(403, 'Anda tidak dapat mengedit laporan ini.');
         }
         $kategoris = Kategori::all();
-        return view('user.edit_pengaduan', compact('pengaduan', 'kategoris'));
+        $pendampingans = Pendampingan::all();
+        $lainnyaKategoriId = Kategori::where('nama_kategori', 'Lainnya')->first()?->id;
+        if ($pengaduan->kategori_id == $lainnyaKategoriId) {
+            $pengaduan->kategori_lainnya = $pengaduan->kategori_lainnya;
+        } else {
+            $pengaduan->kategori_lainnya = null;
+        }
+        return view('user.edit_pengaduan', compact('pengaduan', 'kategoris', 'pendampingans', 'lainnyaKategoriId'));
     }
 
     // Proses update pengaduan oleh user
@@ -257,38 +284,70 @@ class PengaduanController extends Controller
         }
 
         $lainnyaKategoriId = Kategori::where('nama_kategori', 'Lainnya')->first()?->id;
+        $imageFormats = 'jpg,jpeg,png,gif,webp,heic';
+        $videoFormats = 'mp4,mov,avi,mkv,webm,flv';
 
         $request->validate([
-            // Validasi sama seperti form kirim pengaduan
             'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
             'kategori_lainnya' => [
                 Rule::requiredIf($request->input('kategori_id') == $lainnyaKategoriId),
                 'nullable', 'string', 'max:100'
             ],
+            'pendampingan_id' => 'required|exists:pendampingans,id',
             'isi_laporan' => 'required|string',
-            'foto_kejadian' => 'nullable|file|mimes:jpg,jpeg,png,mp4,avi,mov|max:20480',
             'persetujuan' => 'required',
+            'bukti' => 'nullable|array|max:6',
+            'bukti.*' => [
+                'file',
+                'mimes:' . $imageFormats . ',' . $videoFormats,
+                function ($attribute, $value, $fail) {
+                    // Validasi ukuran custom
+                    $maxImageSize = 10 * 1024; // 10 MB untuk gambar
+                    $maxVideoSize = 300 * 1024; // 300 MB untuk video
+
+                    $isImage = Str::startsWith($value->getMimeType(), 'image/');
+                    $isVideo = Str::startsWith($value->getMimeType(), 'video/');
+
+                    if ($isImage && $value->getSize() > $maxImageSize * 1024) {
+                        $fail("Ukuran file gambar tidak boleh lebih dari 10MB.");
+                    }
+                    if ($isVideo && $value->getSize() > $maxVideoSize * 1024) {
+                        $fail("Ukuran file video tidak boleh lebih dari 300MB.");
+                    }
+                },
+            ],
         ]);
 
-        // Ambil semua data kecuali token dan method
-        $data = $request->except(['_token', '_method']);
+        $pengaduan->update([
+            'judul' => $request->judul,
+            'kategori_id' => $request->kategori_id,
+            'pendampingan_id' => $request->pendampingan_id,
+            'isi_laporan' => $request->isi_laporan,
+            'kategori_lainnya' => $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null,
+        ]);
 
         // Logika untuk menangani file bukti baru
-        if ($request->hasFile('bukti_pelapor')) {
-            // Hapus file lama jika ada
-            if ($pengaduan->bukti()->exists()) {
-                Storage::delete($pengaduan->bukti()->exists());
+        if ($request->hasFile('bukti')) {
+            // Hapus semua bukti lama dari storage
+            foreach ($pengaduan->bukti as $buktiLama) {
+                Storage::delete($buktiLama->file_path);
             }
+            // Hapus semua record bukti lama dari database
+            $pengaduan->bukti()->delete();
+
             // Simpan file baru
-            $data['bukti_pelapor'] = $request->file('bukti_pelapor')->store('public/bukti-pelapor');
+            foreach ($request->file('bukti') as $file) {
+                $path = $file->store('public/bukti-pelapor');
+                $type = Str::startsWith($file->getMimeType(), 'image/') ? 'image' : 'video';
+
+                $pengaduan->bukti()->create([
+                    'file_path' => $path,
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_type' => $type,
+                ]);
+            }
         }
-
-        // Pastikan kategori lainnya null jika bukan kategori "Lainnya"
-        $data['kategori_lainnya'] = $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null;
-
-        // Update data pengaduan
-        $pengaduan->update($data);
 
         return redirect()->route('account.pengaduan.show', $pengaduan)->with('success', 'Laporan berhasil diperbarui.');
     }
@@ -311,7 +370,7 @@ class PengaduanController extends Controller
 
     public function exportPDF(Pengaduan $pengaduan)
     {
-        $pengaduan->load('kategori', 'user', 'penanganan.admin');
+        $pengaduan->load('kategori', 'user', 'penanganan.admin', 'pendampingan', 'tindaklanjut');
         return view('print.detail_laporan', compact('pengaduan'));
     }
 }
