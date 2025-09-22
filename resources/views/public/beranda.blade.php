@@ -2,7 +2,7 @@
 @section('title', 'Beranda')
 
 @section('content')
-<div class="relative h-[60vh] md:h-[90vh] w-full mb-12">
+<div class="relative h-[60vh] md:h-[90vh] w-full mb-6">
     <div class="h-full w-full">
         <div class="absolute inset-0 bg-black bg-opacity-50 p-12 flex flex-col justify-center text-white">
             <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">"Satgas PPKPT: Garda Depan Integritas Kampus STIMATA."</h1>
@@ -19,61 +19,66 @@
 </div>
 
 <section class="py-6">
-    <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Struktur Keanggotaan</h2>
-        <p class="text-center text-gray-500 mb-12">Satgas PPKS STMIK PPKIA Pradnya Paramita Malang</p>
+    <div class="flex flex-col mx-auto px-4 gap-6">
+        <div class="flex flex-col ">
+            <h2 class="text-3xl font-bold  text-center text-gray-800 mb-2">Struktur Keanggotaan</h2>
+            <p class="text-center text-gray-500">Satgas PPKS STMIK PPKIA Pradnya Paramita Malang</p>
+        </div>
 
-        {{-- KETUA --}}
-        <div class="flex justify-center mb-10">
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg w-full max-w-xs transform hover:scale-105 transition-transform duration-300">
+        {{-- KETUA (DINAMIS) --}}
+        @if ($ketua)
+        <div class="flex justify-center">
+            <div class="w-[350px] h-[250px] flex flex-col items-center justify-center text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
                 <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/ketua.png') }}" alt="Foto Ketua">
-                <h3 class="text-xl font-bold text-gray-900">Andri Prasetyo,SE., MMSI</h3>
+                <h3 class="text-xl font-bold text-gray-900">{{ $ketua->name }}</h3>
                 <p class="font-semibold text-orange-500">Ketua</p>
             </div>
         </div>
+        @endif
 
-        {{-- SEKRETARIS --}}
-        <div class="flex justify-center mb-12">
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg w-full max-w-xs transform hover:scale-105 transition-transform duration-300">
+        {{-- SEKRETARIS (DINAMIS) --}}
+        @if ($sekretaris)
+        <div class="flex justify-center">
+            <div class="w-[350px] h-[250px] flex flex-col items-center justify-center text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
                 <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/sekretaris.jpg') }}" alt="Foto Sekretaris">
-                <h3 class="text-xl font-bold text-gray-900">Retno Wulandari, S.Kom</h3>
+                <h3 class="text-xl font-bold text-gray-900">{{ $sekretaris->name }}</h3>
                 <p class="font-semibold text-orange-500">Sekretaris</p>
             </div>
         </div>
+        @endif
 
-        <hr class="mb-12 border-t-2 border-gray-200">
-
-        {{-- ANGGOTA --}}
+        {{-- ANGGOTA (DINAMIS) --}}
         <div class="flex flex-wrap justify-center items-center gap-8">
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/anggota_satu.jpg') }}" alt="Foto Anggota">
-                <h3 class="text-xl font-bold text-gray-900">Bella Umamah, S.Kom</h3>
-                <p class="font-semibold text-orange-500">Anggota</p>
-            </div>
+            @forelse ($anggotas as $anggota)
+                <div class="w-[350px] h-[250px] flex flex-col items-center justify-center text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    @php
+                        $nomorUrut = ['satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan'];
+                        $index = $loop->index;
+                        $namaUrut = $nomorUrut[$index] ?? $index + 1;
+                        $extensions = ['png', 'jpg', 'jpeg'];
+                        $imageUrl = null;
 
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/anggota_dua.png') }}" alt="Foto Anggota">
-                <h3 class="text-xl font-bold text-gray-900">Dr. Weda Adistianaya Dewa, S.Kom, MMSI</h3>
-                <p class="font-semibold text-orange-500">Anggota</p>
-            </div>
+                        foreach ($extensions as $ext) {
+                            $path = 'images/anggota_' . $namaUrut . '.' . $ext;
+                            if (file_exists(public_path($path))) {
+                                $imageUrl = asset($path);
+                                break;
+                            }
+                        }
 
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/anggota_tiga.png') }}" alt="Foto Anggota">
-                <h3 class="text-xl font-bold text-gray-900">Aminatus Zainiyah Assahlanie, S.Kom</h3>
-                <p class="font-semibold text-orange-500">Anggota</p>
-            </div>
-
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/anggota_empat.png') }}" alt="Foto Anggota">
-                <h3 class="text-xl font-bold text-gray-900">Hasbi Abdullah</h3>
-                <p class="font-semibold text-orange-500">Anggota</p>
-            </div>
-
-            <div class="text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover" src="{{ asset('images/anggota_lima.png') }}" alt="Foto Anggota">
-                <h3 class="text-xl font-bold text-gray-900">Muhammad Althaf Farrel Natajaya</h3>
-                <p class="font-semibold text-orange-500">Anggota</p>
-            </div>
+                        if (!$imageUrl) {
+                            $imageUrl = 'https://ui-avatars.com/api/?name=' . urlencode($anggota->name) . '&color=FFFFFF&background=fb923c&size=128';
+                        }
+                    @endphp
+                    <img class="w-24 h-24 mx-auto rounded-full mb-4 object-cover"
+                        src="{{ $imageUrl }}"
+                        alt="Foto {{ $anggota->name }}">
+                    <h3 class="text-xl font-bold text-gray-900">{{ $anggota->name }}</h3>
+                    <p class="font-semibold text-orange-500">Anggota</p>
+                </div>
+            @empty
+                <p class="text-center text-gray-500 col-span-full">Data anggota belum tersedia.</p>
+            @endforelse
         </div>
     </div>
 </section>
@@ -114,7 +119,7 @@
 <section id="alur-pengaduan" class="px-8 py-10 bg-gray-50">
     <div class=" mx-auto px-4">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Alur Pengaduan</h2>
-        <p class="text-center text-gray-500 mb-10">Langkah-langkah mudah untuk melaporkan insiden dan bagaimana kami menindaklanjutinya.</p>
+        <p class="text-center text-gray-500 mb-8">Langkah-langkah mudah untuk melaporkan insiden dan bagaimana kami menindaklanjutinya.</p>
 
         {{-- KONTENER UTAMA TIMELINE --}}
         <div id="timeline-container" class="relative">
@@ -179,7 +184,7 @@
                             <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold z-10">6</div>
                             <h3 class="text-lg font-semibold text-gray-800">Laporan selesai</h3>
                         </div>
-                        <p class="text-gray-600 mt-1">Setelah penindakan lanjutan, laporan akan dianggap selesai. Monitoring implementasi sanksi terhadap pelaku dicatat dalam sistem. Sistem bisa menghasilkan rekap laporan berisi jumlah dari status ( menunggu verifikasi, verifikasi awal, ditindaklanjuti & evaluasi → untuk evaluasi internal kampus dan laporan ke Kemendikbud.)</p>
+                        <p class="text-gray-600 mt-1">Setelah penindakan lanjutan, laporan akan dianggap selesai. Monitoring implementasi sanksi terhadap pelaku dicatat dalam sistem. Sistem bisa menghasilkan rekap laporan berisi jumlah dari status ( menunggu verifikasi, penanganan (proses klarifikasi & pemeriksaan, ditindaklanjuti), ditindaklanjuti dan evaluasi → untuk evaluasi internal kampus dan laporan ke Kemendikbud.)</p>
                     </div>
                 </div>
             </div>

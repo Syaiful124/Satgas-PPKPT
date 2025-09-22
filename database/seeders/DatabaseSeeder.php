@@ -32,27 +32,65 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UnduhanSeeder::class,
         ]);
-        
+
+        // --- SUPERADMIN ---
         User::create([
-            'name' => 'Andri Prasetyo,SE., MMSI',
+            'name' => 'Andri Prasetyo, SE., MMSI',
             'email' => 'andri@stimata.ac.id',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
         ]);
-
         User::create([
-            'name' => 'Syaiful Ma\'arif',
-            'email' => 'syaiful_22310001@stimata.ac.id',
+            'name' => 'Retno Wulandari, S.Kom',
+            'email' => 'retno@stimata.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'superadmin',
+        ]);
+
+        // --- ADMIN ---
+        User::create([
+            'name' => 'Bella Umamah, S.Kom',
+            'email' => 'bella@stimata.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'Dr. Weda Adistianaya Dewa, S.Kom, MMSI',
+            'email' => 'weda@stimata.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'Aminatus Zainiyah Assahlanie, S.Kom',
+            'email' => 'aminatus@stimata.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'Hasbi Abdullah',
+            'email' => 'hasbi@stimata.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        User::create([
+            'name' => 'Muhammad Althaf Farrel Natajaya',
+            'email' => 'althaf@stimata.ac.id',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
+        // --- USER ---
         User::create([
             'name' => 'Syaiful',
             'email' => 'syaiful@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'user',
         ]);
-
+        User::create([
+            'name' => 'Alfi',
+            'email' => 'alfi@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+        ]);
     }
 }

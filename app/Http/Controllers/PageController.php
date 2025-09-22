@@ -6,6 +6,8 @@ use App\Models\Unduhan;
 use Illuminate\Http\Request;
 use App\Models\BuktiPenanganan;
 use App\Models\Penanganan;
+use Illuminate\View\View;
+use App\Models\User;
 
 class PageController extends Controller
 {
@@ -27,7 +29,12 @@ class PageController extends Controller
             ->get()
             ->unique('penanganan_id');
 
-        return view('public.beranda', compact('galeriItems'));
+        $superadmins = User::where('role', 'superadmin')->orderBy('id', 'asc')->get();
+        $ketua = $superadmins->first();
+        $sekretaris = $superadmins->get(1);
+        $anggotas = User::where('role', 'admin')->get();
+
+        return view('public.beranda', compact('galeriItems', 'ketua', 'sekretaris', 'anggotas'));
     }
 
     public function unduhan()

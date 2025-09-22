@@ -9,7 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pengaduans', function (Blueprint $table) {
-            // Kolom untuk menyimpan alasan penolakan, bisa dikosongkan (nullable)
             $table->text('alasan_penolakan')->nullable()->after('status');
         });
     }

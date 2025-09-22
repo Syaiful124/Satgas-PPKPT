@@ -25,8 +25,8 @@
     </a>
     <div class="w-full ml-20 mr-20 mt-10 mb-10">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Pengaduan</h1>
-            <p class="text-white">Lengkapi formulir untuk pengaduan Anda</p>
+            <h1 class="text-3xl font-bold text-gray-800">LAPORAN PENGADUAN</h1>
+            <p class="text-white">Lengkapi formulir untuk laporan pengaduan Anda</p>
         </div>
 
         @if ($errors->any())

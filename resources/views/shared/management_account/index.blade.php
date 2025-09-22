@@ -87,23 +87,23 @@
             </thead>
             <tbody>
             @forelse($users as $user)
-                <tr class="border-b hover:bg-gray-50">
+                <tr class="rounded-lg hover:bg-gray-300 hover:shadow-md hover:transition-all">
                     <td class="p-4 border-r w-full h-full">
                         <p class="font-semibold">{{ $user->name }}</p>
                         <p class="text-sm text-gray-500">{{ $user->email }}</p>
                     </td>
-                    <td class="p-4 flex justify-center items-center gap-4 w-[150px]">
+                    <td class="flex justify-center items-center gap-4 w-[150px] my-5">
                         @if($user->status_perubahan)
                             <em>Menunggu Persetujuan</em>
                         @else
-                            <a href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.edit', $user) : route('admin.users.edit', $user) }}" class="text-blue-500 rounded-full hover:bg-blue-100">
+                            <a href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.edit', $user) : route('admin.users.edit', $user) }}" class="text-blue-500 rounded-full p-2 hover:bg-blue-500 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
                             </a>
                             @if(auth()->id() !== $user->id)
                             <form action="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.destroy', $user) : route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="flex items-center justify-center text-red-500 rounded-full hover:bg-red-100">
+                                <button type="submit" class="flex items-center justify-center text-red-500 rounded-full p-2 hover:bg-red-500 hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
                                 </button>
                             </form>
