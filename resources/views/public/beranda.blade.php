@@ -8,8 +8,8 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">"Satgas PPKPT: Garda Depan Integritas Kampus STIMATA."</h1>
             <p class="text-lg mb-6">Satgas PPKPT STIMATA hadir untuk menciptakan lingkungan kampus yang aman dan bebas dari kekerasan. Jangan ragu untuk melaporkan setiap insiden yang Anda alami atau saksikan.</p>
             <div class="flex space-x-4">
-                <a href="{{ route('pengaduan.create') }}" class="bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition duration-300">Buat Laporan Sekarang</a>
-                <a href="#tentang-kami" class="bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-300">Pelajari Lebih Lanjut</a>
+                <a href="{{ route('pengaduan.create') }}" class="bg-orange-300 text-black font-bold py-3 px-6 rounded-lg hover:bg-orange-500 hover:text-white transition duration-300">Buat Laporan Sekarang</a>
+                <a href="#tentang-kami" class="bg-gray-300 text-black font-bold py-3 px-6 rounded-lg hover:bg-gray-500 hover:text-white transition duration-300">Pelajari Lebih Lanjut</a>
             </div>
         </div>
         <div class="hidden md:block h-full w-full">
@@ -18,14 +18,14 @@
     </div>
 </div>
 
-<section class="py-6">
-    <div class="flex flex-col mx-auto px-4 gap-6">
+<section class="p-6">
+    <div class="flex flex-col mx-auto px-4 gap-6 mt-14">
         <div class="flex flex-col ">
             <h2 class="text-3xl font-bold  text-center text-gray-800 mb-2">Struktur Keanggotaan</h2>
             <p class="text-center text-gray-500">Satgas PPKS STMIK PPKIA Pradnya Paramita Malang</p>
         </div>
 
-        {{-- KETUA (DINAMIS) --}}
+        {{-- KETUA --}}
         @if ($ketua)
         <div class="flex justify-center">
             <div class="w-[350px] h-[250px] flex flex-col items-center justify-center text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
@@ -36,7 +36,7 @@
         </div>
         @endif
 
-        {{-- SEKRETARIS (DINAMIS) --}}
+        {{-- SEKRETARIS --}}
         @if ($sekretaris)
         <div class="flex justify-center">
             <div class="w-[350px] h-[250px] flex flex-col items-center justify-center text-center bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
@@ -116,8 +116,8 @@
     </div>
 </section> --}}
 
-<section id="alur-pengaduan" class="px-8 py-10 bg-gray-50">
-    <div class=" mx-auto px-4">
+<section id="alur-pengaduan" class="p-6 bg-gray-50">
+    <div class=" mx-auto px-4 mt-14">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Alur Pengaduan</h2>
         <p class="text-center text-gray-500 mb-8">Langkah-langkah mudah untuk melaporkan insiden dan bagaimana kami menindaklanjutinya.</p>
 
@@ -131,7 +131,7 @@
                     <div class="p-6 bg-white rounded-lg shadow-md border-l-4 border-orange-500 flex items-end flex-col">
                         <div class="flex items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Login & Akses Layanan</h3>
-                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">1</div>
+                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-center text-white font-bold"><p class="w-8 h-8 p-1">1</p></div>
                         </div>
                         <p class="text-gray-600 mt-1">Mahasiswa/dosen/tenaga kependidikan masuk melalui akun SSO (Single Sign-On) kampus. Disediakan menu khusus “Pelaporan Kekerasan Seksual (PPKPT)”. Status laporan akan tersedia di halaman profile jika pelapor sudah memiliki akun.</p>
                     </div>
@@ -139,7 +139,7 @@
                 <div class="w-1/2 pl-3 text-left flex">
                     <div class="p-6 bg-white rounded-lg shadow-md border-r-4 border-orange-500">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold z-10">2</div>
+                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-center text-white font-bold z-10"><p class="w-8 h-8 p-1">2</p></div>
                             <h3 class="text-lg font-semibold text-gray-800">Pengisian Form Laporan Online</h3>
                         </div>
                         <p class="text-gray-600 mt-1">Form berisi identitas pelapor (bisa anonim/rahasia), kronologi, bukti (upload file/audio/video), serta opsi pendampingan yang diinginkan. Pelapor bisa memilih pendampingan psikologis, hukum, atau medis lewat aplikasi. Sistem memberi nomor laporan otomatis.</p>
@@ -152,7 +152,7 @@
                     <div class="p-6 bg-white rounded-lg shadow-md border-l-4 border-orange-500 flex items-end flex-col">
                         <div class="flex items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Menunggu Verifikasi</h3>
-                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">3</div>
+                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-center text-white font-bold"><p class="w-8 h-8 p-1">3</p></div>
                         </div>
                         <p class="text-gray-600 mt-1">Ketua Satgas menerima notifikasi laporan baru. <br>Laporan diverifikasi → jika lengkap diproses, jika belum lengkap pelapor ditolak dengan alasan yang jelas.</p>
                     </div>
@@ -160,7 +160,7 @@
                 <div class="w-1/2 pl-3 text-left flex">
                     <div class="p-6 bg-white rounded-lg shadow-md border-r-4 border-orange-500">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold z-10">4</div>
+                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-center text-white font-bold z-10"><p class="w-8 h-8 p-1">4</p></div>
                             <h3 class="text-lg font-semibold text-gray-800">Penanganan : Proses Klarifikasi & Pemeriksaan</h3>
                         </div>
                         <p class="text-gray-600 mt-1">Setelah Diverifikasi oleh Ketua Satgas, Ketua akan mengirimkan laporan dan surat tugas ke petugas satgas yang ditunjuk untuk melakukan pemeriksaan terdokumentasi. Dari hasil pemeriksaan, petugas satgas akan menentukan tindak lanjut, apakah perlu dilakukan sanksi, tindakan administratif, atau penerusan ke hukum (ditentukan melalui hasil penelusuran kasus).</p>
@@ -173,18 +173,18 @@
                     <div class="p-6 bg-white rounded-lg shadow-md border-l-4 border-orange-500 flex items-end flex-col">
                         <div class="flex items-center gap-4">
                             <h3 class="text-lg font-semibold text-gray-800">Penanganan : Ditindak Lanjuti</h3>
-                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold">5</div>
+                            <div class="w-max h-max  bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-center text-white font-bold"><p class="w-8 h-8 p-1">5</p></div>
                         </div>
-                        <p class="text-gray-600 mt-1">Tindak lanjut tersebut akan diteruskan ke ketua satgas untuk ditindaklanjuti. Pelapor mendapat update layanan pemulihan (psikologis, akademik, administratif).</p>
+                        <p class="text-gray-600 mt-1">Tindak lanjut tersebut akan diteruskan ke ketua satgas untuk ditindaklanjuti, sesuai dengan rekomendasi dari petugas. Kemudian korban akan mendapat update layanan pemulihan (psikologis, akademik, administratif).</p>
                     </div>
                 </div>
                 <div class="w-1/2 pl-3 text-left flex">
                     <div class="p-6 bg-white rounded-lg shadow-md border-r-4 border-orange-500">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white font-bold z-10">6</div>
+                            <div class="w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-center text-white font-bold z-10"><p class="w-8 h-8 p-1">6</p></div>
                             <h3 class="text-lg font-semibold text-gray-800">Laporan selesai</h3>
                         </div>
-                        <p class="text-gray-600 mt-1">Setelah penindakan lanjutan, laporan akan dianggap selesai. Monitoring implementasi sanksi terhadap pelaku dicatat dalam sistem. Sistem bisa menghasilkan rekap laporan berisi jumlah dari status ( menunggu verifikasi, penanganan (proses klarifikasi & pemeriksaan, ditindaklanjuti), ditindaklanjuti dan evaluasi → untuk evaluasi internal kampus dan laporan ke Kemendikbud.)</p>
+                        <p class="text-gray-600 mt-1">Setelah penindakan lanjutan telah dilaksanakan, laporan akan dianggap selesai. Monitoring implementasi sanksi terhadap pelaku dicatat dalam sistem. Sistem bisa menghasilkan rekap laporan berisi jumlah dari status ( menunggu verifikasi, penanganan (proses klarifikasi & pemeriksaan, ditindaklanjuti), ditindaklanjuti dan evaluasi → untuk evaluasi internal kampus dan laporan ke Kemendikbud.)</p>
                     </div>
                 </div>
             </div>
@@ -193,7 +193,7 @@
 </section>
 
 <section id="tentang-kami" class="flex flex-col w-full gap-8 p-6">
-    <div class="text-center">
+    <div class="text-center mt-14">
         <h2 class="text-3xl font-bold text-gray-800">Tentang Satgas PPKPT</h2>
         <p class="text-gray-500 mt-2">Mengenal Misi dan Visi</p>
     </div>
@@ -206,7 +206,7 @@
             <p class="text-gray-600">Kami proaktif melakukan sosialisasi dan edukasi untuk mencegah terjadinya kekerasan seksual di lingkungan kampus.</p>
         </div>
         <div class="bg-white p-8 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
-             <div class="bg-blue-100 text-blue-500 rounded-full p-4 inline-flex mb-4">
+            <div class="bg-blue-100 text-blue-500 rounded-full p-4 inline-flex mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V7a2 2 0 012-2h6l2-2h2l-2 2z" /></svg>
             </div>
             <h3 class="text-xl font-bold mb-2">Penanganan</h3>
@@ -214,7 +214,7 @@
         </div>
         <div class="bg-white p-8 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
             <div class="bg-green-100 text-green-500 rounded-full p-4 inline-flex mb-4">
-                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
             </div>
             <h3 class="text-xl font-bold mb-2">Pemulihan</h3>
             <p class="text-gray-600">Membantu korban mendapatkan dukungan psikologis dan fasilitas pemulihan lainnya untuk melewati masa sulit.</p>
@@ -278,9 +278,9 @@
 <style>
     .tab-button {
         padding: 0.75rem 1.5rem;
-        border: 1px solid #fb923c; /* orange-400 */
+        border: 1px solid #fb923c;
         border-radius: 0.5rem;
-        color: #f97316; /* orange-500 */
+        color: #f97316;
         background-color: white;
         font-weight: 600;
         cursor: pointer;
@@ -291,7 +291,7 @@
         position: relative;
     }
     .tab-button:hover {
-        background-color: #fff7ed; /* orange-50 */
+        background-color: #fff7ed;
     }
     .tab-button .tab-pointer {
         display: none;
@@ -303,10 +303,10 @@
         height: 0;
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
-        border-top: 10px solid #fb923c; /* orange-400 */
+        border-top: 10px solid #fb923c;
     }
     .tab-button.tab-active {
-        background: linear-gradient(to right, #f97316, #fb923c); /* orange-500 to orange-400 */
+        background: linear-gradient(to right, #f97316, #fb923c);
         color: white;
         border-color: transparent;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);

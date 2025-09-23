@@ -77,13 +77,13 @@
                 @if ($pengaduan->bukti->isNotEmpty())
                     <div class="grid grid-cols-3 gap-2 min-h-[100px] max-h-[215px] overflow-y-auto border-lg rounded-lg bg-gray-100 p-2">
                         @foreach($pengaduan->bukti as $bukti)
-                            <div>
+                            <a href="{{ Storage::url($bukti->file_path) }}" target="_blank" class="block transform hover:scale-auto transition-transform duration-300">
                                 @if($bukti->file_type == 'image')
                                     <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full max-h-[200px] rounded-lg shadow">
                                 @else
                                     <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full max-h-[200px] rounded-lg shadow"></video>
                                 @endif
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 @else
@@ -121,13 +121,13 @@
                 @if ($pengaduan->penanganan && $pengaduan->penanganan->bukti->isNotEmpty())
                 <div class="grid grid-cols-3 gap-2 min-h-[100px] max-h-[215px] overflow-y-auto border-lg rounded-lg bg-gray-100 p-2">
                     @foreach($pengaduan->penanganan->bukti as $bukti)
-                        <div>
+                        <a href="{{ Storage::url($bukti->file_path) }}" target="_blank" class="block transform hover:scale-auto transition-transform duration-300">
                             @if($bukti->file_type == 'image')
                                 <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full max-h-[200px] rounded-lg shadow">
                             @else
                                 <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full max-h-[200px] rounded-lg shadow"></video>
                             @endif
-                        </div>
+                        </a>
                     @endforeach
                 </div>
                 @else
@@ -160,16 +160,16 @@
                 <form action="{{ route('superadmin.laporan.setujui', $pengaduan) }}" target="_blank" method="POST" class="mb-4 flex gap-2 items-center">
                     @csrf
                     <label for="petugas_id" class="block font-semibold w-[300px] text-center">Tugaskan kepada :</label>
-                    <select name="petugas_id" id="petugas_id" class="w-full p-2 border rounded-lg text-center" required>
+                    <select name="petugas_id" id="petugas_id" class="w-full p-2 border rounded-lg text-center cursor-pointer" required>
                         <option value="">-- Pilih Petugas --</option>
                         @foreach ($petugas_list as $petugas)
                             <option value="{{ $petugas->id }}">{{ $petugas->name }}</option>
                         @endforeach
                     </select>
-                    <button type="submit" class="w-[300px] btn-primary px-6 py-2 rounded-lg">Buat Surat Tugas</button>
+                    <button type="submit" class="w-[300px] btn-primary px-6 py-2 rounded-lg text-black hover:text-white hover:bg-orange-500">Buat Surat Tugas</button>
                 </form>
 
-                <button onclick="document.getElementById('modal-tolak').classList.remove('hidden')" class="w-full btn-danger px-4 py-2 rounded-lg">Tolak Laporan</button>
+                <button onclick="document.getElementById('modal-tolak').classList.remove('hidden')" class="w-full btn-danger px-4 py-2 rounded-lg text-black hover:text-white">Tolak Laporan</button>
 
                 <div id="modal-tolak" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                     <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">

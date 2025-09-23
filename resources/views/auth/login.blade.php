@@ -40,7 +40,7 @@
 
 </head>
 <body class=" flex items-center justify-center w-full">
-    <a href="{{ route('beranda') }}" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2">
+    <a href="{{ route('beranda') }}" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2 hover:underline">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
@@ -88,8 +88,8 @@
                 <button type="submit" class="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900 transition-colors">Login</button>
             </form>
         </div>
-        <div class="text-center mt-4">
-            <p class="text-gray-600">Belum punya akun? <a href="{{ route('register') }}" class="text-orange-500 font-bold">Register</a></p>
+        <div class="text-center mt-4 text-sm">
+            <p class="text-gray-600">Belum punya akun? <a href="{{ route('register') }}" class="text-orange-500 font-bold hover:underline">Register</a></p>
         </div>
     </div>
     <div class="text-gray-600 text-sm flex justify-center m-3">

@@ -9,11 +9,11 @@
     </div>
     @can('update', $pengaduan)
     <div class="flex space-x-2">
-        <a href="{{ route('account.pengaduan.edit', $pengaduan) }}" class="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 font-semibold">Edit</a>
+        <a href="{{ route('account.pengaduan.edit', $pengaduan) }}" class="bg-yellow-300 px-4 py-2 rounded-lg hover:bg-yellow-500 hover:text-white font-semibold">Edit</a>
         <form action="{{ route('account.pengaduan.destroy', $pengaduan) }}" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus laporan ini?');">
             @csrf
             @method('DELETE')
-            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 font-semibold">Hapus</button>
+            <button type="submit" class="bg-red-300 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white font-semibold">Hapus</button>
         </form>
     </div>
     @endcan
@@ -67,13 +67,13 @@
                 @if ($pengaduan->bukti->isNotEmpty())
                     <div class="grid grid-cols-3 gap-2 min-h-[100px] max-h-[215px] overflow-y-auto border-lg rounded-lg bg-gray-100 p-2">
                         @foreach($pengaduan->bukti as $bukti)
-                            <div>
+                            <a href="{{ Storage::url($bukti->file_path) }}" target="_blank" class="block transform hover:scale-auto transition-transform duration-300">
                                 @if($bukti->file_type == 'image')
                                     <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full max-h-[200px] rounded-lg shadow">
                                 @else
                                     <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full max-h-[200px] rounded-lg shadow"></video>
                                 @endif
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 @else
@@ -143,13 +143,13 @@
                     @if ($pengaduan->penanganan && $pengaduan->penanganan->bukti->isNotEmpty())
                     <div class="grid grid-cols-3 gap-2 min-h-[100px] max-h-[215px] overflow-y-auto border-lg rounded-lg bg-gray-100 p-2">
                         @foreach($pengaduan->penanganan->bukti as $bukti)
-                            <div>
+                            <a href="{{ Storage::url($bukti->file_path) }}" target="_blank" class="block transform hover:scale-auto transition-transform duration-300">
                                 @if($bukti->file_type == 'image')
                                     <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full max-h-[200px] rounded-lg shadow">
                                 @else
                                     <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full max-h-[200px] rounded-lg shadow"></video>
                                 @endif
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                     @else

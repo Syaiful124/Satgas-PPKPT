@@ -9,11 +9,11 @@
             @csrf
             <div class="mb-4">
                 <label for="name" class="block font-semibold">Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 hover:bg-white focus:bg-white focus:outline-none">
             </div>
             <div class="mb-4">
                 <label for="email" class="block font-semibold">Email</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 hover:bg-white focus:bg-white focus:outline-none">
             </div>
             <hr class="my-6">
             <h3 class="font-bold mb-2">Ubah Password</h3>
@@ -21,7 +21,7 @@
                 <div class="mb-4">
                     <label for="current_password" class="block font-semibold">Password Saat Ini</label>
                     <div class="relative">
-                        <input type="password" name="current_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
+                        <input type="password" name="current_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 hover:bg-white focus:bg-white focus:outline-none">
                         <button type="button" class="toggle-password absolute inset-y-0 right-0 m-4 text-gray-500">
                             <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -59,13 +59,13 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <input id="new_password" type="password" name="new_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 items-center">
+                    <input id="new_password" type="password" name="new_password" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 items-center hover:bg-white focus:bg-white focus:outline-none">
                     <button type="button" class="toggle-password absolute inset-y-0 right-0 m-4 text-gray-500">
                         <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                             <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" clip-rule="evenodd" />
                         </svg>
-                        <svg class="bi bi-eye-slash-fill h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" fill="currentColor">
+                        <svg class="bi bi-eye-slash-fill h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
                             <path fill-rule="evenodd" d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z" clip-rule="evenodd"/>
                         </svg>
@@ -76,7 +76,7 @@
             <div class="mb-4">
                 <label for="new_password_confirmation" class="block font-semibold">Konfirmasi Password Baru</label>
                 <div class="relative">
-                    <input id="new_password_confirmation" type="password" name="new_password_confirmation" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1">
+                    <input id="new_password_confirmation" type="password" name="new_password_confirmation" class="bg-gray-200 shadow-lg w-full p-2 border rounded-lg mt-1 hover:bg-white focus:bg-white focus:outline-none">
                     <button type="button" class="toggle-password absolute inset-y-0 right-0 m-4 text-gray-500">
                         <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -93,8 +93,8 @@
                 </div>
             </div>
             <div class="flex justify-end space-x-2 mt-4">
-                <button type="reset" class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400">Reset</button>
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Simpan</button>
+                <button type="reset" class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-500 hover:text-white">Reset</button>
+                <button type="submit" class="bg-green-300 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white">Simpan</button>
             </div>
         </form>
     </div>
@@ -111,8 +111,7 @@
             <form action="{{ route('account.index') }}" method="GET">
                 <div class="flex gap-3 items-start">
                     <div class="flex gap-3">
-                        <label class="text-sm p-2">Status</label>
-                        <select name="status" class="w-fit p-2 border rounded-lg ">
+                        <select name="status" class="w-fit p-2 border rounded-lg cursor-pointer">
                             <option value="">Semua Status</option>
                             <option value="menunggu" @if(request('status') == 'menunggu') selected @endif>Menunggu</option>
                             <option value="penanganan" @if(request('status') == 'penanganan') selected @endif>Penanganan</option>
@@ -121,21 +120,20 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-sm">Urutkan</label>
-                        <select name="sort" class="w-fit p-2 border rounded-lg">
+                        <select name="sort" class="w-fit p-2 border rounded-lg cursor-pointer">
                             <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
                             <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
                         </select>
                     </div>
                     <div class="col-span-2 md:col-span-1">
-                        <a href="{{ route('superadmin.dashboard') }}" class="w-full block text-center bg-gray-300 text-gray-700 p-2 rounded-lg hover:bg-gray-400">
+                        <a href="{{ route('superadmin.dashboard') }}" class="w-full block text-center bg-gray-300 p-2 rounded-lg hover:bg-gray-500 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                             </svg>
                         </a>
                     </div>
                     <div class="col-span-2 md:col-span-1 items-center ">
-                        <button type="submit" class="w-full bg-orange-400 text-white p-2 rounded-lg hover:bg-orange-500">
+                        <button type="submit" class="w-full bg-orange-300 p-2 rounded-lg hover:bg-orange-500 hover:text-white flex justify-center items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
                             </svg>
@@ -153,16 +151,16 @@
                     @if($pengaduan->status == 'selesai') bg-green-50 border-green-200 @endif
                     @if($pengaduan->status == 'ditolak') bg-red-50 border-red-200 @endif
                 ">
-                    <div class="flex justify-between items-start">
+                    <div class="flex justify-between items-center">
                         <div>
                             <p class="font-bold">{{ $pengaduan->judul }}</p>
                             <p class="text-sm text-gray-500">{{ $pengaduan->kategori->nama_kategori }} | {{ $pengaduan->created_at->translatedFormat('d M Y') }}</p>
                         </div>
                         <span class="text-sm font-semibold px-3 py-1 rounded-full items-center
-                             @if($pengaduan->status == 'menunggu') bg-yellow-200 text-yellow-800 @endif
-                             @if($pengaduan->status == 'penanganan') bg-blue-200 text-blue-800 @endif
-                             @if($pengaduan->status == 'selesai') bg-green-200 text-green-800 @endif
-                             @if($pengaduan->status == 'ditolak') bg-red-200 text-red-800 @endif
+                            @if($pengaduan->status == 'menunggu') bg-yellow-200 text-yellow-800 @endif
+                            @if($pengaduan->status == 'penanganan') bg-blue-200 text-blue-800 @endif
+                            @if($pengaduan->status == 'selesai') bg-green-200 text-green-800 @endif
+                            @if($pengaduan->status == 'ditolak') bg-red-200 text-red-800 @endif
                         ">{{ ucfirst($pengaduan->status) }}</span>
                     </div>
                 </a>

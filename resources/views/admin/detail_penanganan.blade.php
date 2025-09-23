@@ -75,13 +75,13 @@
                 @if ($pengaduan->bukti->isNotEmpty())
                     <div class="grid grid-cols-3 gap-2 min-h-[100px] max-h-[215px] overflow-y-auto border-lg rounded-lg bg-gray-100 p-2">
                         @foreach($pengaduan->bukti as $bukti)
-                            <div>
+                            <a href="{{ Storage::url($bukti->file_path) }}" target="_blank" class="block transform hover:scale-auto transition-transform duration-300">
                                 @if($bukti->file_type == 'image')
                                     <img src="{{ Storage::url($bukti->file_path) }}" alt="{{ $bukti->file_name }}" class="w-full max-h-[200px] rounded-lg shadow">
                                 @else
                                     <video src="{{ Storage::url($bukti->file_path) }}" controls class="w-full max-h-[200px] rounded-lg shadow"></video>
                                 @endif
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 @else

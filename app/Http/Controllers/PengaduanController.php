@@ -288,6 +288,19 @@ class PengaduanController extends Controller
         $videoFormats = 'mp4,mov,avi,mkv,webm,flv';
 
         $request->validate([
+            'anonim' => 'nullable|boolean',
+            'nama_pelapor' => [
+                Rule::requiredIf(!$request->boolean('anonim') && !Auth::check()),
+                'nullable', 'string', 'max:255'
+            ],
+            'email_pelapor' => [
+                Rule::requiredIf(!$request->boolean('anonim')),
+                'nullable', 'email', 'max:255'
+            ],
+            'telepon_pelapor' => [
+                Rule::requiredIf(!$request->boolean('anonim')),
+                'nullable', 'string', 'max:25'
+            ],
             'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
             'kategori_lainnya' => [
@@ -319,7 +332,32 @@ class PengaduanController extends Controller
             ],
         ]);
 
+        $is_anonymous = $request->boolean('anonim');
+
+        $reporter_name = null;
+        $reporter_email = null;
+        $reporter_phone = null;
+
+        if ($is_anonymous) {
+            $reporter_name = 'Anonim';
+        } else {
+            if (Auth::check()) {
+                $reporter_name = Auth::user()->name;
+                $reporter_email = Auth::user()->email;
+                $reporter_phone = $request->telepon_pelapor; 
+            } else {
+                $reporter_name = $request->nama_pelapor;
+                $reporter_email = $request->email_pelapor;
+                $reporter_phone = $request->telepon_pelapor;
+            }
+        }
+
+
         $pengaduan->update([
+            'user_id' => Auth::id(),
+            'nama_pelapor' => $reporter_name,
+            'email_pelapor' => $reporter_email,
+            'telepon_pelapor' => $reporter_phone,
             'judul' => $request->judul,
             'kategori_id' => $request->kategori_id,
             'pendampingan_id' => $request->pendampingan_id,

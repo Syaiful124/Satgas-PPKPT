@@ -2,7 +2,7 @@
 @section('title', 'Pusat Unduhan')
 
 @section('content')
-<div class="bg-white p-8 rounded-lg shadow-lg w-full h-full mx-auto">
+<div class="p-8 w-full h-full mx-auto">
     <div class="text-center mb-10">
         <h1 class="text-3xl font-bold text-gray-800">Pusat Unduhan</h1>
         <p class="text-gray-500">Dokumen dan panduan terkait PPKPT.</p>
@@ -11,7 +11,7 @@
     <div class="space-y-4 h-full" id="accordion-container">
         @forelse ($files as $file)
         <div class="border rounded-lg overflow-hidden">
-            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 bg-orange-200 hover:bg-gray-100">
+            <button class="accordion-header w-full flex justify-between items-center p-4 text-left font-semibold bg-orange-300 hover:bg-orange-500 hover:text-white">
                 <span>{{ $file->judul }}</span>
                 <svg class="accordion-arrow w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>

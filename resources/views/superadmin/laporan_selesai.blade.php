@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Ditindaklanjuti')
+@section('title', 'Laporan Selesai')
 
 @section('content')
 <div class="flex justify-between items-center mb-6 title-h">
-    <h1 class="text-3xl font-bold">Laporan Ditindaklanjuti</h1>
+    <h1 class="text-3xl font-bold">Laporan Selesai</h1>
 </div>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             @forelse($pengaduans as $pengaduan)
-            <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
+            <tr class="border-b hover:bg-gray-300 cursor-pointer" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
                 <td class="p-3 flex flex-col gap-1">
                     <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
                     <p class="text-[12px] text-gray-600">

@@ -65,7 +65,7 @@
                                 <input placeholder="email@gmail.com" type="email" name="email_pelapor" id="emailPelapor" value="{{ old('email_pelapor', $pengaduan->email_pelapor) }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
                             </div>
                             <div>
-                                <label for="telepon_pelapor" class="block text-gray-700 font-bold mb-1">No. Telepon/HP</label>
+                                <label for="telepon_pelapor" class="block text-gray-700 font-bold mb-1">No. Telepon/HP/WhatsApp</label>
                                 <input placeholder="no. telepon" type="text" name="telepon_pelapor" id="teleponPelapor" value="{{ old('telepon_pelapor', $pengaduan->telepon_pelapor) }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
                             </div>
                         </div>

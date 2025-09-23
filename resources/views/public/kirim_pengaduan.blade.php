@@ -17,7 +17,7 @@
     </style>
 </head>
 <body class=" flex justify-center w-full">
-    <a href="{{ route('beranda') }}" onclick="window.history.back(); return false;" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2">
+    <a href="{{ route('beranda') }}" onclick="window.history.back(); return false;" class="hover:underline absolute text-1xl top-4 left-4 ml-6 mt-4 flex items-center w-auto gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
@@ -62,7 +62,7 @@
                                 <input placeholder="email@gmail.com" type="email" name="email_pelapor" id="emailPelapor" value="{{ auth()->user()->email ?? old('email_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
                             <div>
-                                <label for="telepon_pelapor" class="block text-gray-700 font-bold mb-1">No. Telepon/HP</label>
+                                <label for="telepon_pelapor" class="block text-gray-700 font-bold mb-1">No. Telepon/HP/WhatsApp</label>
                                 <input placeholder="no. telepon" type="text" name="telepon_pelapor" id="teleponPelapor" value="{{ old('telepon_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="flex flex-row gap-1 items-center justify-between w-full h-max">
-                        <label for="bukti-input" class="text-center w-full h-max cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                        <label for="bukti-input" class="text-center w-full h-max cursor-pointer bg-orange-400 hover:text-white px-4 py-2 rounded-lg hover:bg-orange-500 transition-colors">
                             Pilih File Bukti (Foto/Video)
                         </label>
                         <input type="file" name="bukti[]" id="bukti-input" class="hidden" accept="image/*,video/*" multiple>

@@ -19,25 +19,22 @@
         <div class="flex flex-col gap-3 items-start">
             <div class="flex gap-3">
                 <div>
-                    <label class="text-sm p-2">Bulan</label>
                     <select name="bulan" class="w-fit p-2 border rounded-lg">
-                        <option value="">--</option>
+                        <option value="">Bulan</option>
                         @for ($i = 1; $i <= 12; $i++)
                             <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
                         @endfor
                     </select>
                 </div>
                 <div>
-                    <label class="text-sm p-2">Tahun</label>
                     <select name="tahun" class="w-fit p-2 border rounded-lg">
-                        <option value="">--</option>
+                        <option value="">Tahun</option>
                         @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
                             <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>{{ $i }}</option>
                         @endfor
                     </select>
                 </div>
                 <div>
-                    <label class="text-sm p-2">Urutkan</label>
                     <select name="sort" class="w-fit p-2 border rounded-lg">
                         <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
                         <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
@@ -75,7 +72,7 @@
         </thead>
         <tbody>
             @forelse($pengaduans as $pengaduan)
-            <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
+            <tr class="border-b hover:bg-gray-300 cursor-pointer" onclick="location.href='{{ route('superadmin.laporan.show', $pengaduan) }}'">
                 <td class="p-3 flex flex-col gap-1">
                     <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
                     <p class="text-[12px] text-gray-600">

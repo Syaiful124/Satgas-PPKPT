@@ -75,7 +75,7 @@
             <label for="password_confirmation" class="block text-gray-700 font-bold mb-2">Konfirmasi Password</label>
             <div class="relative">
                 <input type="password" id="password_confirmation" name="password_confirmation" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500">
+                <button type="button" class="toggle-password absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700">
                     <svg class="bi bi-eye-fill h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                         <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" clip-rule="evenodd" />
@@ -89,61 +89,9 @@
         </div>
 
         <div class="flex justify-end space-x-4">
-            <a href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.index', ['role' => $user->role]) : route('admin.users.index') }}" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400">Cancel</a>
-            <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600">Update</button>
+            <a href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.index', ['role' => $user->role]) : route('admin.users.index') }}" class="bg-gray-300 px-6 py-2 rounded-lg hover:bg-gray-500 hover:text-white">Cancel</a>
+            <button type="submit" class="bg-orange-300 px-6 py-2 rounded-lg hover:bg-orange-500 hover:text-white">Update</button>
         </div>
     </form>
 </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const passwordInput = document.getElementById('password');
-        const checks = {
-            length: document.getElementById('check-length'),
-            uppercase: document.getElementById('check-uppercase'),
-            number: document.getElementById('check-number'),
-            symbol: document.getElementById('check-symbol')
-        };
-        const successColor = 'text-green-500';
-        const failColor = 'text-red-500';
-
-        passwordInput.addEventListener('input', function() {
-            const val = this.value;
-            // Length
-            updateCheck(checks.length, val.length >= 8);
-            // Uppercase
-            updateCheck(checks.uppercase, /[A-Z]/.test(val));
-            // Number
-            updateCheck(checks.number, /[0-9]/.test(val));
-            // Symbol
-            updateCheck(checks.symbol, /[^A-Za-z0-9]/.test(val));
-        });
-
-        function updateCheck(element, isSuccess) {
-            const svg = element.querySelector('svg');
-            svg.classList.remove(isSuccess ? failColor : successColor);
-            svg.classList.add(isSuccess ? successColor : failColor);
-        }
-
-        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-
-        togglePasswordButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const passwordInput = this.previousElementSibling;
-
-                const eyeIcon = this.querySelector('.bi-eye-fill');
-                const eyeSlashIcon = this.querySelector('.bi-eye-slash-fill');
-
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    eyeIcon.classList.add('hidden');
-                    eyeSlashIcon.classList.remove('hidden');
-                } else {
-                    passwordInput.type = 'password';
-                    eyeIcon.classList.remove('hidden');
-                    eyeSlashIcon.classList.add('hidden');
-                }
-            });
-        });
-    });
-    </script>
 @endsection

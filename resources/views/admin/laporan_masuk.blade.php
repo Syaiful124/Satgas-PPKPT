@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             @forelse($pengaduans as $pengaduan)
-            <tr class="border-b hover:bg-gray-300" onclick="location.href='{{ route('admin.laporan.show', $pengaduan) }}'">
+            <tr class="border-b hover:bg-gray-300 cursor-pointer" onclick="location.href='{{ route('admin.laporan.show', $pengaduan) }}'">
                 <td class="p-3 flex flex-col gap-1">
                     <h2 class="text-[16px] font-bold">{{ $pengaduan->judul }}</h2>
                     <p class="text-[14px] ">{{ $pengaduan->kategori->nama_kategori }}

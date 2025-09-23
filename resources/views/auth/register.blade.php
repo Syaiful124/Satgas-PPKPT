@@ -11,6 +11,8 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(20deg, #ffffff, #ff6900);
+            max-width: device-width;
+            max-height: device-height;
             height: 100vh;
             margin: 0;
             padding: 0;
@@ -29,8 +31,8 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center w-full h-full ">
-    <a href="{{ route('beranda') }}" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2">
+<body class="flex items-center justify-center w-full">
+    <a href="{{ route('beranda') }}" class="absolute text-1xl top-4 left-4 text-black-500 hover:text-gray-800 ml-6 mt-4 flex items-center w-auto gap-2 hover:underline">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
@@ -105,7 +107,7 @@
             </div>
             <button type="submit" class="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900">Register</button>
             <div class="text-center mt-4 text-sm">
-                <p>Sudah punya akun? <a href="{{ route('login') }}" class="text-orange-500 font-bold">Login User</a></p>
+                <p>Sudah punya akun? <a href="{{ route('login') }}" class="text-orange-500 font-bold hover:underline">Login User</a></p>
             </div>
         </form>
     </div>

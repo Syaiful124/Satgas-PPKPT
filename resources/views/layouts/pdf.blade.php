@@ -45,7 +45,7 @@
         }
 
         /* Button */
-        .print-button { background-color: #ff6900; color: white;}
+        .print-button { background-color: #ff6900;}
         @media print {
             .print-button { display: none; }
         }

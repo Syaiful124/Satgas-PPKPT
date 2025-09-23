@@ -3,12 +3,12 @@
 
 @section('content')
 
-<div class="flex justify-between items-center mb-6 title-h">
+<div class="flex justify-between items-center mb-6 title-h w-full">
     <h1 class="text-3xl font-bold">Management Account</h1>
-    <a href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.create') : route('admin.users.create') }}" class="btn-primary px-4 py-2 rounded-lg">+ Add Account</a>
+    <a href="{{ auth()->user()->role == 'superadmin' ? route('superadmin.users.create') : route('admin.users.create') }}" class="btn-primary px-4 py-2 rounded-lg hover:text-white text-black">+ Add</a>
 </div>
 
-<div class="bg-white rounded-lg shadow-md">
+<div class="bg-white rounded-lg shadow-md w-full">
     <div class="flex border-b">
         @if(auth()->user()->role == 'superadmin')
             <a href="{{ route('superadmin.users.index', ['role' => 'user']) }}" class="px-6 py-3 {{ $role == 'user' ? 'border-b-2 border-orange-500 font-bold' : 'text-gray-500' }}">User</a>
