@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         } else {
-             if (errorMessage) {
+            if (errorMessage) {
                 errorMessage.remove();
             }
         }

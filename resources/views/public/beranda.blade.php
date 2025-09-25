@@ -12,7 +12,7 @@
                 <a href="#tentang-kami" class="bg-gray-300 text-black font-bold py-3 px-6 rounded-lg hover:bg-gray-500 hover:text-white transition duration-300">Pelajari Lebih Lanjut</a>
             </div>
         </div>
-        <div class="hidden md:block h-full w-full">
+        <div class="block h-[60vh] md:h-[90vh] w-full">
             <img src="{{ asset('images/beranda.jpeg') }}" alt="Tim Satgas" class="w-full h-full object-cover">
         </div>
     </div>

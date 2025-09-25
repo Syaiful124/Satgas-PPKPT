@@ -37,83 +37,79 @@
     </form>
 
     <form action="{{ route('superadmin.dashboard') }}" method="GET">
-        <div class="flex flex-col gap-3 ">
-            <div class="flex flex-wrap gap-3 min-w-screen ">
-                <div>
-                    <select name="status" class=" p-2 border rounded-lg cursor-pointer">
-                        <option value="">Pilih Status</option>
-                        <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                        <option value="penanganan" {{ request('status') == 'penanganan' ? 'selected' : '' }}>Penanganan</option>
-                        <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                        <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                    </select>
-                </div>
-                <div>
-                    <select name="kategori" class=" p-2 border rounded-lg cursor-pointer">
-                        <option value="">Semua Kategori</option>
-                        @foreach($kategoris as $kategori)
-                        <option value="{{ $kategori->id }}" {{ request('kategori') == $kategori->id ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <select name="pendampingan" class="p-2 border rounded-lg cursor-pointer">
-                        <option value="">Semua Pendampingan</option>
-                        @foreach($pendampingans as $pendampingan)
-                        <option value="{{ $pendampingan->id }}" {{ request('pendampingan') == $pendampingan->id ? 'selected' : '' }}>{{ $pendampingan->opsi_pendampingan }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <select name="tindaklanjut" class="p-2 border rounded-lg cursor-pointer">
-                        <option value="">Semua Tindak Lanjut</option>
-                        @foreach($tindaklanjuts as $tindaklanjut)
-                            <option value="{{ $tindaklanjut->id }}" {{ request('tindaklanjut') == $tindaklanjut->id ? 'selected' : '' }}>
-                                {{ $tindaklanjut->opsi_tindaklanjut }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+        <div class="flex flex-wrap gap-3 min-w-screen">
+            <div>
+                <select name="status" class=" p-2 border rounded-lg cursor-pointer">
+                    <option value="">Pilih Status</option>
+                    <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                    <option value="penanganan" {{ request('status') == 'penanganan' ? 'selected' : '' }}>Penanganan</option>
+                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                </select>
             </div>
-            <div class="flex gap-3">
-                <div>
-                    <select name="bulan" class=" p-2 border rounded-lg cursor-pointer">
-                        <option value="">Bulan</option>
-                        @for ($i = 1; $i <= 12; $i++)
-                            <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
-                        @endfor
-                    </select>
-                </div>
-                <div>
-                    <select name="tahun" class=" p-2 border rounded-lg cursor-pointer">
-                        <option value="">Tahun</option>
-                        @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
-                            <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>{{ $i }}</option>
-                        @endfor
-                    </select>
-                </div>
-                <div>
-                    <select name="sort" class="w-fit p-2 border rounded-lg cursor-pointer">
-                        <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
-                        <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
-                        <option value="status_asc" @if(request('sort') == 'status_asc') selected @endif>Status (A-Z)</option>
-                        <option value="status_desc" @if(request('sort') == 'status_desc') selected @endif>Status (Z-A)</option>
-                    </select>
-                </div>
-                <div class="col-span-2 md:col-span-1">
-                    <a href="{{ route('superadmin.dashboard') }}" class="w-full block text-center bg-gray-300 p-2 rounded-lg hover:bg-gray-500 hover:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
-                    </a>
-                </div>
-                <div class="col-span-2 md:col-span-1 items-center ">
-                    <button type="submit" class="w-full bg-orange-300 p-2 rounded-lg hover:bg-orange-500 hover:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-                        </svg>
-                    </button>
-                </div>
+            <div>
+                <select name="kategori" class=" p-2 border rounded-lg cursor-pointer">
+                    <option value="">Semua Kategori</option>
+                    @foreach($kategoris as $kategori)
+                    <option value="{{ $kategori->id }}" {{ request('kategori') == $kategori->id ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select name="pendampingan" class="p-2 border rounded-lg cursor-pointer">
+                    <option value="">Semua Pendampingan</option>
+                    @foreach($pendampingans as $pendampingan)
+                    <option value="{{ $pendampingan->id }}" {{ request('pendampingan') == $pendampingan->id ? 'selected' : '' }}>{{ $pendampingan->opsi_pendampingan }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select name="tindaklanjut" class="p-2 border rounded-lg cursor-pointer">
+                    <option value="">Semua Tindak Lanjut</option>
+                    @foreach($tindaklanjuts as $tindaklanjut)
+                        <option value="{{ $tindaklanjut->id }}" {{ request('tindaklanjut') == $tindaklanjut->id ? 'selected' : '' }}>
+                            {{ $tindaklanjut->opsi_tindaklanjut }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <select name="bulan" class=" p-2 border rounded-lg cursor-pointer">
+                    <option value="">Bulan</option>
+                    @for ($i = 1; $i <= 12; $i++)
+                        <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>{{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div>
+                <select name="tahun" class=" p-2 border rounded-lg cursor-pointer">
+                    <option value="">Tahun</option>
+                    @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
+                        <option value="{{ $i }}" {{ request('tahun') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div>
+                <select name="sort" class="w-fit p-2 border rounded-lg cursor-pointer">
+                    <option value="created_at_desc" @if(request('sort') == 'created_at_desc') selected @endif>Tanggal Terbaru</option>
+                    <option value="created_at_asc" @if(request('sort') == 'created_at_asc') selected @endif>Tanggal Terlama</option>
+                    <option value="status_asc" @if(request('sort') == 'status_asc') selected @endif>Status (A-Z)</option>
+                    <option value="status_desc" @if(request('sort') == 'status_desc') selected @endif>Status (Z-A)</option>
+                </select>
+            </div>
+            <div class="col-span-2 md:col-span-1">
+                <a href="{{ route('superadmin.dashboard') }}" class="w-full block text-center bg-gray-300 p-2 rounded-lg hover:bg-gray-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="col-span-2 md:col-span-1 items-center ">
+                <button type="submit" class="w-full bg-orange-300 p-2 rounded-lg hover:bg-orange-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </form>

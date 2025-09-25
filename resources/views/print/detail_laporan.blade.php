@@ -85,6 +85,18 @@
                         <td class="label">Nama Pelapor</td>
                         <td>: {{ $pengaduan->nama_pelapor ?? 'N/A' }}</td>
                     </tr>
+                    @if (!empty($pengaduan->telepon_pelapor))
+                    <tr>
+                        <td class="label">No. Telepon</td>
+                        <td>: {{ $pengaduan->telepon_pelapor }}</td>
+                    </tr>
+                    @endif
+                    @if (!empty($pengaduan->email_pelapor))
+                    <tr>
+                        <td class="label">Email</td>
+                        <td>: {{ $pengaduan->email_pelapor }}</td>
+                    </tr>
+                    @endif
                     <tr>
                         <td class="label">Kategori</td>
                         <td>
@@ -95,8 +107,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="label">Status Akhir</td>
-                        <td>: {{ strtoupper($pengaduan->status) }}</td>
+                        <td class="label">Pendampingan</td>
+                        <td>: {{ $pengaduan->pendampingan->opsi_pendampingan }}</td>
                     </tr>
                     <tr>
                         <td class="label">Kronologi Kejadian</td>
@@ -109,12 +121,20 @@
                 <h3 class="section-title">B. Detail Penanganan</h3>
                 <table class="detail-table">
                     <tr>
+                        <td class="label">Status Akhir</td>
+                        <td>: {{ strtoupper($pengaduan->status) }}</td>
+                    </tr>
+                    <tr>
                         <td class="label">Ditangani Oleh</td>
                         <td>: {{ $pengaduan->penanganan->admin->name }}</td>
                     </tr>
                     <tr>
                         <td class="label">Tanggal Penanganan</td>
                         <td>: {{ $pengaduan->penanganan->created_at?->translatedFormat('d F Y, H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tindak Lanjut</td>
+                        <td>: {{ strtoupper($pengaduan->penanganan->tindaklanjut->opsi_tindaklanjut) }}</td>
                     </tr>
                     <tr>
                         <td class="label">Laporan Hasil Penanganan</td>
@@ -128,9 +148,12 @@
                 <h3 class="section-title">{{ $pengaduan->penanganan ? 'C. Hasil Akhir' : 'B. Hasil Akhir' }}: Laporan Ditolak</h3>
                 <table class="detail-table">
                     <tr>
-                        <td class="label" style="vertical-align: top; color: #dc2626;">Alasan Penolakan</td>
-                        <td style="vertical-align: top;">:</td>
-                        <td style="white-space: pre-wrap;">{{ $pengaduan->alasan_penolakan }}</td>
+                        <td class="label">Status Akhir</td>
+                        <td>: {{ strtoupper($pengaduan->status) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="color: #dc2626;">Alasan Penolakan</td>
+                        <td>: {{ $pengaduan->alasan_penolakan }}</td>
                     </tr>
                 </table>
             </div>

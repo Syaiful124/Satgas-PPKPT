@@ -90,15 +90,15 @@
                 <td class="p-3 text-center">{{ $pengaduan->created_at?->translatedFormat('d-m-Y') }}</td>
                 <td class="p-3 text-center">
                     @if($pengaduan->status == 'menunggu')
-                        <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu Verifikasi</span>
+                        <span class="px-3 py-1 text-sm rounded-full badge-menunggu">Menunggu</span>
                         <p class="text-xs text-gray-500">Menunggu Verifikasi</p>
                     @elseif($pengaduan->status == 'penanganan')
                         <span class="px-3 py-1 text-sm rounded-full badge-penanganan">Penanganan</span>
                         <p class="text-xs text-gray-500">
                             @if($pengaduan->penanganan)
-                                Menunggu konfirmasi
+                                Menunggu Ditindaklanjuti
                             @else
-                                Menunggu laporan admin
+                                Menunggu Klarifikasi & Pemeriksaan Petugas
                             @endif
                         </p>
                     @endif
