@@ -14,12 +14,13 @@ class Pengaduan extends Model
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'layanan_pemulihan' => 'array',
     ];
     public function pendampingan()
     {
         return $this->belongsTo(Pendampingan::class);
     }
-    
+
     public function tindaklanjut()
     {
         return $this->belongsTo(Tindaklanjut::class);
@@ -48,4 +49,5 @@ class Pengaduan extends Model
     {
         return $this->hasMany(BuktiPengaduan::class);
     }
+
 }

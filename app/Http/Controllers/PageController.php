@@ -7,27 +7,31 @@ use Illuminate\Http\Request;
 use App\Models\BuktiPenanganan;
 use App\Models\Penanganan;
 use Illuminate\View\View;
-use App\Models\User;
+use App\Models\User;use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
     public function beranda()
     {
-        $penangananIds = Penanganan::whereHas('pengaduan', function ($query) {
-                $query->where('status', 'selesai');
-            })
-            ->whereHas('bukti', function ($query) {
-                $query->where('file_type', 'video');
-            })
-            ->latest('updated_at')
-            ->limit(6)
-            ->pluck('id');
+        $folderGaleri = 'galeri-satgas';
 
-        $galeriItems = BuktiPenanganan::whereIn('penanganan_id', $penangananIds)
-            ->where('file_type', 'video')
-            ->latest()
-            ->get()
-            ->unique('penanganan_id');
+        $files = Storage::disk('public')->files($folderGaleri);
+
+        $galeriItems = collect($files)->take(9)->map(function ($path) {
+            $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            $type = 'image';
+
+            if (in_array($ext, ['mp4', 'mov', 'webm', 'ogv'])) {
+                $type = 'video';
+            }
+
+            return (object) [
+                'url' => Storage::url($path),
+                'type' => $type,
+                'caption' => 'Galeri Kegiatan Satgas PPKPT - ' . Str::title(str_replace('-', ' ', pathinfo($path, PATHINFO_FILENAME))),
+            ];
+        });
 
         $superadmins = User::where('role', 'superadmin')->orderBy('id', 'asc')->get();
         $ketua = $superadmins->first();

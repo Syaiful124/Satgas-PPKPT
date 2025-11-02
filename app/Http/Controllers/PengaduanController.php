@@ -18,8 +18,7 @@ use App\Models\User;
 
 class PengaduanController extends Controller
 {
-    // === UNTUK SUPERADMIN ===
-
+    // === SUPERADMIN ===
     public function laporanMasukSuperAdmin(Request $request)
     {
         $query = Pengaduan::with('kategori', 'pendampingan', 'tindaklanjut')
@@ -28,12 +27,8 @@ class PengaduanController extends Controller
         if ($request->filled('search')) {
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
-
-        // Fitur Filter
         if ($request->filled('bulan')) $query->whereMonth('created_at', $request->bulan);
         if ($request->filled('tahun')) $query->whereYear('created_at', $request->tahun);
-
-        // Fitur Urutkan
         if ($request->filled('sort')) {
             $sort = explode('_', $request->sort);
             if(count($sort) == 2) $query->orderBy($sort[0], $sort[1]);
@@ -63,13 +58,11 @@ class PengaduanController extends Controller
             'petugas_id' => 'required|exists:users,id',
         ]);
 
-        // Update status dan simpan ID petugas yang ditugaskan
         $pengaduan->update([
             'status' => 'penanganan',
             'petugas_id' => $request->petugas_id
         ]);
 
-        // Arahkan ke halaman print surat tugas
         return redirect()->route('superadmin.surat.penugasan', $pengaduan)
                         ->with('success', 'Laporan disetujui dan surat tugas telah dibuat.');
     }
@@ -90,8 +83,17 @@ class PengaduanController extends Controller
 
     public function selesaikanPengaduan(Request $request, Pengaduan $pengaduan)
     {
-        $pengaduan->update(['status' => 'selesai']);
-        return redirect()->route('superadmin.dashboard')->with('success', 'Pengaduan telah diselesaikan.');
+        $request->validate([
+            'layanan_pemulihan' => 'nullable|array',
+            'layanan_pemulihan.*' => 'in:psikologis,akademis,administratif',
+        ]);
+
+        $pengaduan->update([
+            'status' => 'selesai',
+            'layanan_pemulihan' => $request->layanan_pemulihan,
+        ]);
+
+        return redirect()->route('superadmin.dashboard')->with('success', 'Pengaduan telah ditandai sebagai Selesai.');
     }
 
     public function laporanSelesai(Request $request)
@@ -110,8 +112,7 @@ class PengaduanController extends Controller
     }
 
 
-    // === UNTUK ADMIN ===
-
+    // === ADMIN ===
     public function laporanMasukAdmin(Request $request)
     {
         $query = Pengaduan::with('kategori', 'pendampingan', 'tindaklanjut')
@@ -124,7 +125,6 @@ class PengaduanController extends Controller
 
     public function showAdmin(Pengaduan $pengaduan)
     {
-        // Memastikan admin hanya bisa membuka laporan berstatus penanganan
         if($pengaduan->status !== 'penanganan'){
             abort(403, 'Anda tidak memiliki akses ke laporan ini.');
         }
@@ -133,11 +133,7 @@ class PengaduanController extends Controller
         return view('admin.detail_penanganan', compact('pengaduan', 'tindaklanjuts'));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNGSI UNTUK PUBLIC / USER
-    |--------------------------------------------------------------------------
-    */
+    // === PUBLIC / USER ===
     public function createPublic()
     {
         $kategoris = Kategori::all();
@@ -180,9 +176,8 @@ class PengaduanController extends Controller
                 'file',
                 'mimes:' . $imageFormats . ',' . $videoFormats,
                 function ($attribute, $value, $fail) {
-                    // Validasi ukuran custom
-                    $maxImageSize = 10 * 1024; // 10 MB untuk gambar
-                    $maxVideoSize = 300 * 1024; // 300 MB untuk video
+                    $maxImageSize = 10 * 1024;
+                    $maxVideoSize = 300 * 1024;
 
                     $isImage = Str::startsWith($value->getMimeType(), 'image/');
                     $isVideo = Str::startsWith($value->getMimeType(), 'video/');
@@ -209,7 +204,7 @@ class PengaduanController extends Controller
             if (Auth::check()) {
                 $reporter_name = Auth::user()->name;
                 $reporter_email = Auth::user()->email;
-                $reporter_phone = $request->telepon_pelapor; // Ambil dari form karena mungkin user belum punya data telepon
+                $reporter_phone = $request->telepon_pelapor;
             } else {
                 $reporter_name = $request->nama_pelapor;
                 $reporter_email = $request->email_pelapor;
@@ -247,20 +242,16 @@ class PengaduanController extends Controller
         return redirect()->route('beranda')->with('success', 'Pengaduan Anda telah berhasil dikirim. Terima kasih.');
     }
 
-    // Menampilkan detail pengaduan milik user
     public function showUser(Pengaduan $pengaduan)
     {
-        // Pastikan user hanya bisa melihat laporannya sendiri
         if (Gate::denies('view', $pengaduan)) {
             abort(403);
         }
         return view('user.detail_pengaduan', compact('pengaduan'));
     }
 
-    // Menampilkan form edit pengaduan milik user
     public function editUser(Pengaduan $pengaduan)
     {
-        // Pastikan user hanya bisa mengedit laporannya sendiri & statusnya 'menunggu'
         if (Gate::denies('update', $pengaduan)) {
             abort(403, 'Anda tidak dapat mengedit laporan ini.');
         }
@@ -275,10 +266,8 @@ class PengaduanController extends Controller
         return view('user.edit_pengaduan', compact('pengaduan', 'kategoris', 'pendampingans', 'lainnyaKategoriId'));
     }
 
-    // Proses update pengaduan oleh user
     public function updateUser(Request $request, Pengaduan $pengaduan)
     {
-        // Otorisasi: pastikan hanya pemilik yang bisa mengedit
         if (Gate::denies('update', $pengaduan)) {
             abort(403, 'Anda tidak diizinkan untuk mengedit laporan ini.');
         }
@@ -315,9 +304,8 @@ class PengaduanController extends Controller
                 'file',
                 'mimes:' . $imageFormats . ',' . $videoFormats,
                 function ($attribute, $value, $fail) {
-                    // Validasi ukuran custom
-                    $maxImageSize = 10 * 1024; // 10 MB untuk gambar
-                    $maxVideoSize = 300 * 1024; // 300 MB untuk video
+                    $maxImageSize = 10 * 1024;
+                    $maxVideoSize = 300 * 1024;
 
                     $isImage = Str::startsWith($value->getMimeType(), 'image/');
                     $isVideo = Str::startsWith($value->getMimeType(), 'video/');
@@ -344,7 +332,7 @@ class PengaduanController extends Controller
             if (Auth::check()) {
                 $reporter_name = Auth::user()->name;
                 $reporter_email = Auth::user()->email;
-                $reporter_phone = $request->telepon_pelapor; 
+                $reporter_phone = $request->telepon_pelapor;
             } else {
                 $reporter_name = $request->nama_pelapor;
                 $reporter_email = $request->email_pelapor;
@@ -365,16 +353,12 @@ class PengaduanController extends Controller
             'kategori_lainnya' => $request->kategori_id == $lainnyaKategoriId ? $request->kategori_lainnya : null,
         ]);
 
-        // Logika untuk menangani file bukti baru
         if ($request->hasFile('bukti')) {
-            // Hapus semua bukti lama dari storage
             foreach ($pengaduan->bukti as $buktiLama) {
                 Storage::delete($buktiLama->file_path);
             }
-            // Hapus semua record bukti lama dari database
             $pengaduan->bukti()->delete();
 
-            // Simpan file baru
             foreach ($request->file('bukti') as $file) {
                 $path = $file->store('public/bukti-pelapor');
                 $type = Str::startsWith($file->getMimeType(), 'image/') ? 'image' : 'video';
@@ -390,14 +374,12 @@ class PengaduanController extends Controller
         return redirect()->route('account.pengaduan.show', $pengaduan)->with('success', 'Laporan berhasil diperbarui.');
     }
 
-    // Proses hapus pengaduan oleh user
     public function destroyUser(Pengaduan $pengaduan)
     {
         if (Gate::denies('delete', $pengaduan)) {
             abort(403);
         }
 
-        // Hapus file jika ada
         if ($pengaduan->foto_kejadian) {
             Storage::delete($pengaduan->foto_kejadian);
         }

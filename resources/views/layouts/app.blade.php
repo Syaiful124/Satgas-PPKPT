@@ -64,7 +64,7 @@
 <body class="md:flex bg-gray-100 min-h-screen">
     <div class="header-sidebar">
         <header class="md:hidden bg-white shadow-md p-4 flex justify-start gap-4 items-center">
-            <button id="hamburger-button" class="text-gray-800">
+            <button id="sidebar-button" class="text-gray-800">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
             <div class="flex items-center gap-2">
@@ -125,7 +125,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                                     <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
                                     </svg>
-                                    Management Account
+                                    Management Akuns
                                 </a>
                             </li>
                         @elseif(auth()->user()->role == 'admin')
@@ -143,7 +143,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                                     <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
                                     </svg>
-                                    Management Account
+                                    Management Akuns
                                 </a>
                             </li>
                         @endif
@@ -167,13 +167,13 @@
                         <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
                         <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
                         </svg>
-                        Logout
+                        Keluar
                     </button>
                 </form>
             </div>
         </aside>
     </div>
-    <main class="flex flex-col p-8">
+    <main class="flex flex-col p-8 w-full">
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <span class="block sm:inline">{{ session('success') }}</span>
@@ -190,7 +190,7 @@
     @stack('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const hamburgerButton = document.getElementById('hamburger-button');
+        const sidebarButton = document.getElementById('sidebar-button');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
 
@@ -199,17 +199,14 @@
             overlay.classList.toggle('hidden');
         }
 
-        hamburgerButton.addEventListener('click', toggleSidebar);
+        sidebarButton.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', toggleSidebar);
 
         const togglePasswordButtons = document.querySelectorAll('.toggle-password');
 
         togglePasswordButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Dapatkan input password yang berada tepat sebelum tombol ini
                 const passwordInput = this.previousElementSibling;
-
-                // Dapatkan ikon mata di dalam tombol
                 const eyeIcon = this.querySelector('.bi-eye-fill');
                 const eyeSlashIcon = this.querySelector('.bi-eye-slash-fill');
 
@@ -237,13 +234,9 @@
 
         passwordInput.addEventListener('input', function() {
             const val = this.value;
-            // Length
             updateCheck(checks.length, val.length >= 8);
-            // Uppercase
             updateCheck(checks.uppercase, /[A-Z]/.test(val));
-            // Number
             updateCheck(checks.number, /[0-9]/.test(val));
-            // Symbol
             updateCheck(checks.symbol, /[^A-Za-z0-9]/.test(val));
         });
 

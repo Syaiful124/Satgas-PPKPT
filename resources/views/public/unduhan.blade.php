@@ -2,6 +2,7 @@
 @section('title', 'Pusat Unduhan')
 
 @section('content')
+<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden md:hidden"></div>
 <div class="p-8 w-full h-full mx-auto">
     <div class="text-center mb-10">
         <h1 class="text-3xl font-bold text-gray-800">Pusat Unduhan</h1>

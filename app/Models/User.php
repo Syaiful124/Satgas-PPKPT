@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\App;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Pengaduan;
 
-// Hapus "implements MustVerifyEmail"
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;

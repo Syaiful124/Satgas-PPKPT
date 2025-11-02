@@ -17,16 +17,17 @@
     </style>
 </head>
 <body class=" flex justify-center w-full">
-    <a href="{{ route('beranda') }}" onclick="window.history.back(); return false;" class="hover:underline absolute text-1xl top-4 left-4 ml-6 mt-4 flex items-center w-auto gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-        </svg>
-        Kembali
-    </a>
-    <div class="w-full ml-20 mr-20 mt-10 mb-10">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">LAPORAN PENGADUAN</h1>
-            <p class="text-white">Lengkapi formulir untuk laporan pengaduan Anda</p>
+    <div class="w-full mx-10 md:mx-20 my-10">
+        <div class=" flex items-center justify-center mb-8">
+            <a href="{{ route('beranda') }}" onclick="window.history.back(); return false;" class="hover:underline flex text-center items-center w-auto gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </a>
+            <div class="text-center w-full">
+                <h1 class="text-3xl font-bold text-gray-800">LAPORAN PENGADUAN</h1>
+                <p class="text-white">Lengkapi formulir untuk laporan pengaduan Anda</p>
+            </div>
         </div>
 
         @if ($errors->any())
@@ -40,11 +41,11 @@
             </div>
         @endif
 
-        <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data" id="pengaduanForm" class="flex flex-col gap-4">
+        <form action="{{ route('pengaduan.store') }}" method="POST" enctype="multipart/form-data" id="pengaduanForm">
             @csrf
-            <div class="flex gap-4">
-                <div class="flex flex-col w-full gap-4">
-                    <div class="bg-white p-5 rounded-lg shadow-lg flex flex-col gap-2 ">
+            <div class="flex flex-col gap-4">
+                <div class="flex w-full gap-4">
+                    <div class="bg-white p-5 rounded-lg shadow-lg flex flex-col gap-2 w-full">
                         <div>
                             <label class="flex items-center">
                                 <input type="checkbox" name="anonim" id="anonimCheckbox" value="1" class="form-checkbox h-5 w-5 text-orange-600">
@@ -52,28 +53,26 @@
                             </label>
                         </div>
 
-                        <div id="identitasPelapor">
-                            <div class="mb-2">
-                                <label for="nama_pelapor" class="block text-gray-700 font-bold mb-1">Nama Pengadu</label>
+                        <div id="identitasPelapor" class="flex flex-col m-2 items-center">
+                            <div class="flex flex-col md:flex-row m-2">
+                                <label for="nama_pelapor" class="block text-gray-700 font-bold w-1/3">Nama Pengadu*</label>
                                 <input placeholder="nama pelapor" type="text" name="nama_pelapor" id="namaPelapor" value="{{ auth()->user()->name ?? old('nama_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
-                            <div class="mb-2">
-                                <label for="email_pelapor" class="block text-gray-700 font-bold mb-1">Email</label>
+                            <div class="flex flex-col md:flex-row m-2">
+                                <label for="email_pelapor" class="block text-gray-700 font-bold w-1/3">Email*</label>
                                 <input placeholder="email@gmail.com" type="email" name="email_pelapor" id="emailPelapor" value="{{ auth()->user()->email ?? old('email_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" {{ auth()->check() ? 'readonly' : '' }}>
                             </div>
-                            <div>
-                                <label for="telepon_pelapor" class="block text-gray-700 font-bold mb-1">No. Telepon/HP/WhatsApp</label>
+                            <div class="flex flex-col md:flex-row m-2">
+                                <label for="telepon_pelapor" class="block text-gray-700 font-bold w-1/3">No. Telepon/HP/WhatsApp</label>
                                 <input placeholder="no. telepon" type="text" name="telepon_pelapor" id="teleponPelapor" value="{{ old('telepon_pelapor') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg">
                             </div>
                         </div>
-                    </div>
-                    <div class="bg-white p-5 rounded-lg shadow-lg flex flex-col gap-2 ">
-                        <div>
-                            <label for="judul" class="block text-gray-700 font-bold mb-1">Judul Pengaduan*</label>
+                        <div class="flex flex-col md:flex-row items-center">
+                            <label for="judul" class="block text-gray-700 font-bold w-1/3">Judul Pengaduan*</label>
                             <input placeholder="judul" type="text" name="judul" value="{{ old('judul') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required>
                         </div>
-                        <div>
-                            <label for="kategori_id" class="block text-gray-700 font-bold mb-2">Kategori Pengaduan*</label>
+                        <div class="flex flex-col md:flex-row items-center">
+                            <label for="kategori_id" class="block text-gray-700 font-bold  w-1/3">Kategori Pengaduan*</label>
                             <select name="kategori_id" id="kategoriSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg text-center" required>
                                 <option value="">-- Pilih Kategori --</option>
                                 @foreach($kategoris as $kategori)
@@ -84,8 +83,8 @@
                         <div id="kategoriLainnyaContainer" class="hidden">
                             <input type="text" name="kategori_lainnya" id="kategoriLainnyaInput" value="{{ old('kategori_lainnya') }}" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" placeholder="Tuliskan Kategorinya">
                         </div>
-                        <div class="mb-4">
-                            <label for="pendampingan_id" class="block text-gray-700 font-bold mb-2">Opsi Pendampingan*</label>
+                        <div class="flex flex-col md:flex-row">
+                            <label for="pendampingan_id" class="block text-gray-700 font-bold  w-1/3">Opsi Pendampingan*</label>
                             <select name="pendampingan_id" id="pendampinganSelect" class="bg-gray-100 w-full px-3 py-2 border rounded-lg text-center" required>
                                 <option value="">-- Pilih Pendampingan  --</option>
                                 @foreach($pendampingans as $pendampingan)
@@ -96,10 +95,16 @@
                     </div>
                 </div>
 
+                <div class="p-5 bg-white rounded-lg shadow-lg">
+                    <label for="isi_laporan" class="block text-gray-700 font-bold mb-2">Kronologi Kejadian*</label>
+                    <textarea name="isi_laporan" rows="3" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required
+                    placeholder="Jelaskan secara detail nama korban, lokasi kejadian, tanggal/waktu kejadian, kondisi korban, dll.">{{ old('isi_laporan') }}</textarea>
+                </div>
+
                 <div class="flex flex-col bg-white p-5 rounded-lg shadow-lg 2 w-full h-full">
                     <p class="block text-gray-700 font-bold mb-2 flex items-center justify-center h-full w-full">Bukti Kejadian</p>
                     <div class="flex items-center justify-center space-x-4 flex-col w-full h-full">
-                        <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-3 gap-2 mb-4 min-h-[100px] max-h-[100%] p-2">
+                        <div id="preview-container" class="w-full bg-gray-200 rounded-lg grid grid-cols-6 gap-2 mb-4 min-h-[100px] max-h-[100%] p-2">
                         </div>
                     </div>
                     <div class="flex flex-row gap-1 items-center justify-between w-full h-max">
@@ -114,20 +119,17 @@
                         <br>*Maksimal 6 file bukti
                     </p>
                 </div>
-            </div>
-            <div class="p-5 bg-white rounded-lg shadow-lg">
-                <label for="isi_laporan" class="block text-gray-700 font-bold mb-2">Kronologi Kejadian*</label>
-                <textarea name="isi_laporan" rows="3" class="bg-gray-100 w-full px-3 py-2 border rounded-lg" required
-                placeholder="Jelaskan secara detail nama korban, lokasi kejadian, tanggal/waktu kejadian, kondisi korban, dll.">{{ old('isi_laporan') }}</textarea>
-            </div>
-            <div>
-                <label class="flex items-start cursor-pointer">
-                    <input type="checkbox" name="persetujuan" id="persetujuanCheckbox" value="1" class="form-checkbox h-5 w-5 text-orange-600 mt-1" required>
-                    <span class="ml-2 text-gray-700 font-semibold">Apakah anda yakin sudah mengisi dengan benar dan sejujurnya?<br><small class="font-normal">Pastikan semua data yang anda masukkan sudah benar sebelum mengirim untuk bahan pertimbangan.</small></span>
-                </label>
-            </div>
-            <div class="text-center">
-                <button type="submit" id="submitButton" class="w-full md:w-1/2 bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Kirim Pengaduan</button>
+
+                <div>
+                    <label class="flex items-start cursor-pointer">
+                        <input type="checkbox" name="persetujuan" id="persetujuanCheckbox" value="1" class="form-checkbox h-5 w-5 text-orange-600 mt-1" required>
+                        <span class="ml-2 text-gray-700 font-semibold">Apakah anda yakin sudah mengisi dengan benar dan sejujurnya?<br><small class="font-normal">Pastikan semua data yang anda masukkan sudah benar sebelum mengirim untuk bahan pertimbangan.</small></span>
+                    </label>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" id="submitButton" class="w-full md:w-1/2 bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Kirim Pengaduan</button>
+                </div>
             </div>
         </form>
     </div>
@@ -183,7 +185,7 @@
         // === LOGIKA BARU UNTUK MULTIPLE FILE UPLOAD ===
         const fileInput = document.getElementById('bukti-input');
         const previewContainer = document.getElementById('preview-container');
-        let selectedFiles = []; // Array untuk menampung file yang valid
+        let selectedFiles = [];
 
         fileInput.addEventListener('change', function(event) {
             const newFiles = Array.from(event.target.files);
@@ -200,24 +202,22 @@
         });
 
         function updatePreview() {
-            previewContainer.innerHTML = ''; // Kosongkan preview lama
+            previewContainer.innerHTML = '';
 
             if (selectedFiles.length === 0) {
                 previewContainer.classList.remove('grid');
-                previewContainer.classList.add('flex'); // Kembalikan ke flex jika kosong
+                previewContainer.classList.add('flex');
             } else {
                 previewContainer.classList.remove('flex');
-                previewContainer.classList.add('grid'); // Gunakan grid jika ada file
+                previewContainer.classList.add('grid');
             }
 
             selectedFiles.forEach((file, index) => {
                 const reader = new FileReader();
 
-                // Wrapper untuk satu item file (preview + info)
                 const fileItemWrapper = document.createElement('div');
                 fileItemWrapper.className = 'w-full h-auto bg-gray-100 rounded-lg shadow-sm flex flex-col';
 
-                // Wrapper untuk preview media
                 const previewWrapper = document.createElement('div');
                 previewWrapper.className = 'relative w-full h-24 bg-gray-200 rounded-t-lg';
 
@@ -227,11 +227,10 @@
                 } else {
                     mediaElement = document.createElement('video');
                 }
-                mediaElement.src = URL.createObjectURL(file); // Gunakan URL.createObjectURL untuk preview cepat
+                mediaElement.src = URL.createObjectURL(file);
                 mediaElement.className = 'w-full h-full object-cover rounded-t-lg';
                 previewWrapper.appendChild(mediaElement);
 
-                // Tombol Hapus
                 const removeBtn = document.createElement('button');
                 removeBtn.type = 'button';
                 removeBtn.className = 'absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-75 hover:opacity-100';
@@ -252,7 +251,7 @@
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'block truncate font-semibold text-gray-700';
                 nameSpan.textContent = file.name;
-                nameSpan.title = file.name; // Tooltip jika nama terlalu panjang
+                nameSpan.title = file.name;
 
                 const sizeSpan = document.createElement('span');
                 sizeSpan.className = 'block text-gray-500';
@@ -261,7 +260,6 @@
                 infoDiv.appendChild(nameSpan);
                 infoDiv.appendChild(sizeSpan);
                 fileItemWrapper.appendChild(infoDiv);
-                // =======================================================================
 
                 previewContainer.appendChild(fileItemWrapper);
             });
@@ -275,12 +273,10 @@
             fileInput.files = dataTransfer.files;
         }
 
-        // === Event Listeners ===
         anonimCheckbox.addEventListener('change', toggleIdentitas);
         kategoriSelect.addEventListener('change', toggleKategoriLainnya);
         persetujuanCheckbox.addEventListener('change', toggleSubmitButton);
 
-        // === Panggil fungsi saat halaman pertama kali dimuat ===
         toggleIdentitas();
         toggleKategoriLainnya();
         toggleSubmitButton();

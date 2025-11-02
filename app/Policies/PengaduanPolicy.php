@@ -20,7 +20,6 @@ class PengaduanPolicy
      */
     public function update(User $user, Pengaduan $pengaduan): bool
     {
-        // User bisa update jika laporan itu miliknya DAN statusnya masih 'menunggu'
         return $user->id === $pengaduan->user_id && $pengaduan->status === 'menunggu';
     }
 
@@ -29,7 +28,6 @@ class PengaduanPolicy
      */
     public function delete(User $user, Pengaduan $pengaduan): bool
     {
-        // User bisa hapus jika laporan itu miliknya DAN statusnya masih 'menunggu'
         return $user->id === $pengaduan->user_id && $pengaduan->status === 'menunggu';
     }
 }

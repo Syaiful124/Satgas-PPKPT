@@ -22,13 +22,13 @@ class PenangananController extends Controller
         $request->validate([
             'tindaklanjut_id' => 'required|exists:tindaklanjuts,id',
             'isi_penanganan' => 'required|string',
-            'bukti' => 'nullable|array|max:6', // Validasi untuk multi-file
+            'bukti' => 'nullable|array|max:6',
             'bukti.*' => [
                 'file',
                 'mimes:' . $imageFormats . ',' . $videoFormats,
                 function ($attribute, $value, $fail) {
-                    $maxImageSize = 10 * 1024; // 10 MB
-                    $maxVideoSize = 300 * 1024; // 300 MB
+                    $maxImageSize = 10 * 1024;
+                    $maxVideoSize = 300 * 1024;
 
                     $isImage = Str::startsWith($value->getMimeType(), 'image/');
                     if ($isImage && $value->getSize() > $maxImageSize * 1024) {
@@ -43,7 +43,6 @@ class PenangananController extends Controller
             ],
         ]);
 
-        // Buat atau update data penanganan
         $penanganan = $pengaduan->penanganan()->updateOrCreate(
             ['pengaduan_id' => $pengaduan->id],
             [
@@ -53,15 +52,12 @@ class PenangananController extends Controller
             ]
         );
 
-        // Proses upload file bukti baru
         if ($request->hasFile('bukti')) {
-            // Hapus bukti lama terlebih dahulu jika ada
             foreach ($penanganan->bukti as $buktiLama) {
                 Storage::delete($buktiLama->file_path);
                 $buktiLama->delete();
             }
 
-            // Simpan bukti baru
             foreach ($request->file('bukti') as $file) {
                 $path = $file->store('public/bukti-penanganan');
                 $type = Str::startsWith($file->getMimeType(), 'image/') ? 'image' : 'video';
@@ -75,7 +71,6 @@ class PenangananController extends Controller
             }
         }
 
-        // Update status pengaduan utama
         $pengaduan->update(['status' => 'penanganan']);
 
         return redirect()->route('admin.laporan.masuk')->with('success', 'Laporan penanganan berhasil dikirim.');

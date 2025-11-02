@@ -40,7 +40,6 @@
             </div>
         @endif
 
-        {{-- FORM ACTION & METHOD DIUBAH --}}
         <form action="{{ route('account.pengaduan.update', $pengaduan) }}" method="POST" enctype="multipart/form-data" id="pengaduanForm">
             @csrf
             @method('PUT')
@@ -159,7 +158,6 @@ Deskripsikan lebih lanjut..."
         </form>
     </div>
 
-    {{-- SCRIPT TETAP SAMA KARENA SUDAH DIDESAIN UNTUK ADAPTIF --}}
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const anonimCheckbox = document.getElementById('anonimCheckbox');
@@ -177,7 +175,7 @@ Deskripsikan lebih lanjut..."
         function toggleIdentitas() {
             const isAnonim = anonimCheckbox.checked;
             identitasPelapor.style.display = isAnonim ? 'none' : 'block';
-            if ({{ auth()->check() ? 'false' : 'true' }}) { // Hanya set required untuk tamu
+            if ({{ auth()->check() ? 'false' : 'true' }}) {
                 namaPelaporInput.required = !isAnonim;
                 emailPelaporInput.required = !isAnonim;
                 teleponPelaporInput.required = !isAnonim;
@@ -213,7 +211,7 @@ Deskripsikan lebih lanjut..."
         // === LOGIKA BARU UNTUK MULTIPLE FILE UPLOAD ===
         const fileInput = document.getElementById('bukti-input');
         const previewContainer = document.getElementById('preview-container');
-        let selectedFiles = []; // Array untuk menampung file yang valid
+        let selectedFiles = [];
 
         fileInput.addEventListener('change', function(event) {
             const newFiles = Array.from(event.target.files);
@@ -230,25 +228,23 @@ Deskripsikan lebih lanjut..."
         });
 
         function updatePreview() {
-            previewContainer.innerHTML = ''; // Kosongkan preview lama
+            previewContainer.innerHTML = '';
 
             if (selectedFiles.length === 0) {
                 previewContainer.classList.remove('grid');
-                previewContainer.classList.add('flex'); // Kembalikan ke flex jika kosong
+                previewContainer.classList.add('flex');
             } else {
                 previewContainer.classList.remove('flex');
-                previewContainer.classList.add('grid'); // Gunakan grid jika ada file
+                previewContainer.classList.add('grid');
             }
 
             selectedFiles.forEach((file, index) => {
                 const reader = new FileReader();
 
-                // Wrapper untuk satu item file (preview + info)
                 const fileItemWrapper = document.createElement('div');
                 fileItemWrapper.className = 'w-full h-auto bg-gray-100 rounded-lg shadow-sm flex flex-col';
 
-                // Wrapper untuk preview media
-                const previewWrapper = document.createElement('div');
+\                const previewWrapper = document.createElement('div');
                 previewWrapper.className = 'relative w-full h-24 bg-gray-200 rounded-t-lg';
 
                 let mediaElement;
@@ -257,7 +253,7 @@ Deskripsikan lebih lanjut..."
                 } else {
                     mediaElement = document.createElement('video');
                 }
-                mediaElement.src = URL.createObjectURL(file); // Gunakan URL.createObjectURL untuk preview cepat
+                mediaElement.src = URL.createObjectURL(file);
                 mediaElement.className = 'w-full h-full object-cover rounded-t-lg';
                 previewWrapper.appendChild(mediaElement);
 
@@ -282,7 +278,7 @@ Deskripsikan lebih lanjut..."
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'block truncate font-semibold text-gray-700';
                 nameSpan.textContent = file.name;
-                nameSpan.title = file.name; // Tooltip jika nama terlalu panjang
+                nameSpan.title = file.name;
 
                 const sizeSpan = document.createElement('span');
                 sizeSpan.className = 'block text-gray-500';
@@ -291,7 +287,6 @@ Deskripsikan lebih lanjut..."
                 infoDiv.appendChild(nameSpan);
                 infoDiv.appendChild(sizeSpan);
                 fileItemWrapper.appendChild(infoDiv);
-                // =======================================================================
 
                 previewContainer.appendChild(fileItemWrapper);
             });
@@ -305,12 +300,10 @@ Deskripsikan lebih lanjut..."
             fileInput.files = dataTransfer.files;
         }
 
-        // === Event Listeners ===
         anonimCheckbox.addEventListener('change', toggleIdentitas);
         kategoriSelect.addEventListener('change', toggleKategoriLainnya);
         persetujuanCheckbox.addEventListener('change', toggleSubmitButton);
 
-        // === Panggil fungsi saat halaman pertama kali dimuat untuk menyesuaikan dengan data yang ada ===
         toggleIdentitas();
         toggleKategoriLainnya();
         toggleSubmitButton();

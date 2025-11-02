@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('status_perubahan')->nullable()->after('role'); // misal: 'pending_update', 'pending_delete'
-            $table->json('data_perubahan')->nullable()->after('status_perubahan'); // Menyimpan data baru sebelum disetujui
+            $table->string('status_perubahan')->nullable()->after('role');
+            $table->json('data_perubahan')->nullable()->after('status_perubahan');
         });
     }
     public function down(): void {

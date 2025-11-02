@@ -101,10 +101,8 @@
 
         togglePasswordButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Dapatkan input password yang berada tepat sebelum tombol ini
                 const passwordInput = this.previousElementSibling;
 
-                // Dapatkan ikon mata di dalam tombol
                 const eyeIcon = this.querySelector('.bi-eye-fill');
                 const eyeSlashIcon = this.querySelector('.bi-eye-slash-fill');
 

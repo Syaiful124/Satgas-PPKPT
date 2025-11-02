@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('penanganan_id')->constrained('penanganans')->onDelete('cascade');
             $table->string('file_path');
             $table->string('file_name');
-            $table->string('file_type'); // 'image' atau 'video'
+            $table->string('file_type');
             $table->timestamps();
         });
     }

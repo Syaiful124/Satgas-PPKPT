@@ -2,6 +2,7 @@
 @section('title', 'Hubungi Kami')
 
 @section('content')
+<div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden md:hidden"></div>
 <section id="hubungi-kami" class="p-8">
     <div class="text-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Hubungi Kami</h1>

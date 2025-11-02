@@ -15,23 +15,19 @@ class AccountController extends Controller
         $user = Auth::user();
         $query = $user->pengaduans()->with('kategori', 'pendampingan', 'tindaklanjut')->latest();
 
-        // Fitur Search untuk laporan user
         if ($request->filled('search')) {
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
 
-        // Fitur Filter untuk laporan user
         if ($request->filled('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
-        // Fitur sort
         if ($request->filled('sort')) {
             $sort = explode('_', $request->sort);
             if(count($sort) == 2){
                 $query->orderBy($sort[0], $sort[1]);
             }
         } else {
-            // Urutan default jika tidak ada pilihan sort
             $query->latest();
         }
 
@@ -51,7 +47,6 @@ class AccountController extends Controller
             'new_password' => ['nullable', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
         ]);
 
-        // Jika user mengganti password
         if ($request->filled('current_password')) {
             if (!Hash::check($request->current_password, $user->password)) {
                 return back()->withErrors(['current_password' => 'Password saat ini tidak cocok.']);
@@ -59,7 +54,6 @@ class AccountController extends Controller
             $user->password = Hash::make($request->new_password);
         }
 
-        // Langsung update nama dan email
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();

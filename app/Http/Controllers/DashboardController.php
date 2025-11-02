@@ -17,12 +17,10 @@ class DashboardController extends Controller
     {
         $query = Pengaduan::with(['kategori', 'penanganan.admin', 'petugas', 'pendampingan']);
 
-        // Fitur Search
         if ($request->filled('search')) {
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
 
-        // Fitur Filter
         if ($request->filled('status')) $query->where('status', $request->status);
         if ($request->filled('kategori')) $query->where('kategori_id', $request->kategori);
         if ($request->filled('pendampingan')) $query->where('pendampingan_id', $request->pendampingan);
@@ -34,7 +32,6 @@ class DashboardController extends Controller
         if ($request->filled('bulan')) $query->whereMonth('created_at', $request->bulan);
         if ($request->filled('tahun')) $query->whereYear('created_at', $request->tahun);
 
-        // Fitur Urutkan
         if ($request->filled('sort')) {
             $sort = explode('_', $request->sort);
             if(count($sort) == 2) $query->orderBy($sort[0], $sort[1]);

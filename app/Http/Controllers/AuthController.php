@@ -10,13 +10,12 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    // Menampilkan halaman Login
+    //  Login
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Proses Login yang sudah disederhanakan
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -28,12 +27,11 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            // Langsung arahkan berdasarkan role, tanpa verifikasi
             if ($user->role === 'superadmin') {
                 return redirect()->intended(route('superadmin.dashboard'));
             } elseif ($user->role === 'admin') {
                 return redirect()->intended(route('admin.laporan.masuk'));
-            } else { // Ini untuk 'user'
+            } else {
                 return redirect()->intended(route('account.index'));
             }
         }
@@ -43,13 +41,12 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    // Menampilkan halaman Registrasi
+    // Registrasi
     public function showRegistrationForm()
     {
         return view('auth.register');
     }
 
-    // Proses Registrasi yang sudah disederhanakan
     public function register(Request $request)
     {
         $request->validate([
@@ -65,14 +62,12 @@ class AuthController extends Controller
             'role' => 'user',
         ]);
 
-        // Langsung loginkan user setelah registrasi
         Auth::login($user);
 
-        // Arahkan ke halaman akun mereka
         return redirect()->route('account.index')->with('success', 'Registrasi berhasil! Selamat datang.');
     }
 
-    // Proses Logout
+    // Logout
     public function logout(Request $request)
     {
         Auth::logout();

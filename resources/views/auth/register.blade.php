@@ -128,13 +128,9 @@
 
         passwordInput.addEventListener('input', function() {
             const val = this.value;
-            // Length
             updateCheck(checks.length, val.length >= 8);
-            // Uppercase
             updateCheck(checks.uppercase, /[A-Z]/.test(val));
-            // Number
             updateCheck(checks.number, /[0-9]/.test(val));
-            // Symbol
             updateCheck(checks.symbol, /[^A-Za-z0-9]/.test(val));
         });
 

@@ -12,7 +12,6 @@ use Illuminate\Validation\Rules;
 class UserController extends Controller
 {
     // === UNTUK SUPERADMIN ===
-
     public function index(Request $request)
     {
         $role = $request->query('role', 'user');
@@ -77,7 +76,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        // Mencegah superadmin menghapus dirinya sendiri
         if($user->id === Auth::id()){
             return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
@@ -91,7 +89,7 @@ class UserController extends Controller
         $changes = $user->data_perubahan;
 
         if ($user->status_perubahan === 'pending_update') {
-            $user->update($changes); // Terapkan data baru
+            $user->update($changes);
             $message = 'Perubahan akun berhasil disetujui.';
         } elseif ($user->status_perubahan === 'pending_delete') {
             $user->delete();
@@ -100,7 +98,6 @@ class UserController extends Controller
             return redirect()->route('superadmin.users.index')->with('error', 'Tindakan tidak valid.');
         }
 
-        // Hapus status setelah disetujui
         if ($user->exists) {
             $user->update([
                 'status_perubahan' => null,
@@ -121,7 +118,6 @@ class UserController extends Controller
     }
 
     // === UNTUK ADMIN (HANYA MENGELOLA USER) ===
-
     public function indexAdmin()
     {
         $users = User::where('role', 'user')->paginate(10);
@@ -145,7 +141,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Role di-set otomatis
+            'role' => 'user',
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Akun user berhasil ditambahkan.');
@@ -167,13 +163,11 @@ class UserController extends Controller
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Siapkan data perubahan
         $changes = ['name' => $validatedData['name'], 'email' => $validatedData['email']];
         if ($request->filled('password')) {
             $changes['password'] = Hash::make($request->password);
         }
 
-        // Simpan permintaan ke database
         $user->update([
             'status_perubahan' => 'pending_update',
             'data_perubahan' => $changes,

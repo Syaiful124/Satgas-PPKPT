@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Laporan - SATGAS PPKPT - {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}</title>
+    <title> Laporan-SATGAS PPKPT-{{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}/LP/SATGAS-PPKPT/{{ \Carbon\Carbon::now()->translatedFormat('m/Y') }}</title>
     <link rel="icon" type="image/jpg" href="{{ asset('images/logo.jpg')}}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @page {
-            margin: 50px 40px ;
+            margin: 30px 50px;
         }
         body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;}
 
@@ -28,7 +28,7 @@
         .detail-table td { padding: 4px 0; vertical-align: top; }
         .detail-table .label { font-weight: bold; width: 30%; }
 
-        .tanda-tangan { width: 100%; margin-top: 50px; text-align: center; border: none !important; display: flex; justify-content: end;}
+        .tanda-tangan { width: 100%; text-align: center; border: none !important; display: flex; justify-content: end;}
 
         footer {
             position: fixed;
@@ -42,7 +42,6 @@
             font-family: Arial, sans-serif;
             font-size: 9pt;
         }
-        /* Logika untuk menampilkan nomor halaman (contoh: Halaman 1 dari 5) */
         footer .page-number::before {
             content: "Halaman " counter(page);
         }
@@ -55,20 +54,20 @@
 </head>
 <body>
     <div class="w-full px-5 py-2 flex flex-col">
-        <div class="kop-surat w-full text-center flex justify-center items-center py-2 px-3 mb-10">
+        <div class="kop-surat w-full text-center flex justify-center items-center py-2 px-3 mb-5">
             <img src="https://sst.stimata.ac.id/images/stimata.jpeg" alt="Logo">
             <div class="kop-text w-full text-center flex flex-col justify-center">
                 <h1>SEKOLAH TINGGI MANAJEMEN INFORMATIKA DAN KOMPUTER</h1>
                 <h2>STMIK PPKIA PRADNYA PARAMITA</h2>
                 <p>Kampus : Jl. Laksda Adi Sucipto No. 249-A Malang - 65141</p>
                 <p>Telp. (0341) 412699, Fax. (0341) 412782</p>
-                <p>Official Website : satgas-ppkpt-stimata.ac.id E-mail : satgas-ppkpt@stimata.ac.id</p>
+                <p>Official Website : ppkpt.stimata.ac.id E-mail : satgas-ppkpt@stimata.ac.id</p>
             </div>
         </div>
         <main class="w-full flex flex-col">
             <div class="surat-title">
-                <h3>DETAIL LAPORAN PENGADUAN</h3>
-                <p>Nomor Laporan: {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}</p>
+                <h3>DETAIL LAPORAN</h3>
+                <p>Nomor Laporan: {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}/LP/SATGAS-PPKPT/{{ \Carbon\Carbon::now()->translatedFormat('m/Y') }}</p>
             </div>
             <div>
                 <h3 class="section-title">A. Detail Laporan Masuk</h3>
@@ -108,22 +107,18 @@
                     </tr>
                     <tr>
                         <td class="label">Pendampingan</td>
-                        <td>: {{ $pengaduan->pendampingan->opsi_pendampingan }}</td>
+                        <td>: {{ strtoupper($pengaduan->pendampingan->opsi_pendampingan) }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td class="label">Kronologi Kejadian</td>
                         <td>: {{ $pengaduan->isi_laporan }}</td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
             @if($pengaduan->penanganan)
             <div>
                 <h3 class="section-title">B. Detail Penanganan</h3>
                 <table class="detail-table">
-                    <tr>
-                        <td class="label">Status Akhir</td>
-                        <td>: {{ strtoupper($pengaduan->status) }}</td>
-                    </tr>
                     <tr>
                         <td class="label">Ditangani Oleh</td>
                         <td>: {{ $pengaduan->penanganan->admin->name }}</td>
@@ -136,13 +131,14 @@
                         <td class="label">Tindak Lanjut</td>
                         <td>: {{ strtoupper($pengaduan->penanganan->tindaklanjut->opsi_tindaklanjut) }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td class="label">Laporan Hasil Penanganan</td>
                         <td>: {{ $pengaduan->penanganan->isi_penanganan }}</td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
             @endif
+
             @if ($pengaduan->status == 'ditolak' && !empty($pengaduan->alasan_penolakan))
             <div>
                 <h3 class="section-title">{{ $pengaduan->penanganan ? 'C. Hasil Akhir' : 'B. Hasil Akhir' }}: Laporan Ditolak</h3>
@@ -152,24 +148,43 @@
                         <td>: {{ strtoupper($pengaduan->status) }}</td>
                     </tr>
                     <tr>
-                        <td class="label" style="color: #dc2626;">Alasan Penolakan</td>
+                        <td class="label" style="color: red;">Alasan Penolakan</td>
                         <td>: {{ $pengaduan->alasan_penolakan }}</td>
                     </tr>
                 </table>
             </div>
             @endif
+
+            @if ($pengaduan->status == 'selesai' && !empty($pengaduan->layanan_pemulihan))
             <div>
-                <table class="tanda-tangan">
+                <h3 class="section-title">C. Hasil Akhir: Layanan Pemulihan yang Diberikan</h3>
+                <table class="detail-table">
+                    <tr>
+                        <td class="label">Status Akhir</td>
+                        <td>: {{ strtoupper($pengaduan->status) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="color: green;">Layanan Pemulihan</td>
+                        @foreach ($pengaduan->layanan_pemulihan as $layanan)
+                            <td>: {{ ucfirst($layanan) }}</td>
+                        @endforeach
+                    </tr>
+                </table>
+            </div>
+            @endif
+
+            <div>
+                <table class="tanda-tangan mt-4">
                     <tr>
                         <td>
                             Malang, {{ now()->translatedFormat('d F Y') }}<br>
-                            Ketua Satgas PPKS,<br><br><br><br><br>
+                            Ketua Satgas PPKPT,<br><br><br><br><br>
                             <strong>{{ auth()->user()->name }}</strong>
                         </td>
                     </tr>
                 </table>
             </div>
-        </div>
+        </main>
     </div>
     <button class="print-button fixed px-5 py-1 top-10 right-10 rounded-lg" onclick="window.print()">Cetak</button>
 </body>
