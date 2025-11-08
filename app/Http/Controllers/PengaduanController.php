@@ -151,22 +151,18 @@ class PengaduanController extends Controller
         $request->validate([
             'anonim' => 'nullable|boolean',
             'nama_pelapor' => [
-                Rule::requiredIf(!$request->boolean('anonim') && !Auth::check()),
-                'nullable', 'string', 'max:255'
+                Rule::requiredIf(!$request->boolean('anonim') && !Auth::check()), 'nullable', 'string', 'max:255'
             ],
             'email_pelapor' => [
-                Rule::requiredIf(!$request->boolean('anonim')),
-                'nullable', 'email', 'max:255'
+                Rule::requiredIf(!$request->boolean('anonim') && !Auth::check()), 'nullable', 'email', 'max:255'
             ],
             'telepon_pelapor' => [
-                Rule::requiredIf(!$request->boolean('anonim')),
-                'nullable', 'string', 'max:25'
+                Rule::requiredIf(!$request->boolean('anonim')), 'nullable', 'string', 'max:25'
             ],
             'judul' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
             'kategori_lainnya' => [
-                Rule::requiredIf($request->input('kategori_id') == $lainnyaKategoriId),
-                'nullable', 'string', 'max:100'
+                Rule::requiredIf($request->input('kategori_id') == $lainnyaKategoriId), 'nullable', 'string', 'max:100'
             ],
             'pendampingan_id' => 'required|exists:pendampingans,id',
             'isi_laporan' => 'required|string',
@@ -269,7 +265,7 @@ class PengaduanController extends Controller
     public function updateUser(Request $request, Pengaduan $pengaduan)
     {
         if (Gate::denies('update', $pengaduan)) {
-            abort(403, 'Anda tidak diizinkan untuk mengedit laporan ini.');
+            return redirect()->route('account.pengaduan.show', $pengaduan)->with('error', 'Anda tidak diizinkan untuk mengedit laporan ini.');
         }
 
         $lainnyaKategoriId = Kategori::where('nama_kategori', 'Lainnya')->first()?->id;
@@ -377,7 +373,7 @@ class PengaduanController extends Controller
     public function destroyUser(Pengaduan $pengaduan)
     {
         if (Gate::denies('delete', $pengaduan)) {
-            abort(403);
+            return redirect()->route('account.pengaduan.show', $pengaduan)->with('error', 'Anda tidak diizinkan untuk menghapus laporan ini.');
         }
 
         if ($pengaduan->foto_kejadian) {

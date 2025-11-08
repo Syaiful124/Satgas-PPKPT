@@ -18,7 +18,7 @@
         .content-table table {width: 100%;}
         .content-table th, .content-table td { border: 1px solid #000; padding: 8px; text-align: center;}
         .content-table th { background-color: #b2b2b2; font-weight: bold; }
-        .content-table tr:nth-child(even) { background-color: #e9e9e9; }
+        .content-table tr:nth-child(even) { background-color: #ffff; }
         .page-break {
             page-break-after: always;
         }
@@ -33,7 +33,7 @@
                 <h2>STMIK PPKIA PRADNYA PARAMITA</h2>
                 <p>Kampus : Jl. Laksda Adi Sucipto No. 249-A Malang - 65141</p>
                 <p>Telp. (0341) 412699, Fax. (0341) 412782</p>
-                <p>Official Website : ppkpt.stimata.ac.id E-mail : satgas-ppkpt@stimata.ac.id</p>
+                <p>Official Website : ppkpt.stimata.ac.id, E-mail : satgas-ppkpt@stimata.ac.id</p>
             </div>
         </div>
         <main class="w-full flex flex-col">
@@ -47,8 +47,7 @@
                     <thead>
                         <tr>
                             <th style="width: 5%;">No</th>
-                            <th>Judul Laporan</th>
-                            <th>Kategori</th>
+                            <th>Keterangan</th>
                             <th>Status</th>
                             <th>Tanggal Lapor</th>
                             <th>Tanggal Ditangani</th>
@@ -59,8 +58,8 @@
                         @forelse($pengaduans as $index => $pengaduan)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $pengaduan->judul }}</td>
-                                <td>{{ $pengaduan->kategori->nama_kategori }}
+                                <td>{{ $pengaduan->judul }}
+                                    <br>{{ $pengaduan->kategori->nama_kategori }}
                                     @if ($pengaduan->kategori->nama_kategori == 'Lainnya' && !empty($pengaduan->kategori_lainnya))
                                         ({{ $pengaduan->kategori_lainnya }})
                                     @endif

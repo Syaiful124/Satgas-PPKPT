@@ -166,7 +166,7 @@
                         </div>
                         <span class="text-sm font-semibold px-3 py-1 rounded-full items-center
                             @if($pengaduan->status == 'menunggu') bg-yellow-200 text-yellow-800 @endif
-                            @if($pengaduan->status == 'penanganan') bg-blue-200 text-blue-800 @endif
+                            @if($pengaduan->status == 'penanganan') bg-blue-200 text-blue-800 <p> @endif
                             @if($pengaduan->status == 'selesai') bg-green-200 text-green-800 @endif
                             @if($pengaduan->status == 'ditolak') bg-red-200 text-red-800 @endif
                         ">{{ ucfirst($pengaduan->status) }}</span>
@@ -175,7 +175,7 @@
             @empty
                 <div class="text-center text-gray-500 p-8 border-2 border-dashed rounded-lg">
                     <p>Anda belum pernah membuat pengaduan.</p>
-                    <a href="{{ route('pengaduan.create') }}" class="mt-2 inline-block text-orange-500 font-bold">Kirim Pengaduan Sekarang</a>
+                    <a href="{{ route('pengaduan.create') }}" class="mt-2 inline-block text-orange-500 font-bold">Buat Laporan Sekarang</a>
                 </div>
             @endforelse
         </div>

@@ -62,13 +62,13 @@
                 <h2>STMIK PPKIA PRADNYA PARAMITA</h2>
                 <p>Kampus : Jl. Laksda Adi Sucipto No. 249-A Malang - 65141</p>
                 <p>Telp. (0341) 412699, Fax. (0341) 412782</p>
-                <p>Official Website : ppkpt.stimata.ac.id E-mail : satgas-ppkpt@stimata.ac.id</p>
+                <p>Official Website : ppkpt.stimata.ac.id, E-mail : satgas-ppkpt@stimata.ac.id</p>
             </div>
         </div>
         <main class="w-full flex flex-col">
             <div class="surat-title">
                 <h3>SURAT TUGAS</h3>
-                <p>Nomor Surat: {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}/ST/SATGAS-PPKPT/{{ \Carbon\Carbon::now()->translatedFormat('m/Y') }}</p>
+                <p>Nomor: {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}/ST/SATGAS-PPKPT/{{ \Carbon\Carbon::now()->translatedFormat('m/Y') }}</p>
             </div>
 
             <div class="isi-surat">

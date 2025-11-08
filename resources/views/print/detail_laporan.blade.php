@@ -61,20 +61,20 @@
                 <h2>STMIK PPKIA PRADNYA PARAMITA</h2>
                 <p>Kampus : Jl. Laksda Adi Sucipto No. 249-A Malang - 65141</p>
                 <p>Telp. (0341) 412699, Fax. (0341) 412782</p>
-                <p>Official Website : ppkpt.stimata.ac.id E-mail : satgas-ppkpt@stimata.ac.id</p>
+                <p>Official Website : ppkpt.stimata.ac.id, E-mail : satgas-ppkpt@stimata.ac.id</p>
             </div>
         </div>
         <main class="w-full flex flex-col">
             <div class="surat-title">
                 <h3>DETAIL LAPORAN</h3>
-                <p>Nomor Laporan: {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}/LP/SATGAS-PPKPT/{{ \Carbon\Carbon::now()->translatedFormat('m/Y') }}</p>
+                <p>Nomor: {{ str_pad($pengaduan->id, 3, '0', STR_PAD_LEFT) }}/LP/SATGAS-PPKPT/{{ \Carbon\Carbon::now()->translatedFormat('m/Y') }}</p>
             </div>
             <div>
                 <h3 class="section-title">A. Detail Laporan Masuk</h3>
                 <table class="detail-table">
                     <tr>
                         <td class="label">Tanggal Laporan</td>
-                        <td>: {{ $pengaduan->created_at?->translatedFormat('d F Y, H:i') }}</td>
+                        <td>: {{ $pengaduan->created_at?->translatedFormat('d F Y') }}</td>
                     </tr>
                     <tr>
                         <td class="label">Judul Laporan</td>
@@ -85,10 +85,10 @@
                         <td>: {{ $pengaduan->nama_pelapor ?? 'N/A' }}</td>
                     </tr>
                     @if (!empty($pengaduan->telepon_pelapor))
-                    <tr>
-                        <td class="label">No. Telepon</td>
-                        <td>: {{ $pengaduan->telepon_pelapor }}</td>
-                    </tr>
+                        <tr>
+                            <td class="label">No. Telepon</td>
+                            <td>: {{ $pengaduan->telepon_pelapor }}</td>
+                        </tr>
                     @endif
                     @if (!empty($pengaduan->email_pelapor))
                     <tr>
@@ -125,7 +125,7 @@
                     </tr>
                     <tr>
                         <td class="label">Tanggal Penanganan</td>
-                        <td>: {{ $pengaduan->penanganan->created_at?->translatedFormat('d F Y, H:i') }}</td>
+                        <td>: {{ $pengaduan->penanganan->created_at?->translatedFormat('d F Y') }}</td>
                     </tr>
                     <tr>
                         <td class="label">Tindak Lanjut</td>

@@ -19,6 +19,20 @@
     @endcan
 </div>
 
+{{-- <div class="mx-8">
+    @if ($pengaduan->status == 'penanganan')
+        @if ($pengaduan->penanganan)
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                <h3 class="text-lg font-bold text-blue-800">Informasi Proses (dari Superadmin)</h3>
+                <p class="text-blue-700 mt-1">
+                    Laporan Anda sedang dalam proses klarifikasi oleh petugas.
+                    Keputusan tindak lanjut akan diberikan dalam **1x24 jam** setelah proses klarifikasi selesai.
+                </p>
+            </div>
+        @endif
+    @endif
+</div> --}}
+
 <div class="flex flex-col gap-6 mx-8">
     <div class="bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Laporan Pengaduan</h2>
@@ -100,8 +114,9 @@
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md gap-4 flex flex-col">
-        <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Tanggapan dari Satgas</h2>
+    <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+        <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Detail Penanganan Laporan</h2>
+
         @if ($pengaduan->penanganan)
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -150,7 +165,7 @@
             </div>
         @else
             <div class="text-center text-gray-500 py-8">
-                <p>Belum ada laporan penanganan dari petugas.</p>
+                <p>Laporan Anda telah diteruskan ke petugas. Harap menunggu proses klarifikasi dan penanganan.</p>
             </div>
         @endif
     </div>
